@@ -16,4 +16,6 @@ switch($params[0]){
     case 'GetClothing':
         $controller->getClothes();
     break;
+    default:
+    echo 'Error 404';
 }
