@@ -5,7 +5,7 @@ if(isset($_GET['action']) && !empty($_GET['action'])){
     $action=$_GET['action'];
 }
 else{
-    $action='GetClothing';
+    $action='Clothing';
 };
 
 $params = explode('/', $action);
@@ -13,8 +13,18 @@ $params = explode('/', $action);
 $controller = new ClothingController();
 
 switch($params[0]){
-    case 'GetClothing':
-        $controller->getClothes();
+    case 'Clothing':
+        if(isset($params[1]) && $params[1]==='GetClothing'){
+            if(!isset($params[2])){
+                $controller->getClothes();
+            }
+            else{
+                $controller->getJustOneClothes($params[2]);
+            }
+        }
+        else{
+            echo 'Pagina no encontrada.';
+        }
     break;
     default:
     echo 'Error 404';

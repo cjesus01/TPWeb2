@@ -12,5 +12,14 @@ class ClothingController{
     public function getClothes(){
         $Clothing = $this->model->getAll();
         $this->view->ShowClothes($Clothing);
+    }
+    public function getJustOneClothes($id){
+        if(is_numeric($id) && !empty($id)){
+            $OneClothes=$this->model->getOneClothes($id);
+            $this->view->ShowOneClothes($OneClothes);
+        }
+        else{
+            ShowError('Ingrese un id válido');
+        }
     }    
 }
