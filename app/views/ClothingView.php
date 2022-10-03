@@ -1,16 +1,16 @@
 <?php
+
+require_once './libs/smarty-master/libs/Smarty.class.php';
+
 class ClothingView {
+    private $smarty;
+
+    public function __construct(){
+         $this->smarty= new Smarty();
+    } 
     public function ShowClothes($Clothing){
-        echo '<ul>';
-        foreach ($Clothing as $Clothes){
-            // echo '<li>'.$Clothes->sexo.'</li>';
-            // echo '<li>'.$Clothes->talla.'</li>';
-            // echo '<li>'.$Clothes->color.'</li>';
-            echo '<li>Prenda:'.$Clothes->prenda.'</li>';
-            echo '<li>'.$Clothes->tipo_de_tela.'</li>';
-            echo '<button><a href=Clothing/GetClothing/'.$Clothes->id.'>Ver detalles</a></button>';
-        }
-        echo '</ul>';
+        $this->smarty->assign('prendas', $Clothing);
+        $this->smarty->display('./templates/prendas.tpl');
     }
     public function ShowOneClothes($OneClothes){
         var_dump($OneClothes);
