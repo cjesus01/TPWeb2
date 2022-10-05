@@ -1,5 +1,7 @@
 <?php
 require_once './app/controllers/ClothingController.php';
+require_once './app/controllers/CategoriesController.php';
+define('BASE_URL', '//'.$_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER['PHP_SELF']).'/');
 
 if(isset($_GET['action']) && !empty($_GET['action'])){
     $action=$_GET['action'];
@@ -9,8 +11,8 @@ else{
 };
 
 $params = explode('/', $action);
-
 $controller = new ClothingController();
+$controllerCategories = new CategoriesController(); 
 
 switch($params[0]){
     case 'Clothing':
@@ -22,8 +24,11 @@ switch($params[0]){
                 $controller->getJustOneClothes($params[2]);
             }
         }
+        else if (isset($params[1]) && $params[1] === 'Categories'){
+            $controllerCategories->getCategories();
+        }
         else{
-            echo 'Pagina no encontrada.';
+            $controller->Homepage();
         }
     break;
     default:

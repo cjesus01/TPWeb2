@@ -21,5 +21,8 @@ class ClothingController{
         else{
             ShowError('Ingrese un id válido');
         }
+    }
+    public function Homepage(){
+        $this->view->Homepage();
     }    
 }

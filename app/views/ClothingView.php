@@ -7,24 +7,22 @@ class ClothingView {
 
     public function __construct(){
          $this->smarty= new Smarty();
+         $this->smarty->assign('BASE_URL', BASE_URL);
     } 
     public function ShowClothes($Clothing){
         $this->smarty->assign('prendas', $Clothing);
         $this->smarty->display('./templates/prendas.tpl');
     }
     public function ShowOneClothes($OneClothes){
-        var_dump($OneClothes);
-        echo '<ul>';
-                echo '<li>Prenda:'.$OneClothes->prenda.'</li>';
-                echo '<li>Sexo:'.$OneClothes->sexo.'</li>';
-                echo '<li>Talla:'.$OneClothes->talla.'</li>';
-                echo '<li>Color:'.$OneClothes->color.'</li>';
-                echo '<li>Tipo de tela:'.$OneClothes->tipo_de_tela.'</li>';
-                echo '<button><a href=Clothing/GetClothing>Volver</a></button>';
-        echo '</ul>';
+        $this->smarty->assign('OneClothes', $OneClothes);
+        $this->smarty->display('./templates/oneclothes.tpl');
     }
     
     public function ShowError($mensaje){
         echo '<h1>'.$mensaje.'</h1>';
+    }
+    public function Homepage(){
+        // $this->smarty->assign('Title','Homepage');
+        $this->smarty->display('./templates/homepage.tpl');
     }
 }
