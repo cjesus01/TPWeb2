@@ -12,11 +12,17 @@
             return $db;
         }
         public function getAll(){
-            $query=$this->db->prepare('SELECT * FROM ropa JOIN tela ON ropa.id_tela = tela.id_tela');
+            $query=$this->db->prepare('SELECT * FROM prenda JOIN tela ON prenda.id_tela = tela.id_tela');
             $query->execute();
             $Clothing = $query->fetchAll(PDO::FETCH_OBJ);
             return $Clothing;
         }
+        public function getOneClothes($id){
+            $query=$this->db->prepare('SELECT * FROM prenda JOIN tela ON prenda.id_tela=tela.id_tela WHERE id=?');
+            $query->execute([$id]);
+            $Clothing=$query->fetch(PDO::FETCH_OBJ);
+            return $Clothing;
+        } 
     }
     
 ?>
