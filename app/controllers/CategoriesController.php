@@ -11,8 +11,6 @@ class CategoriesController{
         $this->view = new CategoriesView();
     }
 
-    
-
     public function getCategories(){
         $Categories = $this->model->getCategoriesAll();
         $this->view->ShowCategories($Categories);

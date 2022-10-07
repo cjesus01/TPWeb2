@@ -4,5 +4,5 @@
         <li>{$Categorie->tipo_de_tela}</li>
     {/foreach}
     </ul>
-    <button><a href = "Clothing">Volver</a></button>
+    {include file = 'filtercategoryform.tpl'}
 {include file = 'footer.tpl'}

@@ -11,6 +11,7 @@ class CategoriesView{
     
     public function ShowCategories($Categories){
         $this->smarty->assign('categories',$Categories);
+        $this->smarty->assign('Title','Categories');
         $this->smarty->display('./templates/categories.tpl');
     }
 }

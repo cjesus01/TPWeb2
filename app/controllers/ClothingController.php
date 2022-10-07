@@ -19,10 +19,17 @@ class ClothingController{
             $this->view->ShowOneClothes($OneClothes);
         }
         else{
-            ShowError('Ingrese un id válido');
+            $this->view->ShowError('Ingrese un id válido');
         }
     }
     public function Homepage(){
         $this->view->Homepage();
-    }    
+    }  
+    public function getClothesByCategory(){
+        if(isset($_GET['category']) && !empty($_GET['category'])){
+            $Category =$_GET['category'];
+            $Clothing= $this->model->getAll();
+            $this->view->ShowClothesByCategory($Clothing,$Category);
+        }
+    }  
 }

@@ -16,16 +16,24 @@ $controllerCategories = new CategoriesController();
 
 switch($params[0]){
     case 'Clothing':
-        if(isset($params[1]) && $params[1]==='GetClothing'){
-            if(!isset($params[2])){
-                $controller->getClothes();
+        if(isset($params[1])){
+            if($params[1]==='GetClothing'){
+                if(!isset($params[2])){
+                    $controller->getClothes();
+                }
+                else{
+                    $controller->getJustOneClothes($params[2]);
+                }
+            }
+            else if ($params[1] === 'Categories'){
+                $controllerCategories->getCategories();
+            }
+            else if($params[1]=== 'filtercategoryform'){
+                $controller->getClothesByCategory();
             }
             else{
-                $controller->getJustOneClothes($params[2]);
+                $controller->Homepage();
             }
-        }
-        else if (isset($params[1]) && $params[1] === 'Categories'){
-            $controllerCategories->getCategories();
         }
         else{
             $controller->Homepage();
