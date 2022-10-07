@@ -12,6 +12,7 @@
         <a href="Clothing">Inicio</a>
         <a href="Clothing/GetClothing">Ver todas</a>
         <a href="Clothing/Categories">Ver categorias</a>
+        <a href="Clothing/AddClothingForm">Agregar una nueva prenda</a>
         <a href="">Registrarse</a>
     </nav>
 </body>

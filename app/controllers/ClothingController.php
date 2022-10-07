@@ -24,12 +24,49 @@ class ClothingController{
     }
     public function Homepage(){
         $this->view->Homepage();
-    }  
+    }
     public function getClothesByCategory(){
         if(isset($_GET['category']) && !empty($_GET['category'])){
             $Category =$_GET['category'];
             $Clothing= $this->model->getAll();
             $this->view->ShowClothesByCategory($Clothing,$Category);
         }
+        else{
+            $this->view->ShowError('Ingrese una categoria');
+        }
+    }
+    public function DeleteClothing($id){
+        if(is_numeric($id) && !empty($id)){
+            $this->model->DeleteClothing($id);
+            $this->view->ShowSuccess('Se eliminó con éxito','Delete Clothing');
+        }
+        else{
+            $this->view->ShowError('Ingrese un id válido');
+        }
+    }
+    public function AddClothingForm(){
+        $this->view->FormAddClothing();
     }  
+    public function AddClothing(){
+        if(isset($_GET['prenda']) && isset($_GET['sexo']) &&
+           isset($_GET['color']) && isset($_GET['talla']) && 
+           isset($_GET['category']) && !empty($_GET['prenda']) && 
+           !empty($_GET['sexo']) && !empty($_GET['color']) && 
+           !empty($_GET['talla']) && !empty($_GET['category']) && 
+           !is_numeric($_GET['prenda']) && !is_numeric($_GET['sexo']) && 
+           !is_numeric($_GET['color']) && !is_numeric($_GET['talla'])){
+            $prenda=$_GET['prenda'];
+            $sexo=$_GET['sexo'];
+            $color=$_GET['color'];
+            $talla=$_GET['talla'];
+            $category=intval($_GET['category']);
+
+            $this->model->AddClothing($prenda,$sexo,$color,$talla,$category);
+            $this->view->ShowSuccess('Se agregó con éxito','Add Clothing');
+           }
+           else{
+            $this->view->ShowError('Complete todo el formulario');
+           }
+           
+    } 
 }

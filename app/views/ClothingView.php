@@ -34,4 +34,14 @@ class ClothingView {
         $this->smarty->assign('Title','Clothing');
         $this->smarty->display('./templates/clothing.tpl');
     }
+    public function FormAddClothing(){
+        $this->smarty->assign('Title','Add Clothing');
+        $this->smarty->display('./templates/addformclothing.tpl');
+    }
+    public function ShowSuccess($message,$title){
+        $this->smarty->assign('Title',$title);
+        $this->smarty->assign('message', $message);
+        $this->smarty->assign('return', 'Clothing/GetClothing');
+        $this->smarty->display('./templates/showsuccess.tpl');
+    }
 }

@@ -31,6 +31,20 @@ switch($params[0]){
             else if($params[1]=== 'filtercategoryform'){
                 $controller->getClothesByCategory();
             }
+            else if($params[1]=== 'DeleteClothing'){
+                if(!isset($params[2])){
+                    $controller->getClothes();
+                }
+                else{
+                    $controller->DeleteClothing($params[2]);
+                }
+            }
+            else if($params[1]==='AddClothingForm'){
+                $controller->AddClothingForm();
+            }
+            else if($params[1]==='AddClothing'){
+                $controller->AddClothing();
+            }
             else{
                 $controller->Homepage();
             }

@@ -23,6 +23,14 @@
             $Clothing=$query->fetch(PDO::FETCH_OBJ);
             return $Clothing;
         } 
+        public function DeleteClothing($id){
+            $query=$this->db->prepare('DELETE FROM prenda WHERE id=?');
+            $query->execute([$id]);
+        }
+        public function AddClothing($prenda,$sexo,$color,$talla,$category){
+            $query=$this->db->prepare('INSERT INTO prenda(prenda,sexo,color,talla,id_tela) VALUES (?,?,?,?,?)');
+            $query->execute([$prenda,$sexo,$color,$talla,$category]);
+        }
     }
     
 ?>
