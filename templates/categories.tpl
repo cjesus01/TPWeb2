@@ -2,6 +2,8 @@
     <ul>
     {foreach from=$categories item=$Categorie}
         <li>{$Categorie->tipo_de_tela}</li>
+        <button><a href="Clothing/DeleteCategorie">Eliminar</a></button>
+        <button><a href="Clothing/FormUpdateCategorie/{$Categorie->id_tela}">Modificar</a></button>
     {/foreach}
     </ul>
     {include file = 'filtercategoryform.tpl'}

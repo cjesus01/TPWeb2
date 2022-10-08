@@ -44,4 +44,13 @@ class ClothingView {
         $this->smarty->assign('return', 'Clothing/GetClothing');
         $this->smarty->display('./templates/showsuccess.tpl');
     }
+    public function ShowFormUpdate($sexo, $talla, $color, $prenda, $id){
+        $this->smarty->assign('Title', 'form update');
+        $this->smarty->assign('sexo', $sexo);
+        $this->smarty->assign('talla', $talla);
+        $this->smarty->assign('color', $color);
+        $this->smarty->assign('prenda', $prenda);
+        $this->smarty->assign('id', $id);
+        $this->smarty->display('./templates/updateform.tpl');
+    }
 }

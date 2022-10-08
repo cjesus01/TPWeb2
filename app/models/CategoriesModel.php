@@ -14,7 +14,7 @@ class CategoriesModel{
     }
 
     public function getCategoriesAll(){
-        $query=$this->db->prepare('SELECT tipo_de_tela FROM tela');
+        $query=$this->db->prepare('SELECT * FROM tela');
         $query->execute();
         $Categories = $query-> fetchAll(PDO::FETCH_OBJ);
         return $Categories;
@@ -24,6 +24,10 @@ class CategoriesModel{
         $query->execute([$category]);
         $Clothing=$query->fetchAll(PDO::FETCH_OBJ);
         return $Clothing;
+    }
+    public function AddCategorie($descripcion, $lavado,$temperatura,$categoria){
+        $query=$this->db->prepare("INSERT INTO tela(tipo_de_tela,descripcion,lavado_de_tela,temperatura_de_lavado) VALUES (?,?,?,?)");
+        $query->execute([$categoria,$descripcion,$lavado,$temperatura]);
     }
 }
 ?>

@@ -68,5 +68,39 @@ class ClothingController{
             $this->view->ShowError('Complete todo el formulario');
            }
            
-    } 
+    }
+    public function FormUpdateClothing($id){
+        if(is_numeric($id)&& !empty($id)){
+            $Clothing = $this->model->getOneClothes($id);
+            $sexo = $Clothing->sexo;
+            $talla = $Clothing->talla;
+            $color = $Clothing->color;
+            $prenda = $Clothing->prenda;
+            $this->view->ShowFormUpdate($sexo, $talla, $color, $prenda, $id);
+        }
+    }
+    public function UpdateClothing($id){
+        if(isset($_GET['prenda']) && isset($_GET['sexo']) &&
+           isset($_GET['color']) && isset($_GET['talla']) && 
+           isset($_GET['category']) && !empty($_GET['prenda']) && 
+           !empty($_GET['sexo']) && !empty($_GET['color']) && 
+           !empty($_GET['talla']) && !empty($_GET['category']) && 
+           !is_numeric($_GET['prenda']) && !is_numeric($_GET['sexo']) && 
+           !is_numeric($_GET['color']) && !is_numeric($_GET['talla'])){
+            
+            $prenda = $_GET['prenda'];
+            $color = $_GET['color'];
+            $talla = $_GET['talla'];
+            $sexo = $_GET['sexo'];
+            $Id=intval($id);
+            $category = intval($_GET['category']);
+           
+            $this->model->UpdateClothes($prenda, $color, $talla, $sexo, $category, $Id);
+            $this->view->ShowSuccess('Se modifico con exito', 'Update clothes');
+        }
+    }
+    public function Error($message){
+        $this->view->ShowError($message);
+    }    
+
 }

@@ -39,6 +39,28 @@ switch($params[0]){
                     $controller->DeleteClothing($params[2]);
                 }
             }
+            else if ($params[1] === 'FormUpdateClothing'){
+                if(isset($params[2])){
+                    $controller->FormUpdateClothing($params[2]);
+                }
+                else{
+                    $controller->Error('No se puede modificar intente nuevamente');
+                }
+            }
+            else if($params[1]==='UpdateClothing'){
+                if(isset($params[2])){
+                    $controller->UpdateClothing($params[2]);
+                }
+                else{
+                    $controller->Error('No se puede modificar intente nuevamente'); 
+                }    
+            }
+            else if($params[1]==='FormAddCategorie'){
+                $controllerCategories->FormAddCategories();
+            }
+            else if($params[1]==='AddCategories'){
+                $controllerCategories->AddCategories();
+            }
             else if($params[1]==='AddClothingForm'){
                 $controller->AddClothingForm();
             }

@@ -13,7 +13,8 @@
         <a href="Clothing/GetClothing">Ver todas</a>
         <a href="Clothing/Categories">Ver categorias</a>
         <a href="Clothing/AddClothingForm">Agregar una nueva prenda</a>
-        <a href="">Registrarse</a>
+        <a href="Clothing/FormAddCategorie">Agregar una nueva categoria</a>
+        <a href="Login">Iniciar sesión|Registrarse</a>
     </nav>
 </body>
 </html>

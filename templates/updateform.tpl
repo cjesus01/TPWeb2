@@ -1,15 +1,13 @@
 {include file='header.tpl'}
-    <form method="get" action="Clothing/AddClothing">
-        <label for="prenda">Agregar la prenda:</label>
-        <input type="text" name="prenda">
-        <label for="sexo">Agregar al sexo perteneciente:</label>
-        <input type="text" name="sexo">
+    <form method="get" action="Clothing/UpdateClothing/{$id}">
+        <label for="prenda">Ingrese la prenda:</label>
+        <input type="text" name="prenda" value={$prenda}>
+        <label for="sexo">Ingrese al sexo perteneciente:</label>
+        <input type="text" name="sexo" value={$sexo}>
         <label for="color">Ingrese el color:</label>
-        <input type="text" name="color">
-        <label for="talla">Agregar la talla perteneciente:</label>
-        <input type="text" name="talla">
-        <label for="color">Ingrese el color:</label>
-        <input type="text" name="color">
+        <input type="text" name="color" value={$color}>
+        <label for="talla">Ingrese la talla perteneciente:</label>
+        <input type="text" name="talla" value = {$talla}>
         <label for="category">Seleccione la categoria:</label>
         <select name="category">
             <option value="1">Algodón</option>

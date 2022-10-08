@@ -31,6 +31,10 @@
             $query=$this->db->prepare('INSERT INTO prenda(prenda,sexo,color,talla,id_tela) VALUES (?,?,?,?,?)');
             $query->execute([$prenda,$sexo,$color,$talla,$category]);
         }
+        public function UpdateClothes($prenda, $color, $talla, $sexo, $category, $id){
+            $query=$this->db->prepare("UPDATE prenda SET `sexo`='$sexo', `talla`='$talla', `color`='$color', `prenda`='$prenda', `id_tela`='$category' WHERE id=?");
+            $query->execute([$id]);
+        }
     }
     
 ?>
