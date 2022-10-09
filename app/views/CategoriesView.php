@@ -21,7 +21,7 @@ class CategoriesView{
     public function ShowSuccess($message,$title){
         $this->smarty->assign('Title',$title);
         $this->smarty->assign('message', $message);
-        $this->smarty->assign('return', 'Clothing/GetClothing');
+        $this->smarty->assign('return', 'Clothing/Categories');
         $this->smarty->display('./templates/showsuccess.tpl');
     }
     public function ShowError($message){

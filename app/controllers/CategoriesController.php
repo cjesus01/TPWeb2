@@ -32,10 +32,19 @@ class CategoriesController{
          $category=$_GET['categoria'];
          $this->model->AddCategorie($descripcion, $lavado,$temperatura,$category);
          $this->view->ShowSuccess('Se agregó con correctamente','Add Categories');
+        }
+        else{
+            $this->view->ShowError('No se pudo agregar la categoria');
+        }
     }
-    else{
-        $this->view->ShowError('No se pudo agregar la categoria');
+    public function DeleteCategories($id){
+        if(is_numeric($id) && !empty($id)){
+            $this->model->DeleteCategory($id);
+            $this->view->ShowSuccess('Se eliminó con éxito','Delete Clothing');
+        }
+        else{
+            $this->view->ShowError('No se pudo agregar la categoria');
+        }
     }
-}
 }
 ?>

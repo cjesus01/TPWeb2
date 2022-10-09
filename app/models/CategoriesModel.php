@@ -29,5 +29,9 @@ class CategoriesModel{
         $query=$this->db->prepare("INSERT INTO tela(tipo_de_tela,descripcion,lavado_de_tela,temperatura_de_lavado) VALUES (?,?,?,?)");
         $query->execute([$categoria,$descripcion,$lavado,$temperatura]);
     }
+    public function DeleteCategory($id){
+        $query=$this->db->prepare("DELETE FROM tela WHERE id_tela=?");
+        $query->execute([$id]);
+    } 
 }
 ?>

@@ -1,6 +1,7 @@
 <?php
 require_once './app/controllers/ClothingController.php';
 require_once './app/controllers/CategoriesController.php';
+require_once 'app/controllers/UssersController.php';
 define('BASE_URL', '//'.$_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER['PHP_SELF']).'/');
 
 if(isset($_GET['action']) && !empty($_GET['action'])){
@@ -13,6 +14,7 @@ else{
 $params = explode('/', $action);
 $controller = new ClothingController();
 $controllerCategories = new CategoriesController(); 
+$controllerUssers= new UssersController();
 
 switch($params[0]){
     case 'Clothing':
@@ -40,19 +42,19 @@ switch($params[0]){
                 }
             }
             else if ($params[1] === 'FormUpdateClothing'){
-                if(isset($params[2])){
-                    $controller->FormUpdateClothing($params[2]);
+                if(!isset($params[2])){
+                    $controller->Error('No se puede modificar intente nuevamente');
                 }
                 else{
-                    $controller->Error('No se puede modificar intente nuevamente');
+                    $controller->FormUpdateClothing($params[2]);
                 }
             }
             else if($params[1]==='UpdateClothing'){
-                if(isset($params[2])){
-                    $controller->UpdateClothing($params[2]);
+                if(!isset($params[2])){
+                    $controller->Error('No se puede modificar intente nuevamente'); 
                 }
                 else{
-                    $controller->Error('No se puede modificar intente nuevamente'); 
+                    $controller->UpdateClothing($params[2]);
                 }    
             }
             else if($params[1]==='FormAddCategorie'){
@@ -60,6 +62,14 @@ switch($params[0]){
             }
             else if($params[1]==='AddCategories'){
                 $controllerCategories->AddCategories();
+            }
+            else if($params[1]=== 'DeleteCategorie'){
+                if(!isset($params[2])){
+                    $controller->Error('No se puede eliminar, intente nuevamente'); 
+                }
+                else{
+                    $controllerCategories->DeleteCategories($params[2]);
+                }  
             }
             else if($params[1]==='AddClothingForm'){
                 $controller->AddClothingForm();
@@ -75,6 +85,15 @@ switch($params[0]){
             $controller->Homepage();
         }
     break;
+    case 'Login':
+        $controllerUssers->FormGetLogin();
+        break;
+    case 'LoginIn':
+        $controllerUssers->LoginIn();
+        break;
+    case 'Register':
+        $controllerUssers->FormRegister();
+        break;
     default:
-    echo 'Error 404';
+    $controller->Error('Error 404'); 
 }
