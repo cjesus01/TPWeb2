@@ -28,6 +28,15 @@ class CategoriesView{
         $this->smarty->assign('message', $message);
         $this->smarty->display('./templates/error.tpl');
     }
+    public function ShowFormUpdate($id, $categories, $descripcion, $lavado, $temperatura){
+        $this->smarty->assign('Title', 'form');
+        $this->smarty->assign('id', $id);
+        $this->smarty->assign('categories', $categories);
+        $this->smarty->assign('descripcion', $descripcion);
+        $this->smarty->assign('lavado', $lavado);
+        $this->smarty->assign('temperatura', $temperatura);
+        $this->smarty->display('./templates/updatecategories.tpl');
+    }
 }
 
 ?>

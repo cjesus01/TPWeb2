@@ -55,6 +55,22 @@ switch($params[0]){
                     $controller->Error('No se puede modificar intente nuevamente'); 
                 }    
             }
+            else if($params[1]==='FormUpdateCategorie'){
+                if(isset($params[2])){
+                    $controllerCategories->FormUpdateCategories($params[2]);
+                }
+                else{
+                    $controllerCategories->Error('No se puede acceder al formulario');
+                }
+            }
+            else if($params[1]==='UpdateCategories'){
+                if(isset($params[2])){
+                    $controllerCategories->UpdateCategories($params[2]);
+                }
+                else{
+                    $controllerCategories->Error('No se puede modificar la categoria');
+                }
+            }
             else if($params[1]==='FormAddCategorie'){
                 $controllerCategories->FormAddCategories();
             }
@@ -77,4 +93,5 @@ switch($params[0]){
     break;
     default:
     echo 'Error 404';
+    break;
 }

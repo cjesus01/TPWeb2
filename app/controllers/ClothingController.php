@@ -98,6 +98,9 @@ class ClothingController{
             $this->model->UpdateClothes($prenda, $color, $talla, $sexo, $category, $Id);
             $this->view->ShowSuccess('Se modifico con exito', 'Update clothes');
         }
+        else{
+            $this->view->ShowSuccess('No se pudo modificar con exito');
+        }
     }
     public function Error($message){
         $this->view->ShowError($message);
