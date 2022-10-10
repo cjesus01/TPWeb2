@@ -29,7 +29,6 @@ class CategoriesModel{
         $query=$this->db->prepare("INSERT INTO tela(tipo_de_tela,descripcion,lavado_de_tela,temperatura_de_lavado) VALUES (?,?,?,?)");
         $query->execute([$categoria,$descripcion,$lavado,$temperatura]);
     }
-
     public function getCategoriesOne($id){
         $query=$this->db->prepare("SELECT * FROM tela WHERE id_tela=?");
         $query->execute([$id]);
@@ -40,5 +39,10 @@ class CategoriesModel{
         $query=$this->db->prepare("UPDATE tela SET `id_tela`= '$Id', `tipo_de_tela`='$categories', `descripcion`='$descripcion', `lavado_de_tela`='$lavado', `temperatura_de_lavado`='$temperatura' WHERE id_tela=?");
         $query->execute([$Id]);
     }
+    public function DeleteCategory($id){
+        $query=$this->db->prepare("DELETE FROM tela WHERE id_tela=?");
+        $query->execute([$id]);
+    } 
+
 }
 ?>

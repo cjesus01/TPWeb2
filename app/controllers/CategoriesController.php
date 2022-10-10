@@ -37,39 +37,36 @@ class CategoriesController{
             $this->view->ShowError('No se pudo agregar la categoria');
         }
     }
-
     public function FormUpdateCategories($id){
-        $Id=intval($id);
-        if(is_numeric($Id) && !empty($Id)){
-            $categories = $this->model->getCategoriesOne($Id);
-            $tela = $categories->tipo_de_tela;
+        if(is_numeric($id) && !empty($id)){
+            $categories = $this->model->getCategoriesOne($id);
+            $categoria = $categories->tipo_de_tela;
             $descripcion = $categories->descripcion;
             $lavado = $categories->lavado_de_tela;
             $temperatura = $categories->temperatura_de_lavado;
-            $this->view->ShowFormUpdate($Id, $categories, $tela, $descripcion, $lavado, $temperatura);     
+
+            $this->view->ShowFormUpdate($id, $categoria, $descripcion, $lavado, $temperatura);
         }
     }
     public function UpdateCategories($id){
-        if(isset($_GET['categories'])  && isset($_GET['descripcion']) && 
-           isset($_GET['lavado']) && isset($_GET['temperatura']) && 
-           !empty($_GET['categories']) && !empty($_GET['descripcion']) && 
-           !empty($_GET['lavado']) && !empty($_GET['temperatura']) && 
-           !is_numeric($_GET['categories']) && !is_numeric($_GET['descripcion']) && 
-           !is_numeric($_GET['temperatura']) && !is_numeric($_GET['lavado'])){
+        if(isset($_GET['descripcion']) && isset($_GET['lavado']) &&
+            isset($_GET['temperatura']) && isset($_GET['categoria']) && 
+            !empty($_GET['descripcion']) && !empty($_GET['lavado']) &&
+            !empty($_GET['temperatura']) && !empty($_GET['categoria']) && 
+            !is_numeric($_GET['descripcion']) && !is_numeric($_GET['lavado']) && 
+            !is_numeric($_GET['temperatura']) && !is_numeric($_GET['categoria'])){
+                $descripcion = $_GET['descripcion'];
+                $lavado = $_GET['lavado'];
+                $temperatura = $_GET['temperatura'];
+                $categoria = $_GET['categoria'];
+                $Id=intval($id);
 
-            $categories = $_GET['categories'];
-            $lavado = $_GET['lavado'];
-            $temperatura = $_GET['temperatura'];
-            $descripcion = $_GET['descripcion'];
-            $Id = intval($id);
-
-            $this->model->UpdateCategories($categories, $lavado, $temperatura, $descripcion, $Id);
-            $this->view->ShowSuccess('Se ha modificado con exito', 'Update categories'); 
+                $this->model->UpdateCategories($categoria, $lavado, $temperatura, $descripcion, $Id);
+                $this->view->ShowSuccess('Se pudo modificar con exito', 'Update categories');
         }
-        else{
-            $this->view->ShowSuccess('No se ha podido modificar la categoria');
+        else {
+            $this->view->ShowSuccess('No se pudo modificar', 'Update categories');
         }
-
     }
 }
 ?>

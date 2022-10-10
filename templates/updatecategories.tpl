@@ -10,7 +10,7 @@
         <label for="temperatura">Ingrese la temperatura de lavado:</label>
         <input type="text" name="temperatura" value={$temperatura}>
 
-        <select name="categories">
+        <select name="categoria">
             <option value="Algodón">Algodón</option>
             <option value="Poliéster">Poliéster</option>
             <option value="Seda">Seda</option>
