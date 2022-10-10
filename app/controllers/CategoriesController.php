@@ -39,6 +39,7 @@ class CategoriesController{
     }
     public function FormUpdateCategories($id){
         if(is_numeric($id) && !empty($id)){
+            $Id=intval($id);
             $categories = $this->model->getCategoriesOne($id);
             $categoria = $categories->tipo_de_tela;
             $descripcion = $categories->descripcion;

@@ -43,6 +43,5 @@ class CategoriesModel{
         $query=$this->db->prepare("DELETE FROM tela WHERE id_tela=?");
         $query->execute([$id]);
     } 
-
 }
 ?>
