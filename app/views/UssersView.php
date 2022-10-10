@@ -14,5 +14,15 @@
             $this->smarty->assign('Title','Register');
             $this->smarty->display('./templates/formregister.tpl');
         }
+        public function ShowSuccess($message,$title){
+            $this->smarty->assign('Title',$title);
+            $this->smarty->assign('message', $message);
+            $this->smarty->assign('return', 'Login');
+            $this->smarty->display('./templates/showsuccess.tpl');
+        }
+        public function ShowError($message){
+            $this->smarty->assign('message', $message);
+            $this->smarty->display('./templates/error.tpl');
+        }
     }
 ?>

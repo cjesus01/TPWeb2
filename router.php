@@ -107,8 +107,16 @@ switch($params[0]){
     case 'LoginIn':
         $controllerUssers->LoginIn();
         break;
-    case 'Register':
-        $controllerUssers->FormRegister();
+    case 'Register':    
+        if(!isset($params[1])){
+            $controllerUssers->FormRegister();
+        }
+        else if ($params[1]==='AddUsser'){
+            $controllerUssers->AddUsser();
+        }
+        else{
+            $controllerCategories->Error('No se puede acceder al formulario'); 
+        }
         break;
     default:
     $controller->Error('Error 404'); 

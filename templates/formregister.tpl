@@ -1,5 +1,5 @@
 {include file='header.tpl'}
-    <form action="LoginIn" method="post">
+    <form action="Register/AddUsser" method="post">
         <label for="nombre">Ingrese nombre de usuario:</label>
         <input type="text" name="nombre">
         <label for="mail">Ingrese su mail:</label>
