@@ -21,8 +21,13 @@
             $this->smarty->display('./templates/showsuccess.tpl');
         }
         public function ShowError($message){
+            $this->smarty->assign('Title','Error');
             $this->smarty->assign('message', $message);
             $this->smarty->display('./templates/error.tpl');
+        }
+        public function Homepage(){
+            $this->smarty->assign('Title','Homepage');
+            $this->smarty->display('./templates/homepage.tpl');
         }
     }
 ?>

@@ -21,6 +21,7 @@ class ClothingView {
     }
     
     public function ShowError($message){
+        $this->smarty->assign('Title','Error');
         $this->smarty->assign('message', $message);
         $this->smarty->display('./templates/error.tpl');
     }

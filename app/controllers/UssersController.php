@@ -8,12 +8,31 @@
             $this->model= new UssersModel();
             $this->view= new UssersView();
         }
-        public function FormGetLogin(){
+        public function FormLogin(){
             $this->view->ShowFormLogin();
         }
         public function LoginIn(){
-            //tomar valores y mandar a base de datos y despues mostrar en la vista Getclothes.
+            if(isset($_POST['Nombre']) &&  !empty($_POST['Nombre']) && !is_numeric($_POST['Nombre']) &&
+                isset($_POST['Contraseña']) && !empty($_POST['Contraseña']) && !is_numeric($_POST['Contraseña'])){
+                $nombre=$_POST['Nombre'];
+                $contraseña = $_POST['Contraseña'];
+                $Ussers=$this->model->GetUssers();
+                $contador=1;
+                foreach($Ussers as $usser){
+                    if(($nombre == $usser->nombre || $nombre == $usser->Mail) && $contraseña == $usser->contraseña){
+                        $contador++;
+                        $this->view->Homepage();
+                    }
+                }
+                if($contador==1){
+                    $this->view->ShowError('No se pudo ingresar, intentelo nuevamente. gkso');
+                }
+            }
+            else{
+                $this->view->ShowError('No se pudo ingresar, intentelo nuevamente.');
+            }
         }
+        
         public function FormRegister(){
             $this->view->ShowFormRegister();
         }

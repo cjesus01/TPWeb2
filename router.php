@@ -102,10 +102,15 @@ switch($params[0]){
         }
     break;
     case 'Login':
-        $controllerUssers->FormGetLogin();
-        break;
-    case 'LoginIn':
-        $controllerUssers->LoginIn();
+        if(!isset($params[1])){
+            $controllerUssers->FormLogin();
+        }
+        else if($params[1]==='In'){
+            $controllerUssers->LoginIn();
+        }
+        else{
+            $controllerCategories->Error('No se puede acceder al formulario'); 
+        }
         break;
     case 'Register':    
         if(!isset($params[1])){
