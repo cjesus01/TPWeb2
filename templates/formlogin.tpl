@@ -6,7 +6,8 @@
         <input type="text" name="Contraseña">
         <button type="submit">Enviar</button>
     </form>
-
+    <div>
+        <p>{$message}</p>
     <p>¿No tenes usuario? ¡Registrate!</p>
     <button type="submit"><a href="Register">Registrarse</a></button>
 {include file='footer.tpl'}

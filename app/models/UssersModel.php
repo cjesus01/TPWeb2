@@ -15,10 +15,10 @@
             $query = $this->db->prepare("INSERT INTO usser(nombre,Mail,contraseña) VALUES (?,?,?)");
             $query->execute([$nombre, $Mail, $contraseña]);
         }
-        public function GetUssers(){
-            $query= $this->db->prepare("SELECT * FROM usser");
-            $query->execute();
-            $Ussers=$query->fetchAll(PDO::FETCH_OBJ);
-            return $Ussers;
+        public function GetUsser($nombre){
+            $query= $this->db->prepare("SELECT * FROM usser WHERE nombre=?");
+            $query->execute([$nombre]);
+            $Usser=$query->fetch(PDO::FETCH_OBJ);
+            return $Usser;
         }
     }

@@ -6,8 +6,9 @@
             $this->smarty= new Smarty();
             $this->smarty->assign('BASE_URL', BASE_URL);
         }
-        public function ShowFormLogin(){
+        public function ShowFormLogin($message =''){
             $this->smarty->assign('Title','Login');
+            $this->smarty->assign('message',$message);
             $this->smarty->display('./templates/formlogin.tpl');
         }
         public function ShowFormRegister(){

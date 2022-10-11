@@ -13,23 +13,22 @@
         }
         public function LoginIn(){
             if(isset($_POST['Nombre']) &&  !empty($_POST['Nombre']) && !is_numeric($_POST['Nombre']) &&
-                isset($_POST['Contraseña']) && !empty($_POST['Contraseña']) && !is_numeric($_POST['Contraseña'])){
+               isset($_POST['Contraseña']) && !empty($_POST['Contraseña'])){
                 $nombre=$_POST['Nombre'];
                 $contraseña = $_POST['Contraseña'];
-                $Ussers=$this->model->GetUssers();
-                $contador=1;
-                foreach($Ussers as $usser){
-                    if(($nombre == $usser->nombre || $nombre == $usser->Mail) && $contraseña == $usser->contraseña){
-                        $contador++;
-                        $this->view->Homepage();
-                    }
+                $Usser=$this->model->GetUsser($nombre);
+                if($Usser=== false){
+                    $this->view->ShowFormLogin('Usuario incorrecto, intentelo nuevamente.');
                 }
-                if($contador==1){
-                    $this->view->ShowError('No se pudo ingresar, intentelo nuevamente. gkso');
+                else if(password_verify($contraseña, $Usser->contraseña)){
+                    $this->view->Homepage();
+                }
+                else{
+                    $this->view->ShowFormLogin('Contraseña incorrecta, intentelo nuevamente.');
                 }
             }
             else{
-                $this->view->ShowError('No se pudo ingresar, intentelo nuevamente.');
+                $this->view->ShowError('Complete todos los campos.');
             }
         }
         
@@ -43,7 +42,8 @@
             $nombre=$_POST['nombre'];
             $Mail=$_POST['mail'];
             $contraseña = $_POST['contraseña'];
-            $this->model->AddUsser($nombre, $Mail, $contraseña);
+            $hash=password_hash($contraseña,PASSWORD_DEFAULT);
+            $this->model->AddUsser($nombre, $Mail, $hash);
             $this->view->ShowSuccess('Se ha registrado con exito', 'add usser');
         }
         else{
