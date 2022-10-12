@@ -1,19 +1,23 @@
 <?php
 require_once './app/views/CategoriesView.php';
 require_once './app/models/CategoriesModel.php';
+require_once './helpers/AuthHelper.php';
 
-class CategoriesController{
+class CategoriesController extends AuthHelper{
     private $model;
     private $view;
+    private $Auth;
 
     public function __construct(){
         $this->model = new CategoriesModel();
         $this->view = new CategoriesView();
+        $this->Auth =new AuthHelper();
     }
 
     public function getCategories(){
         $Categories = $this->model->getCategoriesAll();
-        $this->view->ShowCategories($Categories);
+        $Auth=$this->Auth->CheckLoggedIn();
+        $this->view->ShowCategories($Categories,$Auth);
     }
     
     public function FormAddCategories(){
@@ -61,7 +65,7 @@ class CategoriesController{
                 $temperatura = $_GET['temperatura'];
                 $categoria = $_GET['categoria'];
                 $Id=intval($id);
-
+                
                 $this->model->UpdateCategories($categoria, $lavado, $temperatura, $descripcion, $Id);
                 $this->view->ShowSuccess('Se pudo modificar con exito', 'Update categories');
         }
@@ -70,7 +74,8 @@ class CategoriesController{
         }
     }
     public function DeleteCategory($id){
-        $this->model->DeleteCategory($id);
+        $Id=intval($id);
+        $this->model->DeleteCategory($Id);
         $this->view->ShowSuccess('Se eliminó con éxito.','Delete category');
     }
 }

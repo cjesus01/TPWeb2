@@ -6,8 +6,10 @@
             <li>Prenda:{$Clothes->prenda}</li>
             <li>{$Clothes->tipo_de_tela}</li>
             <button><a href=Clothing/GetClothing/{$Clothes->id}>Ver detalles</a></button>
+            {if $auth===true}
             <button><a href=Clothing/DeleteClothing/{$Clothes->id}>Eliminar</a></button>
             <button><a href=Clothing/FormUpdateClothing/{$Clothes->id}>Editar</a></button>
+            {/if}
         {/foreach}
     </ul>
 </body>

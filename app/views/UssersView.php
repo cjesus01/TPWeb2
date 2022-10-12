@@ -26,8 +26,9 @@
             $this->smarty->assign('message', $message);
             $this->smarty->display('./templates/error.tpl');
         }
-        public function Homepage(){
+        public function Homepage($nombre){
             $this->smarty->assign('Title','Homepage');
+            $this->smarty->assign('nombre',$nombre);
             $this->smarty->display('./templates/homepage.tpl');
         }
     }

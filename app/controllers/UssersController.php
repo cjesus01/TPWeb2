@@ -1,12 +1,14 @@
 <?php
     require_once './app/models/UssersModel.php';
     require_once './app/views/UssersView.php';
-    class UssersController{
+    require_once './helpers/AuthHelper.php';
+    class UssersController extends AuthHelper{
         private $model;
         private $view;
         public function __construct(){
             $this->model= new UssersModel();
             $this->view= new UssersView();
+            $this->Auth= new AuthHelper();
         }
         public function FormLogin(){
             $this->view->ShowFormLogin();
@@ -21,7 +23,9 @@
                     $this->view->ShowFormLogin('Usuario incorrecto, intentelo nuevamente.');
                 }
                 else if(password_verify($contraseña, $Usser->contraseña)){
-                    $this->view->Homepage();
+                    session_start();
+                    $_SESSION['User'] = $nombre;
+                    $this->view->Homepage($nombre);
                 }
                 else{
                     $this->view->ShowFormLogin('Contraseña incorrecta, intentelo nuevamente.');
@@ -38,7 +42,7 @@
         public function AddUsser(){
             if(isset($_POST['nombre']) && !empty($_POST['nombre']) && !is_numeric($_POST['nombre'])
             && isset($_POST['mail']) && !empty($_POST['mail']) && !is_numeric($_POST['mail'])
-            && isset($_POST['contraseña']) && !empty($_POST['contraseña']) && !is_numeric($_POST['contraseña'])){
+            && isset($_POST['contraseña']) && !empty($_POST['contraseña'])){
             $nombre=$_POST['nombre'];
             $Mail=$_POST['mail'];
             $contraseña = $_POST['contraseña'];
@@ -49,6 +53,11 @@
         else{
             $this->view->ShowError('No se pudo registrar intentelo nuevamente');
         }
+    }
+
+    public function Logout(){
+        $this->Auth->CheckLogout();
+        $this->view->ShowFormLogin();
     }
 }
 ?>

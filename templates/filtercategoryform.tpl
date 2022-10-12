@@ -1,4 +1,4 @@
-    <form method="get" action="Clothing/filtercategoryform">
+    <form method="get" action="Categories/filtercategoryform">
         <label for="category">Seleccione la categoria para ver las diferentes prendas pertenecientes a esta:</label>
         <select name="category">
         {foreach from=$categories item=$Category}

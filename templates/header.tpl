@@ -11,10 +11,14 @@
     <nav>
         <a href="Clothing">Inicio</a>
         <a href="Clothing/GetClothing">Ver todas</a>
-        <a href="Clothing/Categories">Ver categorias</a>
-        <a href="Clothing/AddClothingForm">Agregar una nueva prenda</a>
-        <a href="Clothing/FormAddCategorie">Agregar una nueva categoria</a>
-        <a href="Login">Iniciar sesión|Registrarse</a>
+        <a href="Categories/Category">Ver categorias</a>
+        {if $auth===true}
+            <a href="Clothing/AddClothingForm">Agregar una nueva prenda</a>
+            <a href="Categories/FormAddCategorie">Agregar una nueva categoria</a>
+            <a href="Logout">Cerrar sesión</a>
+            {else} 
+            <a href="Login">Iniciar sesión|Registrarse</a>
+        {/if}        
     </nav>
 </body>
 </html>

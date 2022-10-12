@@ -2,19 +2,24 @@
 require_once './app/views/ClothingView.php';
 require_once './app/models/ClothingModel.php';
 require_once './app/models/CategoriesModel.php';
+require_once './helpers/AuthHelper.php';
 
-class ClothingController{
+class ClothingController extends AuthHelper{
     private $model;
     private $view;
     private $modelCategory;
+    private $Auth;
+
     public function __construct(){
         $this->model = new ClothingModel();
         $this->view = new ClothingView();
         $this->modelCategory= new CategoriesModel();
+        $this->Auth = new AuthHelper();
     }
     public function getClothes(){
         $Clothing = $this->model->getAll();
-        $this->view->ShowClothes($Clothing);
+        $auth = $this->Auth->CheckLoggedIn();
+        $this->view->ShowClothes($Clothing, $auth);
     }
     public function getJustOneClothes($id){
         if(is_numeric($id) && !empty($id)){
@@ -26,7 +31,14 @@ class ClothingController{
         }
     }
     public function Homepage(){
-        $this->view->Homepage();
+        $auth = $this->Auth->CheckLoggedIn();
+        if($auth===true){
+            $nombre = $_SESSION['User'];
+            $this->view->Homepage($auth, $nombre);
+        }
+        else{
+            $this->view->Homepage($auth);
+        }
     }
     public function getClothesByCategory(){
         if(isset($_GET['category']) && !empty($_GET['category'])){

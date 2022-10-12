@@ -1,5 +1,5 @@
 {include file='header.tpl'}
-    <form method="GET" action="Clothing/AddCategories">
+    <form method="GET" action="Categories/AddCategories">
         <label for="categoria">Ingrese la categoria:</label>
         <input type="text" name="categoria">
         <label for="descripcion">Ingrese su descripcion:</label>

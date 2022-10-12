@@ -27,12 +27,6 @@ switch($params[0]){
                     $controller->getJustOneClothes($params[2]);
                 }
             }
-            else if ($params[1] === 'Categories'){
-                $controllerCategories->getCategories();
-            }
-            else if($params[1]=== 'filtercategoryform'){
-                $controller->getClothesByCategory();
-            }
             else if($params[1]=== 'DeleteClothing'){
                 if(!isset($params[2])){
                     $controller->getClothes();
@@ -57,36 +51,6 @@ switch($params[0]){
                     $controller->UpdateClothing($params[2]);
                 }    
             }
-            else if($params[1]==='FormUpdateCategorie'){
-                if(isset($params[2])){
-                    $controllerCategories->FormUpdateCategories($params[2]);
-                }
-                else{
-                    $controllerCategories->Error('No se puede acceder al formulario');
-                }
-            }
-            else if($params[1]==='UpdateCategories'){
-                if(isset($params[2])){
-                    $controllerCategories->UpdateCategories($params[2]);
-                }
-                else{
-                    $controllerCategories->Error('No se puede modificar la categoria');
-                }
-            }
-            else if($params[1]==='FormAddCategorie'){
-                $controllerCategories->FormAddCategories();
-            }
-            else if($params[1]==='AddCategories'){
-                $controllerCategories->AddCategories();
-            }
-            else if($params[1]=== 'DeleteCategorie'){
-                if(!isset($params[2])){
-                    $controller->Error('No se puede eliminar, intente nuevamente'); 
-                }
-                else{
-                    $controllerCategories->DeleteCategory($params[2]);
-                }  
-            }
             else if($params[1]==='AddClothingForm'){
                 $controller->AddClothingForm();
             }
@@ -101,6 +65,44 @@ switch($params[0]){
             $controller->Homepage();
         }
     break;
+    case 'Categories':
+        if ($params[1] === 'Category'){
+            $controllerCategories->getCategories();
+        }
+        else if($params[1]==='FormAddCategorie'){
+            $controllerCategories->FormAddCategories();
+        }
+        else if($params[1]==='AddCategories'){
+            $controllerCategories->AddCategories();
+        }
+        else if($params[1]=== 'filtercategoryform'){
+            $controller->getClothesByCategory();
+        }
+        else if($params[1]==='FormUpdateCategorie'){
+            if(isset($params[2])){
+                $controllerCategories->FormUpdateCategories($params[2]);
+            }
+            else{
+                $controllerCategories->Error('No se puede acceder al formulario');
+            }
+        }
+        else if($params[1]==='UpdateCategories'){
+            if(isset($params[2])){
+                $controllerCategories->UpdateCategories($params[2]);
+            }
+            else{
+                $controllerCategories->Error('No se puede modificar la categoria');
+            }
+        }
+        else if($params[1] === 'DeleteCategorie'){
+            if(!isset($params[2])){
+                $controller->Error('No se puede eliminar, intente nuevamente'); 
+            }
+            else{
+                $controllerCategories->DeleteCategory($params[2]);
+            }  
+        }
+        break;
     case 'Login':
         if(!isset($params[1])){
             $controllerUssers->FormLogin();
@@ -122,6 +124,9 @@ switch($params[0]){
         else{
             $controllerCategories->Error('No se puede acceder al formulario'); 
         }
+        break;
+    case 'Logout':
+        $controllerUssers->Logout();
         break;
     default:
     $controller->Error('Error 404'); 
