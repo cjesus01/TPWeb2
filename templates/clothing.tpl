@@ -2,15 +2,6 @@
 
 <body>
     <ul>
-    {if isset($Category)}
-        {foreach from=$Clothing item=$Clothes}
-        {if $Clothes->tipo_de_tela == $Category}
-            <li>Prenda:{$Clothes->prenda}</li>
-            <li>{$Clothes->tipo_de_tela}</li>
-           {/if}
-    {/foreach}    
-    </ul>
-        {else}
         {foreach from=$clothing item=$Clothes}
             <li>Prenda:{$Clothes->prenda}</li>
             <li>{$Clothes->tipo_de_tela}</li>
@@ -18,7 +9,7 @@
             <button><a href=Clothing/DeleteClothing/{$Clothes->id}>Eliminar</a></button>
             <button><a href=Clothing/FormUpdateClothing/{$Clothes->id}>Editar</a></button>
         {/foreach}
-    {/if}
+    </ul>
 </body>
 
 {include file= "footer.tpl"}

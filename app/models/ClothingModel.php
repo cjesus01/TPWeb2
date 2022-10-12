@@ -17,6 +17,12 @@
             $Clothing = $query->fetchAll(PDO::FETCH_OBJ);
             return $Clothing;
         }
+        public function getAllByCategory($category){
+            $query=$this->db->prepare('SELECT prenda,tipo_de_tela FROM prenda JOIN tela ON prenda.id_tela = tela.id_tela WHERE prenda.id_tela=?');
+            $query->execute([$category]);
+            $Clothing = $query->fetchAll(PDO::FETCH_OBJ);
+            return $Clothing;
+        }
         public function getOneClothes($id){
             $query=$this->db->prepare('SELECT * FROM prenda JOIN tela ON prenda.id_tela=tela.id_tela WHERE id=?');
             $query->execute([$id]);

@@ -5,7 +5,7 @@
         <label for="mail">Ingrese su mail:</label>
         <input type="text" name="mail">
         <label for="contraseña">Ingrese su contraseña:</label>
-        <input type="text" name="contraseña">
+        <input type="password" name="contraseña">
         <button type="submit">Enviar</button>
     </form>
 {include file='footer.tpl'}

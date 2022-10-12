@@ -1,13 +1,16 @@
 <?php
 require_once './app/views/ClothingView.php';
 require_once './app/models/ClothingModel.php';
+require_once './app/models/CategoriesModel.php';
 
 class ClothingController{
     private $model;
     private $view;
+    private $modelCategory;
     public function __construct(){
         $this->model = new ClothingModel();
         $this->view = new ClothingView();
+        $this->modelCategory= new CategoriesModel();
     }
     public function getClothes(){
         $Clothing = $this->model->getAll();
@@ -27,9 +30,15 @@ class ClothingController{
     }
     public function getClothesByCategory(){
         if(isset($_GET['category']) && !empty($_GET['category'])){
-            $Category =$_GET['category'];
-            $Clothing= $this->model->getAll();
-            $this->view->ShowClothesByCategory($Clothing,$Category);
+            $Category =intval($_GET['category']);
+            $Clothing= $this->model->getAllByCategory($Category);
+            if(!empty($Clothing)){
+                $this->view->ShowClothesByCategory($Clothing);
+            }
+            else{
+                $this->view->ShowError('No hay prenda que coincida con esa categoria');
+            }
+            
         }
         else{
             $this->view->ShowError('Ingrese una categoria');
@@ -45,7 +54,8 @@ class ClothingController{
         }
     }
     public function AddClothingForm(){
-        $this->view->FormAddClothing();
+        $categories=$this->modelCategory->getCategoriesOnlyIdAndTipoDeTela();
+        $this->view->FormAddClothing($categories);
     }  
     public function AddClothing(){
         if(isset($_GET['prenda']) && isset($_GET['sexo']) &&
@@ -72,11 +82,12 @@ class ClothingController{
     public function FormUpdateClothing($id){
         if(is_numeric($id)&& !empty($id)){
             $Clothing = $this->model->getOneClothes($id);
+            $categories=$this->modelCategory->getCategoriesOnlyIdAndTipoDeTela();
             $sexo = $Clothing->sexo;
             $talla = $Clothing->talla;
             $color = $Clothing->color;
             $prenda = $Clothing->prenda;
-            $this->view->ShowFormUpdate($sexo, $talla, $color, $prenda, $id);
+            $this->view->ShowFormUpdate($sexo, $talla, $color, $prenda, $id,$categories);
         }
     }
     public function UpdateClothing($id){

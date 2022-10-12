@@ -40,13 +40,13 @@ class CategoriesController{
     public function FormUpdateCategories($id){
         if(is_numeric($id) && !empty($id)){
             $Id=intval($id);
-            $categories = $this->model->getCategoriesOne($id);
-            $categoria = $categories->tipo_de_tela;
-            $descripcion = $categories->descripcion;
-            $lavado = $categories->lavado_de_tela;
-            $temperatura = $categories->temperatura_de_lavado;
-
-            $this->view->ShowFormUpdate($id, $categoria, $descripcion, $lavado, $temperatura);
+            $category = $this->model->getCategoriesOne($id);
+            $categoria = $category->tipo_de_tela;
+            $descripcion = $category->descripcion;
+            $lavado = $category->lavado_de_tela;
+            $temperatura = $category->temperatura_de_lavado;
+            $categorias=$this->model->getCategoriesOnlyTipoDeTela();
+            $this->view->ShowFormUpdate($id, $categoria, $descripcion, $lavado, $temperatura,$categorias);
         }
     }
     public function UpdateCategories($id){
@@ -68,6 +68,10 @@ class CategoriesController{
         else {
             $this->view->ShowSuccess('No se pudo modificar', 'Update categories');
         }
+    }
+    public function DeleteCategory($id){
+        $this->model->DeleteCategory($id);
+        $this->view->ShowSuccess('Se eliminó con éxito.','Delete category');
     }
 }
 ?>

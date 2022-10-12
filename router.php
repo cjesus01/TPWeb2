@@ -84,7 +84,7 @@ switch($params[0]){
                     $controller->Error('No se puede eliminar, intente nuevamente'); 
                 }
                 else{
-                    $controllerCategories->DeleteCategories($params[2]);
+                    $controllerCategories->DeleteCategory($params[2]);
                 }  
             }
             else if($params[1]==='AddClothingForm'){

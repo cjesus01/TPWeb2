@@ -29,13 +29,13 @@ class ClothingView {
         $this->smarty->assign('Title','Homepage');
         $this->smarty->display('./templates/homepage.tpl');
     }
-    public function ShowClothesByCategory($Clothing,$Category){
+    public function ShowClothesByCategory($Clothing){
         $this->smarty->assign('Clothing', $Clothing);
-        $this->smarty->assign('Category',$Category);
         $this->smarty->assign('Title','Clothing');
-        $this->smarty->display('./templates/clothing.tpl');
+        $this->smarty->display('./templates/clothingbycategory.tpl');
     }
-    public function FormAddClothing(){
+    public function FormAddClothing($categories){
+        $this->smarty->assign('categories',$categories);
         $this->smarty->assign('Title','Add Clothing');
         $this->smarty->display('./templates/addformclothing.tpl');
     }
@@ -45,13 +45,14 @@ class ClothingView {
         $this->smarty->assign('return', 'Clothing/GetClothing');
         $this->smarty->display('./templates/showsuccess.tpl');
     }
-    public function ShowFormUpdate($sexo, $talla, $color, $prenda, $id){
+    public function ShowFormUpdate($sexo, $talla, $color, $prenda, $id,$categories){
         $this->smarty->assign('Title', 'form update');
         $this->smarty->assign('sexo', $sexo);
         $this->smarty->assign('talla', $talla);
         $this->smarty->assign('color', $color);
         $this->smarty->assign('prenda', $prenda);
+        $this->smarty->assign('categories',$categories);
         $this->smarty->assign('id', $id);
-        $this->smarty->display('./templates/updateform.tpl');
+        $this->smarty->display('./templates/updateformclothing.tpl');
     }
 }

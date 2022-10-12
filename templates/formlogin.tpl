@@ -3,7 +3,7 @@
         <label for="nombre">Ingrese nombre de usuario:</label>
         <input type="text" name="Nombre">
         <label for="contraseña">Ingrese su contraseña:</label>
-        <input type="text" name="Contraseña">
+        <input type="password" name="Contraseña">
         <button type="submit">Enviar</button>
     </form>
     <div>
