@@ -2,7 +2,7 @@
 require_once './app/views/ClothingView.php';
 require_once './app/models/ClothingModel.php';
 require_once './app/models/CategoriesModel.php';
-require_once './helpers/AuthHelper.php';
+require_once './app/helpers/AuthHelper.php';
 
 class ClothingController extends AuthHelper{
     private $model;

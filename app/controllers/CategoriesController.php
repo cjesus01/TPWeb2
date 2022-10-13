@@ -1,7 +1,7 @@
 <?php
 require_once './app/views/CategoriesView.php';
 require_once './app/models/CategoriesModel.php';
-require_once './helpers/AuthHelper.php';
+require_once './app/helpers/AuthHelper.php';
 
 class CategoriesController extends AuthHelper{
     private $model;

@@ -1,7 +1,7 @@
 <?php
     require_once './app/models/UssersModel.php';
     require_once './app/views/UssersView.php';
-    require_once './helpers/AuthHelper.php';
+    require_once './app/helpers/AuthHelper.php';
     class UssersController extends AuthHelper{
         private $model;
         private $view;
