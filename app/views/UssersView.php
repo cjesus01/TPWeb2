@@ -12,8 +12,9 @@
             $this->smarty->assign('auth',$auth);
             $this->smarty->display('./templates/formlogin.tpl');
         }
-        public function ShowFormRegister(){
+        public function ShowFormRegister($auth){
             $this->smarty->assign('Title','Register');
+            $this->smarty->assign('auth',$auth);
             $this->smarty->display('./templates/formregister.tpl');
         }
         public function ShowSuccess($message,$title,$auth){

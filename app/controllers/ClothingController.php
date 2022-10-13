@@ -126,7 +126,7 @@ class ClothingController extends AuthHelper{
             $category = intval($_GET['category']);
            
             $this->model->UpdateClothes($prenda, $color, $talla, $sexo, $category, $Id);
-            $this->view->ShowSuccess('Se modificó con exito.', 'Update clothes',$auth);
+            $this->view->ShowSuccess('Se modificó con exito.', 'Update clothes', $auth);
         }
         else{
             $this->view->ShowError('No se pudo modificar',$auth);

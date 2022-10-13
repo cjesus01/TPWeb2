@@ -40,9 +40,11 @@
         }
         
         public function FormRegister(){
-            $this->view->ShowFormRegister();
+            $auth=$this->Auth->CheckLoggedIn();
+            $this->view->ShowFormRegister($auth);
         }
         public function AddUsser(){
+            $auth=$this->Auth->CheckLoggedIn();
             if(isset($_POST['nombre']) && !empty($_POST['nombre']) && !is_numeric($_POST['nombre'])
             && isset($_POST['mail']) && !empty($_POST['mail']) && !is_numeric($_POST['mail'])
             && isset($_POST['contraseña']) && !empty($_POST['contraseña'])){
@@ -50,11 +52,11 @@
             $Mail=$_POST['mail'];
             $contraseña = $_POST['contraseña'];
             $hash=password_hash($contraseña,PASSWORD_DEFAULT);
-            $this->model->AddUsser($nombre, $Mail, $hash);
-            $this->view->ShowSuccess('Se ha registrado con exito', 'add usser');
+            $this->model->AddUsser($nombre, $Mail, $hash, $auth);
+            $this->view->ShowSuccess('Se ha registrado con exito', 'add usser', $auth);
         }
         else{
-            $this->view->ShowError('No se pudo registrar intentelo nuevamente');
+            $this->view->ShowError('No se pudo registrar intentelo nuevamente', $auth);
         }
     }
 

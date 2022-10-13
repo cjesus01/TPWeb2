@@ -5,7 +5,7 @@
         <select name="category">
         {foreach from=$categories item=$Category}
             <option value="{$Category->id_tela}">{$Category->tipo_de_tela}</option>
-            {/foreach}
+        {/foreach}
         </select>
         <button type=submit>Enviar</button>
     </form>
