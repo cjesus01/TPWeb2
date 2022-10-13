@@ -5,34 +5,37 @@
     class UssersController extends AuthHelper{
         private $model;
         private $view;
+        private $Auth;
         public function __construct(){
             $this->model= new UssersModel();
             $this->view= new UssersView();
             $this->Auth= new AuthHelper();
         }
         public function FormLogin(){
-            $this->view->ShowFormLogin();
+            $auth=$this->Auth->CheckLoggedIn();
+            $this->view->ShowFormLogin($auth);
         }
         public function LoginIn(){
+            $auth=$this->Auth->CheckLoggedIn();
             if(isset($_POST['Nombre']) &&  !empty($_POST['Nombre']) && !is_numeric($_POST['Nombre']) &&
                isset($_POST['Contraseña']) && !empty($_POST['Contraseña'])){
                 $nombre=$_POST['Nombre'];
                 $contraseña = $_POST['Contraseña'];
                 $Usser=$this->model->GetUsser($nombre);
                 if($Usser=== false){
-                    $this->view->ShowFormLogin('Usuario incorrecto, intentelo nuevamente.');
+                    $this->view->ShowFormLogin($auth,'Usuario incorrecto, intentelo nuevamente.');
                 }
                 else if(password_verify($contraseña, $Usser->contraseña)){
-                    session_start();
                     $_SESSION['User'] = $nombre;
-                    $this->view->Homepage($nombre);
+                    $auth=$this->Auth->ChecksessionStart();
+                    $this->view->Homepage($auth,$nombre);
                 }
                 else{
-                    $this->view->ShowFormLogin('Contraseña incorrecta, intentelo nuevamente.');
+                    $this->view->ShowFormLogin($auth,'Contraseña incorrecta, intentelo nuevamente.');
                 }
             }
             else{
-                $this->view->ShowError('Complete todos los campos.');
+                $this->view->ShowError('Complete todos los campos.',$auth);
             }
         }
         
@@ -56,8 +59,8 @@
     }
 
     public function Logout(){
-        $this->Auth->CheckLogout();
-        $this->view->ShowFormLogin();
+        $auth=$this->Auth->CheckLogout();
+        $this->view->ShowFormLogin($auth);
     }
 }
 ?>

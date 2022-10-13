@@ -22,12 +22,13 @@ class ClothingController extends AuthHelper{
         $this->view->ShowClothes($Clothing, $auth);
     }
     public function getJustOneClothes($id){
+        $auth = $this->Auth->CheckLoggedIn();
         if(is_numeric($id) && !empty($id)){
             $OneClothes=$this->model->getOneClothes($id);
-            $this->view->ShowOneClothes($OneClothes);
+            $this->view->ShowOneClothes($OneClothes,$auth);
         }
         else{
-            $this->view->ShowError('Ingrese un id válido');
+            $this->view->ShowError('Ingrese un id válido',$auth);
         }
     }
     public function Homepage(){
@@ -41,35 +42,38 @@ class ClothingController extends AuthHelper{
         }
     }
     public function getClothesByCategory(){
+        $auth=$this->Auth->CheckLoggedIn();
         if(isset($_GET['category']) && !empty($_GET['category'])){
-            $Category =intval($_GET['category']);
+            $Category=intval($_GET['category']);
             $Clothing= $this->model->getAllByCategory($Category);
             if(!empty($Clothing)){
-                $this->view->ShowClothesByCategory($Clothing);
+                $this->view->ShowClothesByCategory($Clothing,$auth);
             }
             else{
-                $this->view->ShowError('No hay prenda que coincida con esa categoria');
-            }
-            
+                $this->view->ShowError('No hay prenda que coincida con esa categoria',$auth);
+            }     
         }
         else{
-            $this->view->ShowError('Ingrese una categoria');
+            $this->view->ShowError('Ingrese una categoria',$auth);
         }
     }
     public function DeleteClothing($id){
+        $auth = $this->Auth->CheckLoggedIn();
         if(is_numeric($id) && !empty($id)){
             $this->model->DeleteClothing($id);
-            $this->view->ShowSuccess('Se eliminó con éxito','Delete Clothing');
+            $this->view->ShowSuccess('Se eliminó con éxito','Delete Clothing',$auth);
         }
         else{
-            $this->view->ShowError('Ingrese un id válido');
+            $this->view->ShowError('Ingrese un id válido',$auth);
         }
     }
     public function AddClothingForm(){
+        $auth=$this->Auth->CheckLoggedIn();
         $categories=$this->modelCategory->getCategoriesOnlyIdAndTipoDeTela();
-        $this->view->FormAddClothing($categories);
+        $this->view->FormAddClothing($categories,$auth);
     }  
     public function AddClothing(){
+        $auth=$this->Auth->CheckLoggedIn();
         if(isset($_GET['prenda']) && isset($_GET['sexo']) &&
            isset($_GET['color']) && isset($_GET['talla']) && 
            isset($_GET['category']) && !empty($_GET['prenda']) && 
@@ -84,14 +88,14 @@ class ClothingController extends AuthHelper{
             $category=intval($_GET['category']);
 
             $this->model->AddClothing($prenda,$sexo,$color,$talla,$category);
-            $this->view->ShowSuccess('Se agregó con éxito','Add Clothing');
+            $this->view->ShowSuccess('Se agregó con éxito','Add Clothing',$auth);
            }
            else{
-            $this->view->ShowError('Complete todo el formulario');
-           }
-           
+            $this->view->ShowError('Complete todo el formulario',$auth);
+           }      
     }
     public function FormUpdateClothing($id){
+        $auth=$this->Auth->CheckLoggedIn();
         if(is_numeric($id)&& !empty($id)){
             $Clothing = $this->model->getOneClothes($id);
             $categories=$this->modelCategory->getCategoriesOnlyIdAndTipoDeTela();
@@ -99,10 +103,13 @@ class ClothingController extends AuthHelper{
             $talla = $Clothing->talla;
             $color = $Clothing->color;
             $prenda = $Clothing->prenda;
-            $this->view->ShowFormUpdate($sexo, $talla, $color, $prenda, $id,$categories);
+            $this->view->ShowFormUpdate($sexo, $talla, $color, $prenda, $id,$categories,$auth);
+        }else{
+            $this->view->ShowError('Ingrese un id válido',$auth);
         }
     }
     public function UpdateClothing($id){
+        $auth=$this->Auth->CheckLoggedIn();
         if(isset($_GET['prenda']) && isset($_GET['sexo']) &&
            isset($_GET['color']) && isset($_GET['talla']) && 
            isset($_GET['category']) && !empty($_GET['prenda']) && 
@@ -119,14 +126,15 @@ class ClothingController extends AuthHelper{
             $category = intval($_GET['category']);
            
             $this->model->UpdateClothes($prenda, $color, $talla, $sexo, $category, $Id);
-            $this->view->ShowSuccess('Se modifico con exito', 'Update clothes');
+            $this->view->ShowSuccess('Se modificó con exito.', 'Update clothes',$auth);
         }
         else{
-            $this->view->ShowSuccess('No se pudo modificar con exito');
+            $this->view->ShowError('No se pudo modificar',$auth);
         }
     }
     public function Error($message){
-        $this->view->ShowError($message);
+        $auth = $this->Auth->CheckLoggedIn();
+        $this->view->ShowError($message,$auth);
     }    
 
 }
