@@ -55,5 +55,11 @@ class CategoriesModel{
         $query=$this->db->prepare("DELETE FROM tela WHERE id_tela=?");
         $query->execute([$id]);
     } 
+    public function CategoriesId(){
+        $query=$this->db->prepare('SELECT id_tela FROM tela');
+        $query->execute();
+        $CategoriesId=$query->fetchAll(PDO::FETCH_OBJ);
+        return $CategoriesId;
+    }
 }
 ?>

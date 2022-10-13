@@ -62,7 +62,7 @@ switch($params[0]){
                     $controllerCategories->FormUpdateCategories($params[2]);
                 }
                 else{
-                    $controllerCategories->Error('No se puede acceder al formulario');
+                    $controller->Error('No se puede acceder al formulario');
                 }
             }
             else if($params[1]==='UpdateCategories'){

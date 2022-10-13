@@ -1,14 +1,16 @@
 <?php
 require_once './app/views/CategoriesView.php';
 require_once './app/models/CategoriesModel.php';
+require_once './app/models/ClothingModel.php';
 
 class CategoriesController{
     private $model;
     private $view;
-
+    private $modelClothing;
     public function __construct(){
         $this->model = new CategoriesModel();
         $this->view = new CategoriesView();
+        $this->modelClothing=new ClothingModel();
     }
 
     public function getCategories(){
@@ -38,7 +40,7 @@ class CategoriesController{
         }
     }
     public function FormUpdateCategories($id){
-        if(is_numeric($id) && !empty($id)){
+        if(is_numeric($id) && !empty($id) && $this->Idparams($id)){
             $Id=intval($id);
             $category = $this->model->getCategoriesOne($id);
             $categoria = $category->tipo_de_tela;
@@ -48,6 +50,9 @@ class CategoriesController{
             $categorias=$this->model->getCategoriesOnlyTipoDeTela();
             $this->view->ShowFormUpdate($id, $categoria, $descripcion, $lavado, $temperatura,$categorias);
         }
+        else{
+            $this->view->ShowError('Ingrese id válido.');
+        }
     }
     public function UpdateCategories($id){
         if(isset($_GET['descripcion']) && isset($_GET['lavado']) &&
@@ -55,7 +60,7 @@ class CategoriesController{
             !empty($_GET['descripcion']) && !empty($_GET['lavado']) &&
             !empty($_GET['temperatura']) && !empty($_GET['categoria']) && 
             !is_numeric($_GET['descripcion']) && !is_numeric($_GET['lavado']) && 
-            !is_numeric($_GET['temperatura']) && !is_numeric($_GET['categoria'])){
+            !is_numeric($_GET['temperatura']) && !is_numeric($_GET['categoria']) && $this->Idparams($id)){
                 $descripcion = $_GET['descripcion'];
                 $lavado = $_GET['lavado'];
                 $temperatura = $_GET['temperatura'];
@@ -66,12 +71,35 @@ class CategoriesController{
                 $this->view->ShowSuccess('Se pudo modificar con exito', 'Update categories');
         }
         else {
-            $this->view->ShowSuccess('No se pudo modificar', 'Update categories');
+            $this->view->ShowSuccess('No se pudo modificar.', 'Update categories');
         }
     }
     public function DeleteCategory($id){
-        $this->model->DeleteCategory($id);
-        $this->view->ShowSuccess('Se eliminó con éxito.','Delete category');
+        if($this->Idparams($id) && $this->CheckCategoryAssignedToAClothing($id)){
+            $this->model->DeleteCategory($id);
+            $this->view->ShowSuccess('Se eliminó con éxito.','Delete category');
+        }
+        else{
+            $this->view->ShowError('No se puede eliminar.');
+        }
+    }
+    public function Idparams($id){
+        $CategoriesId=$this->model->CategoriesId();
+        foreach($CategoriesId as $Category){
+            if($Category->id_tela==$id){
+                return true;
+            }
+        }
+        return false;
+    }    
+    public function CheckCategoryAssignedToAClothing($id){
+        $ClothingIdtela=$this->modelClothing->CategoriesIdTela();
+        foreach($ClothingIdtela as $Clothing){
+            if($Clothing->id_tela==$id){
+                return false;
+            }
+        }
+        return true;
     }
 }
 ?>

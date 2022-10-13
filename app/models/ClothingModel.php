@@ -41,6 +41,18 @@
             $query=$this->db->prepare("UPDATE prenda SET `sexo`='$sexo', `talla`='$talla', `color`='$color', `prenda`='$prenda', `id_tela`='$category' WHERE id=?");
             $query->execute([$id]);
         }
+        public function ClothingId(){
+            $query=$this->db->prepare("SELECT id FROM prenda");
+            $query->execute();
+            $Clothing=$query->fetchAll(PDO::FETCH_OBJ);
+            return $Clothing;
+        }
+        public function CategoriesIdTela(){
+            $query=$this->db->prepare('SELECT id_tela FROM prenda');
+            $query->execute();
+            $Idtela = $query->fetchAll(PDO::FETCH_OBJ);
+            return $Idtela;
+        }
     }
     
 ?>

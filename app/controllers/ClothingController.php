@@ -17,7 +17,7 @@ class ClothingController{
         $this->view->ShowClothes($Clothing);
     }
     public function getJustOneClothes($id){
-        if(is_numeric($id) && !empty($id)){
+        if(is_numeric($id) && !empty($id) && $this->Idparams($id)===true){
             $OneClothes=$this->model->getOneClothes($id);
             $this->view->ShowOneClothes($OneClothes);
         }
@@ -45,7 +45,7 @@ class ClothingController{
         }
     }
     public function DeleteClothing($id){
-        if(is_numeric($id) && !empty($id)){
+        if(is_numeric($id) && !empty($id) && $this->Idparams($id)===true){
             $this->model->DeleteClothing($id);
             $this->view->ShowSuccess('Se eliminó con éxito','Delete Clothing');
         }
@@ -80,7 +80,7 @@ class ClothingController{
            
     }
     public function FormUpdateClothing($id){
-        if(is_numeric($id)&& !empty($id)){
+        if(is_numeric($id)&& !empty($id) && $this->Idparams($id)===true){
             $Clothing = $this->model->getOneClothes($id);
             $categories=$this->modelCategory->getCategoriesOnlyIdAndTipoDeTela();
             $sexo = $Clothing->sexo;
@@ -88,6 +88,9 @@ class ClothingController{
             $color = $Clothing->color;
             $prenda = $Clothing->prenda;
             $this->view->ShowFormUpdate($sexo, $talla, $color, $prenda, $id,$categories);
+        }
+        else{
+            $this->view->ShowError('Ingrese un id válido.');
         }
     }
     public function UpdateClothing($id){
@@ -97,7 +100,7 @@ class ClothingController{
            !empty($_GET['sexo']) && !empty($_GET['color']) && 
            !empty($_GET['talla']) && !empty($_GET['category']) && 
            !is_numeric($_GET['prenda']) && !is_numeric($_GET['sexo']) && 
-           !is_numeric($_GET['color']) && !is_numeric($_GET['talla'])){
+           !is_numeric($_GET['color']) && !is_numeric($_GET['talla']) && $this->Idparams($id)===true){
             
             $prenda = $_GET['prenda'];
             $color = $_GET['color'];
@@ -107,14 +110,23 @@ class ClothingController{
             $category = intval($_GET['category']);
            
             $this->model->UpdateClothes($prenda, $color, $talla, $sexo, $category, $Id);
-            $this->view->ShowSuccess('Se modifico con exito', 'Update clothes');
+            $this->view->ShowSuccess('Se modificó con exito.', 'Update clothes');
         }
         else{
-            $this->view->ShowSuccess('No se pudo modificar con exito');
+            $this->view->ShowError('No se pudo modificar con exito');
         }
     }
     public function Error($message){
         $this->view->ShowError($message);
+    }
+    public function Idparams($id){
+        $Clothing=$this->model->ClothingId();
+        foreach($Clothing as $Clothes){
+            if($Clothes->id==$id){
+                return true;
+            }
+        }
+        return false;
     }    
 
 }
