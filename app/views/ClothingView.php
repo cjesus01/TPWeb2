@@ -28,7 +28,7 @@ class ClothingView {
         $this->smarty->assign('auth', $auth);
         $this->smarty->display('./templates/error.tpl');
     }
-    public function Homepage($auth, $nombre=''){
+    public function Homepage($auth, $nombre=NULL){
         $this->smarty->assign('Title','Homepage');
         $this->smarty->assign('nombre', $nombre);
         $this->smarty->assign('auth', $auth);

@@ -7,7 +7,7 @@
 
         public function conection(){
             $db = new PDO ('mysql:host=localhost;
-                            dbname=ussers;charset=utf8',
+                            dbname=indumentaria;charset=utf8',
                             'root','');
             return $db;
         }
