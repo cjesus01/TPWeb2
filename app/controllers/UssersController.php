@@ -2,13 +2,16 @@
     require_once './app/models/UssersModel.php';
     require_once './app/views/UssersView.php';
     require_once './app/helpers/AuthHelper.php';
+    require_once './app/views/ClothingView.php';
     class UssersController extends AuthHelper{
         private $model;
         private $view;
+        private $viewClothing;
         private $Auth;
         public function __construct(){
             $this->model= new UssersModel();
             $this->view= new UssersView();
+            $this->viewClothing=new ClothingVIew();
             $this->Auth= new AuthHelper();
         }
         public function FormLogin(){
@@ -28,14 +31,14 @@
                 else if(password_verify($contraseña, $Usser->contraseña)){
                     $_SESSION['User'] = $nombre;
                     $auth=$this->Auth->ChecksessionStart();
-                    $this->view->Homepage($auth,$nombre);
+                    $this->viewClothing->Homepage($auth,$nombre);
                 }
                 else{
                     $this->view->ShowFormLogin($auth,'Contraseña incorrecta, intentelo nuevamente.');
                 }
             }
             else{
-                $this->view->ShowError('Complete todos los campos.',$auth);
+                $this->viewClothing->ShowError('Complete todos los campos.',$auth);
             }
         }
         
@@ -53,10 +56,10 @@
             $contraseña = $_POST['contraseña'];
             $hash=password_hash($contraseña,PASSWORD_DEFAULT);
             $this->model->AddUsser($nombre, $Mail, $hash, $auth);
-            $this->view->ShowSuccess('Se ha registrado con exito', 'add usser', $auth);
+            $this->viewClothing->ShowSuccess('Se ha registrado con éxito.', 'add usser','Login', $auth);
         }
         else{
-            $this->view->ShowError('No se pudo registrar intentelo nuevamente', $auth);
+            $this->viewClothing->ShowError('No se logró registrar, intentelo nuevamente.', $auth);
         }
     }
 

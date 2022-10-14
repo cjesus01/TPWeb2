@@ -1,5 +1,6 @@
 <?php
 require_once './app/views/CategoriesView.php';
+require_once './app/views/ClothingView.php';
 require_once './app/models/CategoriesModel.php';
 require_once './app/models/ClothingModel.php';
 require_once './app/helpers/AuthHelper.php';
@@ -7,14 +8,16 @@ require_once './app/helpers/AuthHelper.php';
 class CategoriesController extends AuthHelper{
     private $model;
     private $view;
+    private $viewClothing;
     private $modelClothing;
     private $Auth;
 
     public function __construct(){
-        $this->model = new CategoriesModel();
-        $this->view = new CategoriesView();
+        $this->model=new CategoriesModel();
+        $this->view=new CategoriesView();
+        $this->viewClothing=new ClothingVIew();
         $this->modelClothing=new ClothingModel();
-        $this->Auth =new AuthHelper();
+        $this->Auth=new AuthHelper();
     }
 
     public function getCategories(){
@@ -40,11 +43,11 @@ class CategoriesController extends AuthHelper{
             $temperatura=$_GET['temperatura'];
             $category=$_GET['categoria'];
             $this->model->AddCategorie($descripcion, $lavado,$temperatura,$category);
-            $this->view->ShowSuccess('Se agregó con correctamente','Add Categories', $auth);
+            $this->viewClothing->ShowSuccess('Se agregó correctamente','Add Categories','Categories/Category', $auth);
         }
         else{
             $auth=$this->Auth->CheckLoggenIn();
-            $this->view->ShowError('No se pudo agregar la categoria', $auth);
+            $this->viewClothing->ShowError('No se logró agregar la categoria.', $auth);
         }
     }
     public function FormUpdateCategories($id){
@@ -60,7 +63,7 @@ class CategoriesController extends AuthHelper{
             $this->view->ShowFormUpdate($id, $categoria, $descripcion, $lavado, $temperatura,$categorias,$auth);
         }
         else{
-            $this->view->ShowError('Ingrese id válido.');
+            $this->viewClothing->ShowError('Ingrese id válido.',$auth);
         }
     }
     public function UpdateCategories($id){
@@ -78,10 +81,10 @@ class CategoriesController extends AuthHelper{
                 $Id=intval($id);
                 
                 $this->model->UpdateCategories($categoria, $lavado, $temperatura, $descripcion, $Id);
-                $this->view->ShowSuccess('Se pudo modificar con exito', 'Update categories', $auth);
+                $this->viewClothing->ShowSuccess('Se modificó con éxito.', 'Update categories','Categories/Category', $auth);
         }
         else {
-        $this->view->ShowError('No se pudo modificar', 'Update categories', $auth);
+        $this->viewClothing->ShowError('No se logró modificar.', 'Update categories', $auth);
         }
     }
     public function DeleteCategory($id){
@@ -89,10 +92,10 @@ class CategoriesController extends AuthHelper{
         if($this->Idparams($id) && $this->CheckCategoryAssignedToAClothing($id)){
             $Id=intval($id);
             $this->model->DeleteCategory($Id);
-            $this->view->ShowSuccess('Se eliminó con éxito.','Delete category', $auth);
+            $this->viewClothing->ShowSuccess('Se eliminó con éxito.','Delete category','Categories/Category', $auth);
         }
         else{
-            $this->view->ShowError('No se puede eliminar.',$auth);
+            $this->viewClothing->ShowError('No se puede eliminar dado que existen prendas que forman parte de esta categoria.',$auth);
         }
     }
     public function Idparams($id){

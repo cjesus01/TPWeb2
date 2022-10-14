@@ -20,8 +20,7 @@ class ClothingView {
         $this->smarty->assign('OneClothes', $OneClothes);
         $this->smarty->assign('auth', $auth);
         $this->smarty->display('./templates/oneclothes.tpl');
-    }
-    
+    } 
     public function ShowError($message,$auth){
         $this->smarty->assign('Title','Error');
         $this->smarty->assign('message', $message);
@@ -46,11 +45,11 @@ class ClothingView {
         $this->smarty->assign('auth',$auth);
         $this->smarty->display('./templates/addformclothing.tpl');
     }
-    public function ShowSuccess($message,$title,$auth){
+    public function ShowSuccess($message,$title,$button,$auth){
         $this->smarty->assign('Title',$title);
         $this->smarty->assign('message', $message);
         $this->smarty->assign('auth', $auth);
-        $this->smarty->assign('return', 'Clothing/GetClothing');
+        $this->smarty->assign('return', $button);
         $this->smarty->display('./templates/showsuccess.tpl');
     }
     public function ShowFormUpdate($sexo, $talla, $color, $prenda, $id,$categories,$auth){

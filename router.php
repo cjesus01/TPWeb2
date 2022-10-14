@@ -37,7 +37,7 @@ switch($params[0]){
             }
             else if ($params[1] === 'FormUpdateClothing'){
                 if(!isset($params[2])){
-                    $controller->Error('No se puede modificar intente nuevamente');
+                    $controller->Error('No se puede modificar, intentelo nuevamente.');
                 }
                 else{
                     $controller->FormUpdateClothing($params[2]);
@@ -45,7 +45,7 @@ switch($params[0]){
             }
             else if($params[1]==='UpdateClothing'){
                 if(!isset($params[2])){
-                    $controller->Error('No se puede modificar intente nuevamente'); 
+                    $controller->Error('No se puede modificar, intentelo nuevamente.'); 
                 }
                 else{
                     $controller->UpdateClothing($params[2]);
@@ -66,63 +66,75 @@ switch($params[0]){
         }
     break;
     case 'Categories':
-        if ($params[1] === 'Category'){
-            $controllerCategories->getCategories();
-        }
-        else if($params[1]==='FormAddCategorie'){
-            $controllerCategories->FormAddCategories();
-        }
-        else if($params[1]==='AddCategories'){
-            $controllerCategories->AddCategories();
-        }
-        else if($params[1]=== 'filtercategoryform'){
-            $controller->getClothesByCategory();
-        }
-        else if($params[1]==='FormUpdateCategorie'){
-            if(isset($params[2])){
-                $controllerCategories->FormUpdateCategories($params[2]);
+        if(isset($params[1])){
+            if ($params[1] === 'Category'){
+                $controllerCategories->getCategories();
+            }
+            else if($params[1]==='FormAddCategorie'){
+                $controllerCategories->FormAddCategories();
+            }
+            else if($params[1]==='AddCategories'){
+                $controllerCategories->AddCategories();
+            }
+            else if($params[1]=== 'filtercategoryform'){
+                $controller->getClothesByCategory();
+            }
+            else if($params[1]==='FormUpdateCategorie'){
+                if(isset($params[2])){
+                    $controllerCategories->FormUpdateCategories($params[2]);
+                }
+                else{
+                    $controller->Error('No se puede acceder al formulario.');
+                }
+            }
+            else if($params[1]==='UpdateCategories'){
+                if(isset($params[2])){
+                    $controllerCategories->UpdateCategories($params[2]);
+                }
+                else{
+                    $controller->Error('No se puede modificar la categoria.');
+                }
+            }
+            else if($params[1] === 'DeleteCategorie'){
+                if(!isset($params[2])){
+                    $controller->Error('No se puede eliminar, intente nuevamente.'); 
+                }
+                else{
+                    $controllerCategories->DeleteCategory($params[2]);
+                }  
             }
             else{
-                $controllerCategories->Error('No se puede acceder al formulario');
+                $controller->Homepage();
             }
         }
-        else if($params[1]==='UpdateCategories'){
-            if(isset($params[2])){
-                $controllerCategories->UpdateCategories($params[2]);
-            }
-            else{
-                $controllerCategories->Error('No se puede modificar la categoria');
-            }
-        }
-        else if($params[1] === 'DeleteCategorie'){
-            if(!isset($params[2])){
-                $controller->Error('No se puede eliminar, intente nuevamente'); 
-            }
-            else{
-                $controllerCategories->DeleteCategory($params[2]);
-            }  
+        else{
+            $controller->Homepage();
         }
         break;
     case 'Login':
-        if(!isset($params[1])){
-            $controllerUssers->FormLogin();
-        }
-        else if($params[1]==='In'){
-            $controllerUssers->LoginIn();
+        if(isset($params[1])){
+            if($params[1]==='In'){
+                $controllerUssers->LoginIn();
+            }
+            else{
+                $controller->Error('No se puede acceder, intentelo de vuelta.'); 
+            }
         }
         else{
-            $controllerCategories->Error('No se puede acceder al formulario'); 
+            $controllerUssers->FormLogin();
         }
         break;
     case 'Register':    
-        if(!isset($params[1])){
-            $controllerUssers->FormRegister();
-        }
-        else if ($params[1]==='AddUsser'){
-            $controllerUssers->AddUsser();
+        if(isset($params[1])){
+           if($params[1]==='AddUsser'){
+                $controllerUssers->AddUsser();
+            }
+            else{
+                $controller->Error('No se puede registrar, intentelo de vuelta.'); 
+            }
         }
         else{
-            $controllerCategories->Error('No se puede acceder al formulario'); 
+            $controllerUssers->FormRegister();
         }
         break;
     case 'Logout':
