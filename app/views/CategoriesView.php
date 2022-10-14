@@ -9,28 +9,33 @@ class CategoriesView{
         $this->smarty->assign('BASE_URL', BASE_URL);
     }
     
-    public function ShowCategories($Categories){
+    public function ShowCategories($Categories,$Auth){
         $this->smarty->assign('categories',$Categories);
+        $this->smarty->assign('auth',$Auth);
         $this->smarty->assign('Title','Categories');
         $this->smarty->display('./templates/categories.tpl');
     }
-    public function ShowFormCategories(){
+    public function ShowFormCategories($auth){
         $this->smarty->assign('Title', 'form');
+        $this->smarty->assign('auth', $auth);
         $this->smarty->display('./templates/addformcategories.tpl');
     }
-    public function ShowSuccess($message,$title){
+    public function ShowSuccess($message,$title,$auth){
         $this->smarty->assign('Title',$title);
         $this->smarty->assign('message', $message);
-        $this->smarty->assign('return', 'Clothing/Categories');
+        $this->smarty->assign('auth', $auth);
+        $this->smarty->assign('return', 'Categories/Category');
         $this->smarty->display('./templates/showsuccess.tpl');
     }
-    public function ShowError($message){
+    public function ShowError($message, $auth){
         $this->smarty->assign('Title','Error');
+        $this->smarty->assign('auth', $auth);
         $this->smarty->assign('message', $message);
         $this->smarty->display('./templates/error.tpl');
     }
-    public function ShowFormUpdate($id, $categoria, $descripcion, $lavado, $temperatura,$categories){
+    public function ShowFormUpdate($id, $categoria, $descripcion, $lavado, $temperatura, $categories, $auth){
         $this->smarty->assign('Title', 'form');
+        $this->smarty->assign('auth', $auth);
         $this->smarty->assign('id', $id);
         $this->smarty->assign('categories', $categoria);
         $this->smarty->assign('descripcion', $descripcion);

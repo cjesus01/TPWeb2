@@ -1,5 +1,5 @@
 {include file = 'header.tpl'}
-    <form method="GET" action="Clothing/UpdateCategories/{$id}">
+    <form method="GET" action="Categories/UpdateCategories/{$id}">
         <label for="descripcion">Ingrese su descripcion:</label>
         <textarea name="descripcion" cols="30" rows="10">{$descripcion}</textarea>
         <label for="lavado">Ingrese el tipo de lavado:</label>

@@ -1,3 +1,7 @@
 {include file= "header.tpl"}
-<h1>PAGINA PRINCIPAL</h1>
+{if $auth===true}
+<h1>Bienvenido {$nombre}</h1>
+{else}
+<h1>Bienvenido</h1>
+{/if}
 {include file= "footer.tpl"}

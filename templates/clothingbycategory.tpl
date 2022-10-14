@@ -3,5 +3,5 @@
         {foreach from=$Clothing item=$Clothes}
             <li>{$Clothes->prenda}</li>
     {/foreach}
-    <button type='submit'><a href='Clothing/Categories'>Volver</a></button>
+    <button type='submit'><a href='Categories/Category'>Volver</a></button>
 {include file='footer.tpl'}
