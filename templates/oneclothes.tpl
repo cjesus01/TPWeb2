@@ -1,5 +1,4 @@
 {include file= "header.tpl"}
-
 <body>
     <ul>
           <li>Prenda:{$OneClothes->prenda}</li>

@@ -10,16 +10,18 @@
 </head>
 <body>
     <nav>
-        <a href="Clothing">Inicio</a>
-        <a href="Clothing/GetClothing">Ver todas</a>
-        <a href="Categories/Category">Ver categorias</a>
-        {if $auth===true}
-            <a href="Clothing/AddClothingForm">Agregar una nueva prenda</a>
-            <a href="Categories/FormAddCategorie">Agregar una nueva categoria</a>
-            <a href="Logout">Cerrar sesión</a>
-            {else} 
-            <a href="Login">Iniciar sesión|Registrarse</a>
-        {/if}        
+        <div class = "menu">
+            <a href="Clothing" class = "barranav">Inicio</a>
+            <a href="Clothing/GetClothing" class = "barranav">Ver todas</a>
+            <a href="Categories/Category" class = "barranav">Ver categorias</a>
+            {if $auth===true}
+                <a href="Clothing/AddClothingForm" class = "barranav">Agregar una nueva prenda</a>
+                <a href="Categories/FormAddCategorie" class = "barranav">Agregar una nueva categoria</a>
+                <a href="Logout" class = "barranav"">Cerrar sesión</a>
+                {else} 
+                <a href="Login" class = "barranav">Iniciar sesión|Registrarse</a>
+            {/if}     
+        </div>   
     </nav>
 </body>
 </html>

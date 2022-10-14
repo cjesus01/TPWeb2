@@ -6,7 +6,7 @@
             $this->smarty= new Smarty();
             $this->smarty->assign('BASE_URL', BASE_URL);
         }
-        public function ShowFormLogin($auth,$message =NULL){
+        public function ShowFormLogin($auth,$message = NULL){
             $this->smarty->assign('Title','Login');
             $this->smarty->assign('message',$message);
             $this->smarty->assign('auth',$auth);
