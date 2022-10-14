@@ -74,26 +74,39 @@ class ClothingController extends AuthHelper{
     }  
     public function AddClothing(){
         $auth=$this->Auth->CheckLoggedIn();
-        if(isset($_GET['prenda']) && isset($_GET['sexo']) &&
-           isset($_GET['color']) && isset($_GET['talla']) && 
-           isset($_GET['category']) && !empty($_GET['prenda']) && 
-           !empty($_GET['sexo']) && !empty($_GET['color']) && 
-           !empty($_GET['talla']) && !empty($_GET['category']) && 
-           !is_numeric($_GET['prenda']) && !is_numeric($_GET['sexo']) && 
-           !is_numeric($_GET['color']) && !is_numeric($_GET['talla'])){
-            $prenda=$_GET['prenda'];
-            $sexo=$_GET['sexo'];
-            $color=$_GET['color'];
-            $talla=$_GET['talla'];
-            $category=intval($_GET['category']);
-
-            $this->model->AddClothing($prenda,$sexo,$color,$talla,$category);
-            $this->view->ShowSuccess('Se agregó con éxito.','Add Clothing','Clothing/GetClothing',$auth);
-           }
-           else{
+        if(isset($_POST['prenda']) && isset($_POST['sexo']) &&
+           isset($_POST['color']) && isset($_POST['talla']) && 
+           isset($_POST['category']) && !empty($_POST['prenda']) && 
+           !empty($_POST['sexo']) && !empty($_POST['color']) && 
+           !empty($_POST['talla']) && !empty($_POST['category']) && 
+           !is_numeric($_POST['prenda']) && !is_numeric($_POST['sexo']) && 
+           !is_numeric($_POST['color']) && !is_numeric($_POST['talla'])){
+            $prenda=$_POST['prenda'];
+            $sexo=$_POST['sexo'];
+            $color=$_POST['color'];
+            $talla=$_POST['talla'];
+            $category=intval($_POST['category']);
+            if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
+                    || $_FILES['imagen']['type'] == "image/png" ) {
+                $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
+                $this->model->AddClothing($prenda,$sexo,$color,$talla,$category,$img);
+                $this->view->ShowSuccess('Se agregó con éxito.','Add Clothing','Clothing/GetClothing',$auth);
+            }
+            else{
+                $this->model->AddClothing($prenda,$sexo,$color,$talla,$category);
+                $this->view->ShowSuccess('Se agregó con éxito.','Add Clothing','Clothing/GetClothing',$auth);
+            }
+        }
+        else{
             $this->view->ShowError('Complete todo el formulario.',$auth);
-           }      
+       }      
     }
+    private function uploadImage($image){
+        $target = './imgs/clothing/' . uniqid() . '.jpg';
+        move_uploaded_file($image, $target);
+        return $target;
+    }
+
     public function FormUpdateClothing($id){
         $auth=$this->Auth->CheckLoggedIn();
         if(is_numeric($id)&& !empty($id) && $this->Idparams($id)){
@@ -111,25 +124,31 @@ class ClothingController extends AuthHelper{
     }
     public function UpdateClothing($id){
         $auth=$this->Auth->CheckLoggedIn();
-        if(isset($_GET['prenda']) && isset($_GET['sexo']) &&
-           isset($_GET['color']) && isset($_GET['talla']) && 
-           isset($_GET['category']) && !empty($_GET['prenda']) && 
-           !empty($_GET['sexo']) && !empty($_GET['color']) && 
-           !empty($_GET['talla']) && !empty($_GET['category']) && 
-           !is_numeric($_GET['prenda']) && !is_numeric($_GET['sexo']) && 
-           !is_numeric($_GET['color']) && !is_numeric($_GET['talla']) && $this->Idparams($id)===true){
-            
-            $prenda = $_GET['prenda'];
-            $color = $_GET['color'];
-            $talla = $_GET['talla'];
-            $sexo = $_GET['sexo'];
-            $Id=intval($id);
-            $category = intval($_GET['category']);
-           
-            $this->model->UpdateClothes($prenda, $color, $talla, $sexo, $category, $Id);
-            $this->view->ShowSuccess('Se modificó con exito.', 'Update clothes','Clothing/GetClothing', $auth);
-        }
-        else{
+        if(isset($_POST['prenda']) && isset($_POST['sexo']) &&
+           isset($_POST['color']) && isset($_POST['talla']) && 
+           isset($_POST['category']) && !empty($_POST['prenda']) && 
+           !empty($_POST['sexo']) && !empty($_POST['color']) && 
+           !empty($_POST['talla']) && !empty($_POST['category']) && 
+           !is_numeric($_POST['prenda']) && !is_numeric($_POST['sexo']) && 
+           !is_numeric($_POST['color']) && !is_numeric($_POST['talla']) && $this->Idparams($id)){
+                $prenda = $_POST['prenda'];
+                $color = $_POST['color'];
+                $talla = $_POST['talla'];
+                $sexo = $_POST['sexo'];
+                $Id=intval($id);
+                $category = intval($_POST['category']);
+                if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
+                || $_FILES['imagen']['type'] == "image/png" ) {
+                        $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
+                         $this->model->UpdateClothes($prenda, $color, $talla, $sexo, $category, $Id,$img);
+                         $this->view->ShowSuccess('Se modificó con exito.', 'Update clothes','Clothing/GetClothing', $auth);
+                }
+                else{
+                    $this->model->UpdateClothes($prenda, $color, $talla, $sexo, $category, $Id);
+                    $this->view->ShowSuccess('Se modificó con exito.', 'Update clothes','Clothing/GetClothing', $auth);
+                }
+            }
+            else{
             $this->view->ShowError('No se logró modificar.',$auth);
         }
     }

@@ -14,7 +14,7 @@
         {foreach from=$clothing item=$Clothes}
             <div class = "mostrar_por_categoria">
                 <li>Prenda:{$Clothes->prenda}</li>
-                <li>{$Clothes->tipo_de_tela}</li>
+                <li>Tipo de tela:{$Clothes->tipo_de_tela}</li>
                 <button><a href=Clothing/GetClothing/{$Clothes->id}>Ver detalles</a></button>
                 {if $auth===true}
                 <button><a href=Clothing/DeleteClothing/{$Clothes->id}>Eliminar</a></button>

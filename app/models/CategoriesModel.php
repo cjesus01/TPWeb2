@@ -37,9 +37,15 @@ class CategoriesModel{
         $Clothing=$query->fetchAll(PDO::FETCH_OBJ);
         return $Clothing;
     }
-    public function AddCategorie($descripcion, $lavado,$temperatura,$categoria){
-        $query=$this->db->prepare("INSERT INTO tela(tipo_de_tela,descripcion,lavado_de_tela,temperatura_de_lavado) VALUES (?,?,?,?)");
-        $query->execute([$categoria,$descripcion,$lavado,$temperatura]);
+    public function AddCategory($descripcion, $lavado,$temperatura,$categoria,$img=NULL){
+        if($img!=NULL){
+            $query=$this->db->prepare("INSERT INTO tela(tipo_de_tela,descripcion,lavado_de_tela,temperatura_de_lavado,imagen) VALUES (?,?,?,?,?)");
+            $query->execute([$categoria,$descripcion,$lavado,$temperatura,$img]);
+        }
+        else{
+            $query=$this->db->prepare("INSERT INTO tela(tipo_de_tela,descripcion,lavado_de_tela,temperatura_de_lavado) VALUES (?,?,?,?)");
+            $query->execute([$categoria,$descripcion,$lavado,$temperatura]);
+        }
     }
     public function getCategoriesOne($id){
         $query=$this->db->prepare("SELECT * FROM tela WHERE id_tela=?");
@@ -47,8 +53,8 @@ class CategoriesModel{
         $Categories=$query->fetch(PDO::FETCH_OBJ);
         return $Categories;
     }
-    public function UpdateCategories($categories, $lavado, $temperatura, $descripcion, $Id){
-        $query=$this->db->prepare("UPDATE tela SET `id_tela`= '$Id', `tipo_de_tela`='$categories', `descripcion`='$descripcion', `lavado_de_tela`='$lavado', `temperatura_de_lavado`='$temperatura' WHERE id_tela=?");
+    public function UpdateCategories($categories, $lavado, $temperatura, $descripcion, $Id,$img=NULL){
+        $query=$this->db->prepare("UPDATE tela SET `id_tela`= '$Id', `tipo_de_tela`='$categories', `descripcion`='$descripcion', `lavado_de_tela`='$lavado', `temperatura_de_lavado`='$temperatura',`imagen`='$img' WHERE id_tela=?");
         $query->execute([$Id]);
     }
     public function DeleteCategory($id){

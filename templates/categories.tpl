@@ -26,8 +26,8 @@
             <li>Descripción: {$Category->descripcion}</li>
             <li>Lavado: {$Category->lavado_de_tela}</li>
             <li>Temperatura(agua): {$Category->temperatura_de_lavado}</li>
-            {if isset($Category->imagen)}
-                <li>Imagen:<img src="./imgs/categories/{$Category->imagen}" alt="error"></li>
+            {if $Category->imagen!=NULL}
+                <li>Imagen:<img src="{$Category->imagen}" alt="error"></li>
             {/if}
             {if $auth===true}
                 <button><a href="Categories/DeleteCategorie/{$Category->id_tela}">Eliminar</a></button>

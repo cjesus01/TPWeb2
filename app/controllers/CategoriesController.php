@@ -32,23 +32,36 @@ class CategoriesController extends AuthHelper{
     }
     public function AddCategories(){
         $auth=$this->Auth->CheckLoggedIn();
-            if(isset($_GET['descripcion']) && isset($_GET['lavado']) &&
-            isset($_GET['temperatura']) && isset($_GET['categoria']) && 
-            !empty($_GET['descripcion']) && !empty($_GET['lavado']) &&
-            !empty($_GET['temperatura']) && !empty($_GET['categoria']) && 
-            !is_numeric($_GET['descripcion']) && !is_numeric($_GET['lavado']) && 
-            !is_numeric($_GET['temperatura']) && !is_numeric($_GET['categoria'])){
-            $descripcion=$_GET['descripcion'];
-            $lavado=$_GET['lavado'];
-            $temperatura=$_GET['temperatura'];
-            $category=$_GET['categoria'];
-            $this->model->AddCategorie($descripcion, $lavado,$temperatura,$category);
-            $this->viewClothing->ShowSuccess('Se agregó correctamente','Add Categories','Categories/Category', $auth);
-        }
+            if(isset($_POST['descripcion']) && isset($_POST['lavado']) &&
+            isset($_POST['temperatura']) && isset($_POST['categoria']) && 
+            !empty($_POST['descripcion']) && !empty($_POST['lavado']) &&
+            !empty($_POST['temperatura']) && !empty($_POST['categoria']) && 
+            !is_numeric($_POST['descripcion']) && !is_numeric($_POST['lavado']) && 
+            !is_numeric($_POST['temperatura']) && !is_numeric($_POST['categoria'])){
+                $descripcion=$_POST['descripcion'];
+                $lavado=$_POST['lavado'];
+                $temperatura=$_POST['temperatura'];
+                $category=$_POST['categoria'];
+                if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
+                    || $_FILES['imagen']['type'] == "image/png" ) {
+                    $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
+                    $this->model->AddCategory($descripcion, $lavado,$temperatura,$category,$img);
+                    $this->viewClothing->ShowSuccess('Se agregó correctamente','Add Categories','Categories/Category', $auth);
+                }
+                else{
+                    $this->model->AddCategory($descripcion, $lavado,$temperatura,$category);
+                    $this->viewClothing->ShowSuccess('Se agregó correctamente','Add Categories','Categories/Category', $auth);
+                }
+            }
         else{
             $auth=$this->Auth->CheckLoggenIn();
             $this->viewClothing->ShowError('No se logró agregar la categoria.', $auth);
         }
+    }
+    private function uploadImage($image){
+        $target = './imgs/categories/' . uniqid() . '.jpg';
+        move_uploaded_file($image, $target);
+        return $target;
     }
     public function FormUpdateCategories($id){
         $auth = $this->Auth->CheckLoggedIn();
@@ -68,20 +81,27 @@ class CategoriesController extends AuthHelper{
     }
     public function UpdateCategories($id){
         $auth = $this->Auth->CheckLoggedIn();
-        if(isset($_GET['descripcion']) && isset($_GET['lavado']) &&
-            isset($_GET['temperatura']) && isset($_GET['categoria']) && 
-            !empty($_GET['descripcion']) && !empty($_GET['lavado']) &&
-            !empty($_GET['temperatura']) && !empty($_GET['categoria']) && 
-            !is_numeric($_GET['descripcion']) && !is_numeric($_GET['lavado']) && 
-            !is_numeric($_GET['temperatura']) && !is_numeric($_GET['categoria']) && $this->Idparams($id)){
-                $descripcion = $_GET['descripcion'];
-                $lavado = $_GET['lavado'];
-                $temperatura = $_GET['temperatura'];
-                $categoria = $_GET['categoria'];
+        if(isset($_POST['descripcion']) && isset($_POST['lavado']) &&
+            isset($_POST['temperatura']) && isset($_POST['categoria']) && 
+            !empty($_POST['descripcion']) && !empty($_POST['lavado']) &&
+            !empty($_POST['temperatura']) && !empty($_POST['categoria']) && 
+            !is_numeric($_POST['descripcion']) && !is_numeric($_POST['lavado']) && 
+            !is_numeric($_POST['temperatura']) && !is_numeric($_POST['categoria']) && $this->Idparams($id)){
+                $descripcion = $_POST['descripcion'];
+                $lavado = $_POST['lavado'];
+                $temperatura = $_POST['temperatura'];
+                $categoria = $_POST['categoria'];
                 $Id=intval($id);
-                
-                $this->model->UpdateCategories($categoria, $lavado, $temperatura, $descripcion, $Id);
-                $this->viewClothing->ShowSuccess('Se modificó con éxito.', 'Update categories','Categories/Category', $auth);
+                if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
+                    || $_FILES['imagen']['type'] == "image/png" ) {
+                    $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
+                    $this->model->UpdateCategories($categoria, $lavado, $temperatura, $descripcion, $Id,$img);
+                    $this->viewClothing->ShowSuccess('Se modificó con éxito.', 'Update categories','Categories/Category', $auth);
+                }
+                else{
+                    $this->model->UpdateCategories($categoria, $lavado, $temperatura, $descripcion, $Id);
+                    $this->viewClothing->ShowSuccess('Se modificó con éxito.', 'Update categories','Categories/Category', $auth);
+                }
         }
         else {
         $this->viewClothing->ShowError('No se logró modificar.', 'Update categories', $auth);

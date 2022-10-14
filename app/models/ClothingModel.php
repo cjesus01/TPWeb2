@@ -12,7 +12,7 @@
             return $db;
         }
         public function getAll(){
-            $query=$this->db->prepare('SELECT * FROM prenda JOIN tela ON prenda.id_tela = tela.id_tela');
+            $query=$this->db->prepare('SELECT prenda,tipo_de_tela,id FROM prenda JOIN tela ON prenda.id_tela = tela.id_tela');
             $query->execute();
             $Clothing = $query->fetchAll(PDO::FETCH_OBJ);
             return $Clothing;
@@ -33,13 +33,23 @@
             $query=$this->db->prepare('DELETE FROM prenda WHERE id=?');
             $query->execute([$id]);
         }
-        public function AddClothing($prenda,$sexo,$color,$talla,$category){
+        public function AddClothing($prenda,$sexo,$color,$talla,$category,$img=NULL){
+            if($img!=NULL){
+                $query=$this->db->prepare('INSERT INTO prenda(prenda,sexo,color,talla,id_tela,imagen_prenda) VALUES (?,?,?,?,?,?)');
+                $query->execute([$prenda,$sexo,$color,$talla,$category,$img]);
+            }
             $query=$this->db->prepare('INSERT INTO prenda(prenda,sexo,color,talla,id_tela) VALUES (?,?,?,?,?)');
             $query->execute([$prenda,$sexo,$color,$talla,$category]);
         }
-        public function UpdateClothes($prenda, $color, $talla, $sexo, $category, $id){
-            $query=$this->db->prepare("UPDATE prenda SET `sexo`='$sexo', `talla`='$talla', `color`='$color', `prenda`='$prenda', `id_tela`='$category' WHERE id=?");
-            $query->execute([$id]);
+        public function UpdateClothes($prenda, $color, $talla, $sexo, $category, $id,$img=NULL){
+            if($img!=NULL){
+                $query=$this->db->prepare("UPDATE prenda SET `sexo`='$sexo', `talla`='$talla', `color`='$color', `prenda`='$prenda', `id_tela`='$category',`imagen_prenda`='$img' WHERE id=?");
+                $query->execute([$id]);
+            }
+            else{
+                $query=$this->db->prepare("UPDATE prenda SET `sexo`='$sexo', `talla`='$talla', `color`='$color', `prenda`='$prenda', `id_tela`='$category' WHERE id=?");
+                $query->execute([$id]);
+            }
         }
         public function ClothingId(){
             $query=$this->db->prepare("SELECT id FROM prenda");

@@ -1,5 +1,5 @@
 {include file='header.tpl'}
 
-<h1 class="error">{$message}</h1>
+<h2 class="error">{$message}</h2>
 
 {include file='footer.tpl'}

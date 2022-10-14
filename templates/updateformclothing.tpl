@@ -1,5 +1,5 @@
 {include file='header.tpl'}
-    <form method="get" action="Clothing/UpdateClothing/{$id}">
+    <form method="post" action="Clothing/UpdateClothing/{$id}" enctype="multipart/form-data">
     <div class="formulario">
         <label for="prenda">Ingrese la prenda:</label>
         <input type="text" name="prenda" value={$prenda}>
@@ -15,6 +15,10 @@
     <div class="formulario">
         <label for="talla">Ingrese la talla perteneciente:</label>
         <input type="text" name="talla" value = {$talla}>
+    </div>
+    <div class="formulario">
+        <label for="imagen">Ingrese la imagen:</label>
+        <input type="file" name="imagen">
     </div>
     <div class="formulario">
         <label for="category">Seleccione la categoria:</label>
