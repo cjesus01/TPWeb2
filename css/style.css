@@ -150,3 +150,24 @@ textarea{
     outline:none;
     margin-top: 1%;
 }
+img{
+    width: 20%;
+    margin-left: 40%;
+}
+.un_elemento{
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 4%;
+    border: solid rgb(82, 50, 35);
+}
+.un_elemento ul li{
+    text-align: center;
+    list-style: none;
+}
+.acomodar_btn{
+    display: flex;
+    flex-direction: column;
+}
+.boton_volver{
+    margin-left: 45%;
+}
