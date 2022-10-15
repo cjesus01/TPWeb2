@@ -77,7 +77,12 @@ switch($params[0]){
                 $controllerCategories->AddCategories();
             }
             else if($params[1]=== 'filtercategoryform'){
-                $controller->getClothesByCategory();
+                if(isset($params[2])){
+                    $controller->getClothesByCategory($params[2]);
+                }
+                else{
+                    $controller->getClothesByCategory();
+                }    
             }
             else if($params[1]==='FormUpdateCategorie'){
                 if(isset($params[2])){

@@ -41,20 +41,31 @@ class ClothingController extends AuthHelper{
             $this->view->Homepage($auth);
         }
     }
-    public function getClothesByCategory(){
+    public function getClothesByCategory($Category=NULL){
         $auth=$this->Auth->CheckLoggedIn();
-        if(isset($_GET['category']) && !empty($_GET['category'])){
-            $Category=intval($_GET['category']);
+        if($Category!=NULL){
             $Clothing= $this->model->getAllByCategory($Category);
             if(!empty($Clothing)){
                 $this->view->ShowClothesByCategory($Clothing,$auth);
             }
             else{
                 $this->view->ShowError('No hay prenda que coincida con esa categoria.',$auth);
-            }     
+            } 
         }
         else{
-            $this->view->ShowError('Ingrese una categoria.',$auth);
+            if(isset($_GET['category']) && !empty($_GET['category'])){
+                $Category=intval($_GET['category']);
+                $Clothing= $this->model->getAllByCategory($Category);
+                if(!empty($Clothing)){
+                    $this->view->ShowClothesByCategory($Clothing,$auth);
+                }
+                else{
+                    $this->view->ShowError('No hay prenda que coincida con esa categoria.',$auth);
+                }     
+            }
+            else{
+                $this->view->ShowError('Ingrese una categoria.',$auth);
+            }
         }
     }
     public function DeleteClothing($id){
@@ -164,5 +175,11 @@ class ClothingController extends AuthHelper{
     public function Error($message){
         $auth = $this->Auth->CheckLoggedIn();
         $this->view->ShowError($message,$auth);
-    }    
+    }
+    /*public function BringCategories($id){
+        $auth = $this->Auth->CheckLoggedIn();
+        $Id=intval($id);
+        $id_tela = $this->model->BringGarment($Id);  
+        $this->view->ShowClothesByCategory($auth, $id_tela);    
+    }*/    
 }

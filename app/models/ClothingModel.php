@@ -63,6 +63,12 @@
             $Idtela = $query->fetchAll(PDO::FETCH_OBJ);
             return $Idtela;
         }
+        public function BringGarment($id){
+            $query=$this->db->prepare("SELECT * FROM prenda  JOIN tela ON prenda.id_tela=tela.id_tela WHERE prenda.id_tela=?");
+            $query->execute([$id]);
+            $id=$query->fetchAll(PDO::FETCH_OBJ);
+            return $id;        
+        }
     }
     
 ?>
