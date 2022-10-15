@@ -67,10 +67,7 @@ switch($params[0]){
     break;
     case 'Categories':
         if(isset($params[1])){
-            if ($params[1] === 'Category'){
-                $controllerCategories->getCategories();
-            }
-            else if($params[1]==='FormAddCategorie'){
+            if($params[1]==='FormAddCategorie'){
                 $controllerCategories->FormAddCategories();
             }
             else if($params[1]==='AddCategories'){
@@ -104,11 +101,11 @@ switch($params[0]){
                 }  
             }
             else{
-                $controller->Homepage();
+                $controllerCategories->getCategories();
             }
         }
         else{
-            $controller->Homepage();
+            $controllerCategories->getCategories();
         }
         break;
     case 'Login':

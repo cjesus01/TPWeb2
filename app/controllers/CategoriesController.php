@@ -28,10 +28,16 @@ class CategoriesController extends AuthHelper{
     
     public function FormAddCategories(){
         $auth = $this->Auth->CheckLoggedIn();
-        $this->view->ShowFormCategories($auth);
+        if($auth){
+            $this->view->ShowFormCategories($auth);
+        }
+        else{
+            $this->viewClothing->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
+        }
     }
     public function AddCategories(){
         $auth=$this->Auth->CheckLoggedIn();
+        if($auth){
             if(isset($_POST['descripcion']) && isset($_POST['lavado']) &&
             isset($_POST['temperatura']) && isset($_POST['categoria']) && 
             !empty($_POST['descripcion']) && !empty($_POST['lavado']) &&
@@ -53,8 +59,12 @@ class CategoriesController extends AuthHelper{
                     $this->viewClothing->ShowSuccess('Se agregó correctamente','Add Categories','Categories/Category', $auth);
                 }
             }
+            else{
+                $this->viewClothing->ShowError('No se logró agregar la categoria.', $auth);
+            }
+        }
         else{
-            $this->viewClothing->ShowError('No se logró agregar la categoria.', $auth);
+            $this->viewClothing->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
         }
     }
     private function uploadImage($image){
@@ -64,22 +74,28 @@ class CategoriesController extends AuthHelper{
     }
     public function FormUpdateCategories($id){
         $auth = $this->Auth->CheckLoggedIn();
-        if(is_numeric($id) && !empty($id) && $this->Idparams($id)){
-            $Id=intval($id);
-            $category = $this->model->getCategoriesOne($id);
-            $categoria = $category->tipo_de_tela;
-            $descripcion = $category->descripcion;
-            $lavado = $category->lavado_de_tela;
-            $temperatura = $category->temperatura_de_lavado;
-            $this->view->ShowFormUpdate($id, $categoria, $descripcion, $lavado, $temperatura,$auth);
+        if($auth){
+            if(is_numeric($id) && !empty($id) && $this->Idparams($id)){
+                $Id=intval($id);
+                $category = $this->model->getCategoriesOne($id);
+                $categoria = $category->tipo_de_tela;
+                $descripcion = $category->descripcion;
+                $lavado = $category->lavado_de_tela;
+                $temperatura = $category->temperatura_de_lavado;
+                $this->view->ShowFormUpdate($id, $categoria, $descripcion, $lavado, $temperatura,$auth);
+            }
+            else{
+                $this->viewClothing->ShowError('Ingrese id válido.',$auth);
+            }
         }
         else{
-            $this->viewClothing->ShowError('Ingrese id válido.',$auth);
+            $this->viewClothing->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
         }
     }
     public function UpdateCategories($id){
         $auth = $this->Auth->CheckLoggedIn();
-        if(isset($_POST['descripcion']) && isset($_POST['lavado']) &&
+        if($auth){
+            if(isset($_POST['descripcion']) && isset($_POST['lavado']) &&
             isset($_POST['temperatura']) && isset($_POST['categoria']) && 
             !empty($_POST['descripcion']) && !empty($_POST['lavado']) &&
             !empty($_POST['temperatura']) && !empty($_POST['categoria']) && 
@@ -101,20 +117,29 @@ class CategoriesController extends AuthHelper{
                     $this->model->UpdateCategories($categoria, $lavado, $temperatura, $descripcion, $Id);
                     $this->viewClothing->ShowSuccess('Se modificó con éxito.', 'Update categories','Categories/Category', $auth);
                 }
+            }
+            else {
+                $this->viewClothing->ShowError('No se logró modificar.', 'Update categories', $auth);
+            }
         }
-        else {
-        $this->viewClothing->ShowError('No se logró modificar.', 'Update categories', $auth);
+        else{
+            $this->viewClothing->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
         }
     }
     public function DeleteCategory($id){
         $auth=$this->Auth->CheckLoggedIn();
-        if($this->Idparams($id) && $this->CheckCategoryAssignedToAClothing($id)){
-            $Id=intval($id);
-            $this->model->DeleteCategory($Id);
-            $this->viewClothing->ShowSuccess('Se eliminó con éxito.','Delete category','Categories/Category', $auth);
+        if($auth){
+            if($this->Idparams($id) && $this->CheckCategoryAssignedToAClothing($id)){
+                $Id=intval($id);
+                $this->model->DeleteCategory($Id);
+                $this->viewClothing->ShowSuccess('Se eliminó con éxito.','Delete category','Categories/Category', $auth);
+            }
+            else{
+                $this->viewClothing->ShowError('No se puede eliminar dado que existen prendas que forman parte de esta categoria.',$auth);
+            }
         }
         else{
-            $this->viewClothing->ShowError('No se puede eliminar dado que existen prendas que forman parte de esta categoria.',$auth);
+            $this->viewClothing->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
         }
     }
     public function Idparams($id){
