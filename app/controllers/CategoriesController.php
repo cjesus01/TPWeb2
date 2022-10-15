@@ -54,7 +54,6 @@ class CategoriesController extends AuthHelper{
                 }
             }
         else{
-            $auth=$this->Auth->CheckLoggenIn();
             $this->viewClothing->ShowError('No se logró agregar la categoria.', $auth);
         }
     }
