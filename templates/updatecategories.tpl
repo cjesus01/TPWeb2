@@ -18,11 +18,7 @@
     </div>
     <div class="formulario">
         <label for="categoria">Ingrese la categoria:</label>
-        <select name="categoria">
-            {foreach from=$categories item=$category}
-            <option value="{$category->tipo_de_tela}">{$category->tipo_de_tela}</option>
-            {/foreach}
-        </select>
+        <input type='text' name="categoria" value='{$categoria}'>
         <button type='submit'>Enviar</button>
     </div>
     </form>

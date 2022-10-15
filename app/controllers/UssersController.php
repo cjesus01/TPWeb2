@@ -50,7 +50,7 @@
             $auth=$this->Auth->CheckLoggedIn();
             if(isset($_POST['nombre']) && !empty($_POST['nombre']) && !is_numeric($_POST['nombre'])
             && isset($_POST['mail']) && !empty($_POST['mail']) && !is_numeric($_POST['mail'])
-            && isset($_POST['contraseña']) && !empty($_POST['contraseña'])){
+            && isset($_POST['contraseña']) && !empty($_POST['contraseña']) && $this->CheckNameUsser($_POST['nombre'],$_POST['mail'])){
             $nombre=$_POST['nombre'];
             $Mail=$_POST['mail'];
             $contraseña = $_POST['contraseña'];
@@ -66,6 +66,15 @@
     public function Logout(){
         $auth=$this->Auth->CheckLogout();
         $this->view->ShowFormLogin($auth);
+    }
+    public function CheckNameUsser($NameUsser,$Mail){
+        $Ussers=$this->model->getNameMailUssers();
+        foreach($Ussers as $Usser){
+            if($Usser->nombre==$NameUsser || $Usser->Mail==$Mail){
+                return false;
+            }
+        }
+        return true;
     }
 }
 ?>

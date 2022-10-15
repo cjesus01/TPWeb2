@@ -25,12 +25,6 @@ class CategoriesModel{
         $Categories=$query->fetchAll(PDO::FETCH_OBJ);
         return $Categories;
     }
-    public function getCategoriesOnlyTipoDeTela(){
-        $query=$this->db->prepare("SELECT tipo_de_tela FROM tela");
-        $query->execute();
-        $Categories=$query->fetchAll(PDO::FETCH_OBJ);
-        return $Categories;
-    }
     public function ReadCategories($category){
         $query=$this->db->prepare('SELECT id_tela FROM tela WHERE tipo_de_tela=?');
         $query->execute([$category]);
@@ -66,6 +60,12 @@ class CategoriesModel{
         $query->execute();
         $CategoriesId=$query->fetchAll(PDO::FETCH_OBJ);
         return $CategoriesId;
+    }
+    public function getTipoDeTelaCategories(){
+        $query=$this->db->prepare("SELECT tipo_de_tela FROM tela");
+        $query->execute();
+        $TipoDeTela=$query->fetchAll(PDO::FETCH_OBJ);
+        return $TipoDeTela;
     }
 }
 ?>

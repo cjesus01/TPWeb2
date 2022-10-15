@@ -37,7 +37,7 @@ class CategoriesController extends AuthHelper{
             !empty($_POST['descripcion']) && !empty($_POST['lavado']) &&
             !empty($_POST['temperatura']) && !empty($_POST['categoria']) && 
             !is_numeric($_POST['descripcion']) && !is_numeric($_POST['lavado']) && 
-            !is_numeric($_POST['temperatura']) && !is_numeric($_POST['categoria'])){
+            !is_numeric($_POST['temperatura']) && !is_numeric($_POST['categoria']) && $this->CheckCategories($_POST['categoria'])){
                 $descripcion=$_POST['descripcion'];
                 $lavado=$_POST['lavado'];
                 $temperatura=$_POST['temperatura'];
@@ -54,7 +54,6 @@ class CategoriesController extends AuthHelper{
                 }
             }
         else{
-            $auth=$this->Auth->CheckLoggenIn();
             $this->viewClothing->ShowError('No se logró agregar la categoria.', $auth);
         }
     }
@@ -72,8 +71,7 @@ class CategoriesController extends AuthHelper{
             $descripcion = $category->descripcion;
             $lavado = $category->lavado_de_tela;
             $temperatura = $category->temperatura_de_lavado;
-            $categorias=$this->model->getCategoriesOnlyTipoDeTela();
-            $this->view->ShowFormUpdate($id, $categoria, $descripcion, $lavado, $temperatura,$categorias,$auth);
+            $this->view->ShowFormUpdate($id, $categoria, $descripcion, $lavado, $temperatura,$auth);
         }
         else{
             $this->viewClothing->ShowError('Ingrese id válido.',$auth);
@@ -86,7 +84,8 @@ class CategoriesController extends AuthHelper{
             !empty($_POST['descripcion']) && !empty($_POST['lavado']) &&
             !empty($_POST['temperatura']) && !empty($_POST['categoria']) && 
             !is_numeric($_POST['descripcion']) && !is_numeric($_POST['lavado']) && 
-            !is_numeric($_POST['temperatura']) && !is_numeric($_POST['categoria']) && $this->Idparams($id)){
+            !is_numeric($_POST['temperatura']) && !is_numeric($_POST['categoria']) &&
+            $this->Idparams($id) && $this->CheckCategories($_POST['categoria'],$id)){
                 $descripcion = $_POST['descripcion'];
                 $lavado = $_POST['lavado'];
                 $temperatura = $_POST['temperatura'];
@@ -135,6 +134,28 @@ class CategoriesController extends AuthHelper{
             }
         }
         return true;
+    }
+    public function CheckCategories($categoria,$id=NULL){
+        if($id!=NULL){
+            $Categories=$this->model->getCategoriesOnlyIdAndTipoDeTela();
+            foreach($Categories as $category){
+                if($category->tipo_de_tela==$categoria && $category->id_tela==$id){
+                        return true;
+                    }
+                else if($category->tipo_de_tela==$categoria && $category->id_tela!=$id){
+                    return false;
+                }
+            }
+        }
+        else{
+            $Categories=$this->model->getTipoDeTelaCategories();
+            foreach($Categories as $category){
+                if($category->tipo_de_tela == $categoria){
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
 ?>
