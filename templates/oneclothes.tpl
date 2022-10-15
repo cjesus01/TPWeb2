@@ -13,7 +13,7 @@
             <img src="{$OneClothes->imagen_prenda}" alt="error">
           {/if}
           </div>
-           <button class="boton_volver"><a href=Clothing/GetClothing>Volver</a></button>
+          <button class="boton_volver"><a href=Clothing/GetClothing>Volver</a></button>
     </ul>
   </div>
 </body>

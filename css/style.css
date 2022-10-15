@@ -171,3 +171,16 @@ img{
 .boton_volver{
     margin-left: 45%;
 }
+.boton_volver_cat{
+    margin-left: 48%;
+}
+.categorias{
+    display: flex;
+    flex-direction:column;
+}
+.btn_categoria{
+    display: block;
+}
+.img_categoria{
+    margin-left: 5%;
+}

@@ -26,13 +26,18 @@
             <li>Descripción: {$Category->descripcion}</li>
             <li>Lavado: {$Category->lavado_de_tela}</li>
             <li>Temperatura(agua): {$Category->temperatura_de_lavado}</li>
+            <div class="acomodar_btn">
             {if $Category->imagen!=NULL}
-                <li>Imagen:<img src="{$Category->imagen}" alt="error"></li>
+                <li>Imagen:</li>
+                <img src="{$Category->imagen}" alt="error" class="img_categoria">
             {/if}
             {if $auth===true}
+            <div class="btn_categoria">
                 <button><a href="Categories/DeleteCategorie/{$Category->id_tela}">Eliminar</a></button>
                 <button><a href="Categories/FormUpdateCategorie/{$Category->id_tela}">Modificar</a></button>
+            </div>
             {/if}
+            </div>
         </div>
     {/foreach}
 
