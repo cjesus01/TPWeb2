@@ -16,29 +16,39 @@
         }
         public function FormLogin(){
             $auth=$this->Auth->CheckLoggedIn();
-            $this->view->ShowFormLogin($auth);
+            if($auth){
+                $this->viewClothing->ShowError('Ya se encuentra logueado.', $auth);
+            }
+            else{
+                $this->view->ShowFormLogin($auth);
+            }
         }
         public function LoginIn(){
             $auth=$this->Auth->CheckLoggedIn();
-            if(isset($_POST['Nombre']) &&  !empty($_POST['Nombre']) && !is_numeric($_POST['Nombre']) &&
+            if($auth){
+                $this->viewClothing->ShowError('Ya se encuentra logueado.', $auth);
+            }
+            else{
+                if(isset($_POST['Nombre']) &&  !empty($_POST['Nombre']) && !is_numeric($_POST['Nombre']) &&
                isset($_POST['Contraseña']) && !empty($_POST['Contraseña'])){
                 $nombre=$_POST['Nombre'];
                 $contraseña = $_POST['Contraseña'];
                 $Usser=$this->model->GetUsser($nombre);
-                if($Usser=== false){
-                    $this->view->ShowFormLogin($auth,'Usuario incorrecto, intentelo nuevamente.');
-                }
-                else if(password_verify($contraseña, $Usser->contraseña)){
-                    $_SESSION['User'] = $nombre;
-                    $auth=$this->Auth->ChecksessionStart();
-                    $this->viewClothing->Homepage($auth,$nombre);
+                    if($Usser=== false){
+                        $this->view->ShowFormLogin($auth,'Usuario incorrecto, intentelo nuevamente.');
+                    }
+                    else if(password_verify($contraseña, $Usser->contraseña)){
+                        $_SESSION['User'] = $nombre;
+                        $auth=$this->Auth->ChecksessionStart();
+                        $this->viewClothing->Homepage($auth,$nombre);
+                    }
+                    else{
+                        $this->view->ShowFormLogin($auth,'Contraseña incorrecta, intentelo nuevamente.');
+                    }
                 }
                 else{
-                    $this->view->ShowFormLogin($auth,'Contraseña incorrecta, intentelo nuevamente.');
-                }
-            }
-            else{
-                $this->viewClothing->ShowError('Complete todos los campos.',$auth);
+                    $this->viewClothing->ShowError('Complete todos los campos.',$auth);
+                } 
             }
         }
         

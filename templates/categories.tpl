@@ -17,7 +17,7 @@
             <option value="{$Category->tipo_de_tela}">{$Category->tipo_de_tela}</option>
         {/foreach}
         </select>
-        <button type=submit class = "boton">Enviar</button>
+        <button type="submit" class = "boton">Enviar</button>
     </form>
     <ul>
     {foreach from=$categories item=$Category}
