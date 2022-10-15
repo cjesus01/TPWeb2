@@ -28,7 +28,7 @@ class ClothingController extends AuthHelper{
             $this->view->ShowOneClothes($OneClothes,$auth);
         }
         else{
-            $this->view->ShowError('Ingrese un id válido.',$auth);
+            $this->view->ShowError('Esta prenda no existe, por favor busque una prenda que se encuentre en esta pagina.',$auth);
         }
     }
     public function Homepage(){
@@ -50,7 +50,7 @@ class ClothingController extends AuthHelper{
                 $this->view->ShowClothesByCategory($Clothing,$auth);
             }
             else{
-                $this->view->ShowError('No hay prenda que coincida con esa categoria.',$auth);
+                $this->view->ShowError('No hay prendas disponibles para este tipo de tela.',$auth);
             }
         }
         else{
@@ -60,11 +60,11 @@ class ClothingController extends AuthHelper{
                     $this->view->ShowClothesByCategory($Clothing,$auth);
                 }
                 else{
-                    $this->view->ShowError('No hay prenda que coincida con esa categoria.',$auth);
+                    $this->view->ShowError('No hay prendas disponibles para este tipo de tela.',$auth);
                 }
             }
             else{
-                    $this->view->ShowError('Ingrese una categoria valida.',$auth);
+                    $this->view->ShowError('Esta prenda no existe, por favor busque una prenda que se encuentre en esta pagina.',$auth);
             }
         }    
     }
@@ -73,14 +73,14 @@ class ClothingController extends AuthHelper{
         if($auth){
             if(is_numeric($id) && !empty($id) && $this->Idparams($id)){
                 $this->model->DeleteClothing($id);
-                $this->view->ShowSuccess('Se eliminó con éxito.','Delete Clothing','Clothing/GetClothing',$auth);
+                $this->view->ShowSuccess('Se eliminó esta prenda con éxito.','Delete Clothing','Clothing/GetClothing',$auth);
             }
             else{
-                $this->view->ShowError('Ingrese un id válido.',$auth);
+                $this->view->ShowError('Esta prenda no existe, por favor busque una prenda que se encuentre en esta pagina.',$auth);
             }
         }
         else{
-            $this->view->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
+            $this->view->ShowError('No se puede elimninar prendas. Para hacer esta accion REGISTRESE', $auth);
         }
     }
     public function AddClothingForm(){
@@ -90,7 +90,7 @@ class ClothingController extends AuthHelper{
             $this->view->FormAddClothing($categories,$auth);
         }
         else{
-            $this->view->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
+            $this->view->ShowError('No se puede elimninar prendas. Para hacer esta accion REGISTRESE', $auth);
         }  
     }
     public function AddClothingImg($id,$auth){
@@ -118,35 +118,35 @@ class ClothingController extends AuthHelper{
         $auth=$this->Auth->CheckLoggedIn();
         if($auth){
             if(isset($_POST['prenda']) && isset($_POST['sexo']) &&
-           isset($_POST['color']) && isset($_POST['talla']) && 
-           isset($_POST['category']) && !empty($_POST['prenda']) && 
-           !empty($_POST['sexo']) && !empty($_POST['color']) && 
-           !empty($_POST['talla']) && !empty($_POST['category']) && 
-           !is_numeric($_POST['prenda']) && !is_numeric($_POST['sexo']) && 
-           !is_numeric($_POST['color']) && !is_numeric($_POST['talla'])){
-            $prenda=$_POST['prenda'];
-            $sexo=$_POST['sexo'];
-            $color=$_POST['color'];
-            $talla=$_POST['talla'];
-            $category=intval($_POST['category']);
-            if(isset($_FILES['imagen']['name']) && !empty($_FILES['imagen']['name'])){
-                if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
-                        || $_FILES['imagen']['type'] == "image/png" ) {
-                    $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
-                    $this->model->AddClothing($prenda,$sexo,$color,$talla,$category,$img);
-                    $this->view->ShowSuccess('Se agregó con éxito.','Add Clothing','Clothing/GetClothing',$auth);
+            isset($_POST['color']) && isset($_POST['talla']) && 
+            isset($_POST['category']) && !empty($_POST['prenda']) && 
+            !empty($_POST['sexo']) && !empty($_POST['color']) && 
+            !empty($_POST['talla']) && !empty($_POST['category']) && 
+            !is_numeric($_POST['prenda']) && !is_numeric($_POST['sexo']) && 
+            !is_numeric($_POST['color']) && !is_numeric($_POST['talla'])){
+                $prenda=$_POST['prenda'];
+                $sexo=$_POST['sexo'];
+                $color=$_POST['color'];
+                $talla=$_POST['talla'];
+                $category=intval($_POST['category']);
+                if(isset($_FILES['imagen']['name']) && !empty($_FILES['imagen']['name'])){
+                    if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
+                            || $_FILES['imagen']['type'] == "image/png" ) {
+                        $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
+                        $this->model->AddClothing($prenda,$sexo,$color,$talla,$category,$img);
+                        $this->view->ShowSuccess('La prenda ha sido agregada con éxito.','Add Clothing','Clothing/GetClothing',$auth);
+                    }
+                    else{
+                        $this->view->ShowError('El formato de la imagen no es válida, ingrese otro formato.',$auth);
+                    }
                 }
                 else{
-                    $this->view->ShowError('El formato de la imagen no es válida, ingrese otro formato.',$auth);
+                    $this->view->ShowError('Se necesita que se agregue una foto.',$auth);
                 }
             }
             else{
-                $this->view->ShowError('Se necesita que se agregue una foto.',$auth);
+                $this->view->ShowError('Complete todos los campos para agregar la prenda.',$auth);            
             }
-        }
-            else{
-                $this->view->ShowError('Complete todo el formulario.',$auth);
-            }      
         }
         else{
             $this->view->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
@@ -171,7 +171,7 @@ class ClothingController extends AuthHelper{
                 $this->view->ShowFormUpdate($sexo, $talla, $color, $prenda, $id,$categories,$auth);
             }
             else{
-                $this->view->ShowError('Ingrese un id válido.',$auth);
+                $this->view->ShowError('Esta prenda no existe, por favor busque una prenda que se encuentre en esta pagina.',$auth);
             }
         }
         else{
@@ -182,42 +182,46 @@ class ClothingController extends AuthHelper{
     public function UpdateClothing($id){
         $auth=$this->Auth->CheckLoggedIn();
         if($auth){
-            if(isset($_POST['prenda']) && isset($_POST['sexo']) &&
-           isset($_POST['color']) && isset($_POST['talla']) && 
-           isset($_POST['category']) && !empty($_POST['prenda']) && 
-           !empty($_POST['sexo']) && !empty($_POST['color']) && 
-           !empty($_POST['talla']) && !empty($_POST['category']) && 
-           !is_numeric($_POST['prenda']) && !is_numeric($_POST['sexo']) && 
-           !is_numeric($_POST['color']) && !is_numeric($_POST['talla']) && $this->Idparams($id)){
-                $prenda = $_POST['prenda'];
-                $color = $_POST['color'];
-                $talla = $_POST['talla'];
-                $sexo = $_POST['sexo'];
-                $Id=intval($id);
-                $category = intval($_POST['category']);
-                if(isset($_FILES['imagen']['name']) && !empty($_FILES['imagen']['name'])){
-                    if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
-                    || $_FILES['imagen']['type'] == "image/png" ) {
-                        $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
-                        $this->model->UpdateClothes($prenda, $color, $talla, $sexo, $category, $Id,$img);
-                        $this->view->ShowSuccess('Se modificó con éxito.', 'Update clothes','Clothing/GetClothing', $auth);
+            if($this->Idparams($id)){
+                if(isset($_POST['prenda']) && isset($_POST['sexo']) &&
+                isset($_POST['color']) && isset($_POST['talla']) && 
+                isset($_POST['category']) && !empty($_POST['prenda']) && 
+                !empty($_POST['sexo']) && !empty($_POST['color']) && 
+                !empty($_POST['talla']) && !empty($_POST['category']) && 
+                !is_numeric($_POST['prenda']) && !is_numeric($_POST['sexo']) && 
+                !is_numeric($_POST['color']) && !is_numeric($_POST['talla'])){
+                    $prenda = $_POST['prenda'];
+                    $color = $_POST['color'];
+                    $talla = $_POST['talla'];
+                    $sexo = $_POST['sexo'];
+                    $Id=intval($id);
+                    $category = intval($_POST['category']);
+                    if(isset($_FILES['imagen']['name']) && !empty($_FILES['imagen']['name'])){
+                        if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
+                        || $_FILES['imagen']['type'] == "image/png" ){
+                            $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
+                            $this->model->UpdateClothes($prenda, $color, $talla, $sexo, $category, $Id,$img);
+                            $this->view->ShowSuccess('La prenda se modificó con éxito.', 'Update clothes','Clothing/GetClothing', $auth);
+                        }
+                        else{
+                            $this->view->ShowError('El formato de la imagen no es válido. Ingrese uno diferente.',$auth);
+                        }
                     }
                     else{
-                        $this->view->ShowError('El formato de la imagen no es válido. Ingrese uno diferente.',$auth);
+                        $this->view->ShowError('Se necesita que se agregue una foto.',$auth);             
                     }
                 }
                 else{
-                    $this->view->ShowError('Se necesita que se agregue una foto.',$auth);
+                    $this->view->ShowError('Complete todos los campos para modificar la prenda.',$auth);
                 }
             }
             else{
-                $this->view->ShowError('No se logró modificar.',$auth);
+                $this->view->ShowError('Ingrese una id válida.',$auth);
             }
         }
         else{
             $this->view->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
-        }
-        
+        }    
     }
     public function Idparams($id){
         $Clothing=$this->model->ClothingId();
@@ -232,5 +236,6 @@ class ClothingController extends AuthHelper{
         $auth = $this->Auth->CheckLoggedIn();
         $this->view->ShowError($message,$auth);
     }
-   
 }
+
+?>
