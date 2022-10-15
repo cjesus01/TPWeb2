@@ -6,7 +6,7 @@
     <h1>Bienvenido!!</h1>
 {/if}
     <h3>Nuestras principales telas</h3>
-    <div class="homepage_imgs">
+    <div class="homepage_img">
         {foreach from=$Categories item=$Category}
         <a href="Categories/filtercategoryform/{$Category->tipo_de_tela}"><img src="{$Category->imagen}" alt="error" class="img_categoria"></a>
         {/foreach}

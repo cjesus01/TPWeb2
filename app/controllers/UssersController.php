@@ -20,7 +20,7 @@
         public function FormLogin(){
             $auth=$this->Auth->CheckLoggedIn();
             if($auth){
-                $this->viewClothing->ShowError('Ya se encuentra logueado.', $auth);
+                $this->viewClothing->ShowError('Ya se encuentra Registrado.', $auth);
             }
             else{
                 $this->view->ShowFormLogin($auth);
@@ -29,7 +29,7 @@
         public function LoginIn(){
             $auth=$this->Auth->CheckLoggedIn();
             if($auth){
-                $this->viewClothing->ShowError('Ya se encuentra logueado.', $auth);
+                $this->viewClothing->ShowError('Ya se encuentra Registrado.', $auth);
             }
             else{
                 if(isset($_POST['Nombre']) &&  !empty($_POST['Nombre']) && !is_numeric($_POST['Nombre']) &&
@@ -51,7 +51,7 @@
                     }
                 }
                 else{
-                    $this->viewClothing->ShowError('Complete todos los campos.',$auth);
+                    $this->viewClothing->ShowError('Complete todos los campos para ingresar.',$auth);
                 } 
             }
         }
@@ -70,10 +70,10 @@
             $contraseña = $_POST['contraseña'];
             $hash=password_hash($contraseña,PASSWORD_DEFAULT);
             $this->model->AddUsser($nombre, $Mail, $hash, $auth);
-            $this->viewClothing->ShowSuccess('Se ha registrado con éxito.', 'add usser','Login', $auth);
+            $this->viewClothing->ShowSuccess('Usted ha registrado con éxito.', 'add usser','Login', $auth);
         }
         else{
-            $this->viewClothing->ShowError('No se logró registrar, intentelo nuevamente.', $auth);
+            $this->viewClothing->ShowError('No se pudo registrar, intentelo nuevamente.', $auth);
         }
     }
 

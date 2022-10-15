@@ -181,11 +181,7 @@ img{
 .btn_categoria{
     display: block;
 }
-a .img_categoria{
-    margin-left: 4%;
-    width: 70%;
-    height: 90%;
-}
+
 .homepage h1{
     margin: 0%;    
     margin-top: 3%;
@@ -201,13 +197,10 @@ a .img_categoria{
     margin-left: 2%;
     color: teal;    
 }
-.homepage_imgs{
-    display: flex;
-    flex-direction: row;
-}
 .homepage_img{
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 .homepage h3 .acomodar_titulo{
     font-size: 150%;
@@ -215,22 +208,5 @@ a .img_categoria{
     margin-top: 18%;
     color: teal; 
 }
-.img_categorias{
-    margin-top: 0%;
-    margin-left: 4%;
-    width: 20%;
-    height: 30%;
-}
-.img_categorias_seda{
-    margin-top: 0%;
-    margin-left: 4%;
-    width: 12%;
-    height: 5%;
-}
 
-.img_categorias_algodon{
-    margin-top: 0%;
-    margin-left: 4%;
-    width: 17%;
-    height: 30%;
-}
+

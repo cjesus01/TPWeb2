@@ -28,7 +28,7 @@ class ClothingController extends AuthHelper{
             $this->view->ShowOneClothes($OneClothes,$auth);
         }
         else{
-            $this->view->ShowError('Ingrese un id válido.',$auth);
+            $this->view->ShowError('Esta prenda no existe, por favor busque una prenda que se encuentre en esta pagina.',$auth);
         }
     }
     public function Homepage(){
@@ -50,7 +50,7 @@ class ClothingController extends AuthHelper{
                 $this->view->ShowClothesByCategory($Clothing,$auth);
             }
             else{
-                $this->view->ShowError('No hay prenda que coincida con esa categoria.',$auth);
+                $this->view->ShowError('No hay prendas disponibles para este tipo de tela.',$auth);
             }
         }
         else{
@@ -60,11 +60,11 @@ class ClothingController extends AuthHelper{
                     $this->view->ShowClothesByCategory($Clothing,$auth);
                 }
                 else{
-                    $this->view->ShowError('No hay prenda que coincida con esa categoria.',$auth);
+                    $this->view->ShowError('No hay prendas disponibles para este tipo de tela.',$auth);
                 }
             }
             else{
-                    $this->view->ShowError('Ingrese una categoria valida.',$auth);
+                    $this->view->ShowError('Esta prenda no existe, por favor busque una prenda que se encuentre en esta pagina.',$auth);
             }
         }    
     }
@@ -73,14 +73,14 @@ class ClothingController extends AuthHelper{
         if($auth){
             if(is_numeric($id) && !empty($id) && $this->Idparams($id)){
                 $this->model->DeleteClothing($id);
-                $this->view->ShowSuccess('Se eliminó con éxito.','Delete Clothing','Clothing/GetClothing',$auth);
+                $this->view->ShowSuccess('Se eliminó esta prenda con éxito.','Delete Clothing','Clothing/GetClothing',$auth);
             }
             else{
-                $this->view->ShowError('Ingrese un id válido.',$auth);
+                $this->view->ShowError('Esta prenda no existe, por favor busque una prenda que se encuentre en esta pagina.',$auth);
             }
         }
         else{
-            $this->view->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
+            $this->view->ShowError('No se puede elimninar prendas. Para hacer esta accion REGISTRESE', $auth);
         }
     }
     public function AddClothingForm(){
@@ -90,7 +90,7 @@ class ClothingController extends AuthHelper{
             $this->view->FormAddClothing($categories,$auth);
         }
         else{
-            $this->view->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
+            $this->view->ShowError('No se puede elimninar prendas. Para hacer esta accion REGISTRESE', $auth);
         }  
     }  
     public function AddClothing(){
@@ -112,15 +112,15 @@ class ClothingController extends AuthHelper{
                         || $_FILES['imagen']['type'] == "image/png" ) {
                     $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
                     $this->model->AddClothing($prenda,$sexo,$color,$talla,$category,$img);
-                    $this->view->ShowSuccess('Se agregó con éxito.','Add Clothing','Clothing/GetClothing',$auth);
+                    $this->view->ShowSuccess('La prenda ha sido agregada con éxito.','Add Clothing','Clothing/GetClothing',$auth);
                 }
                 else{
                     $this->model->AddClothing($prenda,$sexo,$color,$talla,$category);
-                    $this->view->ShowSuccess('Se agregó con éxito.','Add Clothing','Clothing/GetClothing',$auth);
+                    $this->view->ShowSuccess('La prenda ha sido agregada con éxito.','Add Clothing','Clothing/GetClothing',$auth);
                 }
             }
             else{
-                $this->view->ShowError('Complete todo el formulario.',$auth);
+                $this->view->ShowError('Complete todos los campos para agregar la prenda.',$auth);
             }      
         }
         else{
@@ -146,7 +146,7 @@ class ClothingController extends AuthHelper{
                 $this->view->ShowFormUpdate($sexo, $talla, $color, $prenda, $id,$categories,$auth);
             }
             else{
-                $this->view->ShowError('Ingrese un id válido.',$auth);
+                $this->view->ShowError('Esta prenda no existe, por favor busque una prenda que se encuentre en esta pagina.',$auth);
             }
         }
         else{
@@ -173,15 +173,15 @@ class ClothingController extends AuthHelper{
                 || $_FILES['imagen']['type'] == "image/png" ) {
                         $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
                          $this->model->UpdateClothes($prenda, $color, $talla, $sexo, $category, $Id,$img);
-                         $this->view->ShowSuccess('Se modificó con exito.', 'Update clothes','Clothing/GetClothing', $auth);
+                         $this->view->ShowSuccess('La prenda se modificó con exito.', 'Update clothes','Clothing/GetClothing', $auth);
                 }
                 else{
                     $this->model->UpdateClothes($prenda, $color, $talla, $sexo, $category, $Id);
-                    $this->view->ShowSuccess('Se modificó con exito.', 'Update clothes','Clothing/GetClothing', $auth);
+                    $this->view->ShowSuccess('La prenda se modificó con exito.', 'Update clothes','Clothing/GetClothing', $auth);
                 }
             }
             else{
-                $this->view->ShowError('No se logró modificar.',$auth);
+                $this->view->ShowError('Complete todos los campos para modificar la prenda.',$auth);
             }
         }
         else{
@@ -201,11 +201,5 @@ class ClothingController extends AuthHelper{
     public function Error($message){
         $auth = $this->Auth->CheckLoggedIn();
         $this->view->ShowError($message,$auth);
-    }
-    /*public function BringCategories($id){
-        $auth = $this->Auth->CheckLoggedIn();
-        $Id=intval($id);
-        $id_tela = $this->model->BringGarment($Id);  
-        $this->view->ShowClothesByCategory($auth, $id_tela);    
-    }*/    
+    }  
 }
