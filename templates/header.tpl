@@ -14,7 +14,7 @@
             <a href="Clothing" class = "barranav">Inicio</a>
             <a href="Clothing/GetClothing" class = "barranav">Ver todas</a>
             <a href="Categories" class = "barranav">Ver categorias</a>
-            {if $auth===true}
+            {if $auth}
                 <a href="Clothing/AddClothingForm" class = "barranav">Agregar una nueva prenda</a>
                 <a href="Categories/FormAddCategorie" class = "barranav">Agregar una nueva categoria</a>
                 <a href="Logout" class = "barranav"">Cerrar sesión</a>

@@ -36,11 +36,11 @@ switch($params[0]){
                 }
             }
             else if ($params[1] === 'FormUpdateClothing'){
-                if(!isset($params[2])){
-                    $controller->Error('No se puede modificar, intentelo nuevamente.');
-                }
-                else{
+                if(isset($params[2])){
                     $controller->FormUpdateClothing($params[2]);
+                    }
+                else{
+                    $controller->Error('No se puede modificar, intentelo nuevamente.');
                 }
             }
             else if($params[1]==='UpdateClothing'){

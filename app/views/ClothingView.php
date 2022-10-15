@@ -64,4 +64,5 @@ class ClothingView {
         $this->smarty->assign('id', $id);
         $this->smarty->display('./templates/updateformclothing.tpl');
     }
+
 }

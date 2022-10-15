@@ -48,19 +48,23 @@ class CategoriesController extends AuthHelper{
                 $lavado=$_POST['lavado'];
                 $temperatura=$_POST['temperatura'];
                 $category=$_POST['categoria'];
-                if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
-                    || $_FILES['imagen']['type'] == "image/png" ) {
-                    $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
-                    $this->model->AddCategory($descripcion, $lavado,$temperatura,$category,$img);
-                    $this->viewClothing->ShowSuccess('Se agregó correctamente','Add Categories','Categories/Category', $auth);
+                if(isset($_FILES['imagen']['name']) && !empty($_FILES['imagen']['name'])){
+                    if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
+                        || $_FILES['imagen']['type'] == "image/png" ) {
+                        $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
+                        $this->model->AddCategory($descripcion, $lavado,$temperatura,$category,$img);
+                        $this->viewClothing->ShowSuccess('Se agregó correctamente','Add Categories','Categories/Category', $auth);
+                    }
+                    else{
+                        $this->viewClothing->ShowError('El formato de la imagen no es válido. Ingrese uno diferente.',$auth);
+                    }
                 }
                 else{
-                    $this->model->AddCategory($descripcion, $lavado,$temperatura,$category);
-                    $this->viewClothing->ShowSuccess('Se agregó correctamente','Add Categories','Categories/Category', $auth);
+                    $this->viewClothing->ShowError('Se necesita que se agregue una foto.',$auth);
                 }
             }
             else{
-                $this->viewClothing->ShowError('No se logró agregar la categoria.', $auth);
+                $this->viewClothing->ShowError('No se logró modificar.',$auth);
             }
         }
         else{
@@ -101,25 +105,29 @@ class CategoriesController extends AuthHelper{
             !empty($_POST['temperatura']) && !empty($_POST['categoria']) && 
             !is_numeric($_POST['descripcion']) && !is_numeric($_POST['lavado']) && 
             !is_numeric($_POST['temperatura']) && !is_numeric($_POST['categoria']) &&
-            $this->Idparams($id) && $this->CheckCategories($_POST['categoria'])){
+            $this->Idparams($id) && $this->CheckCategories($_POST['categoria'],$id)){
                 $descripcion = $_POST['descripcion'];
                 $lavado = $_POST['lavado'];
                 $temperatura = $_POST['temperatura'];
                 $categoria = $_POST['categoria'];
                 $Id=intval($id);
-                if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
-                    || $_FILES['imagen']['type'] == "image/png" ) {
-                    $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
-                    $this->model->UpdateCategories($categoria, $lavado, $temperatura, $descripcion, $Id,$img);
-                    $this->viewClothing->ShowSuccess('Se modificó con éxito.', 'Update categories','Categories/Category', $auth);
+                if(isset($_FILES['imagen']['name']) && !empty($_FILES['imagen']['name'])){
+                    if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
+                        || $_FILES['imagen']['type'] == "image/png" ) {
+                        $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
+                        $this->model->UpdateCategories($categoria, $lavado, $temperatura, $descripcion, $Id,$img);
+                        $this->viewClothing->ShowSuccess('Se modificó con éxito.', 'Update categories','Categories/Category', $auth);
+                    }
+                    else{
+                        $this->viewClothing->ShowError('El formato de la imagen no es válido. Ingrese uno diferente.',$auth);
+                    }
                 }
-                else{
-                    $this->model->UpdateCategories($categoria, $lavado, $temperatura, $descripcion, $Id);
-                    $this->viewClothing->ShowSuccess('Se modificó con éxito.', 'Update categories','Categories/Category', $auth);
+                else {
+                    $this->viewClothing->ShowError('Se necesita que se agregue una foto.',$auth);
                 }
             }
-            else {
-                $this->viewClothing->ShowError('No se logró modificar.', 'Update categories', $auth);
+            else{
+                $this->viewClothing->ShowError('No se logró modificar.',$auth);
             }
         }
         else{
@@ -170,8 +178,9 @@ class CategoriesController extends AuthHelper{
                 else if($category->tipo_de_tela==$categoria && $category->id_tela!=$id){
                     return false;
                 }
-            }
         }
+        return true;
+    }
         else{
             $Categories=$this->model->getTipoDeTelaCategories();
             foreach($Categories as $category){

@@ -47,8 +47,12 @@ class CategoriesModel{
         $Categories=$query->fetch(PDO::FETCH_OBJ);
         return $Categories;
     }
-    public function UpdateCategories($categories, $lavado, $temperatura, $descripcion, $Id,$img=NULL){
-        $query=$this->db->prepare("UPDATE tela SET `id_tela`= '$Id', `tipo_de_tela`='$categories', `descripcion`='$descripcion', `lavado_de_tela`='$lavado', `temperatura_de_lavado`='$temperatura',`imagen`='$img' WHERE id_tela=?");
+    public function UpdateCategories($categories, $lavado, $temperatura, $descripcion, $Id,$img){
+        $query=$this->db->prepare("UPDATE tela SET `tipo_de_tela`='$categories', `descripcion`='$descripcion', `lavado_de_tela`='$lavado', `temperatura_de_lavado`='$temperatura',`imagen`='$img' WHERE id_tela=?");
+        $query->execute([$Id]);
+    }
+    public function UpdateClothesImg($img,$Id){
+        $query=$this->db->prepare("UPDATE tela SET `imagen`='$img' WHERE id_tela=?");
         $query->execute([$Id]);
     }
     public function DeleteCategory($id){
