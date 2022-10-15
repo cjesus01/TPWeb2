@@ -67,5 +67,11 @@ class CategoriesModel{
         $TipoDeTela=$query->fetchAll(PDO::FETCH_OBJ);
         return $TipoDeTela;
     }
+    public function getTipoDeTelaAndImagenCategories(){
+        $query=$this->db->prepare("SELECT tipo_de_tela,imagen FROM tela");
+        $query->execute();
+        $TipoDeTela=$query->fetchAll(PDO::FETCH_OBJ);
+        return $TipoDeTela;
+    }
 }
 ?>

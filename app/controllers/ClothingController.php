@@ -33,12 +33,13 @@ class ClothingController extends AuthHelper{
     }
     public function Homepage(){
         $auth = $this->Auth->CheckLoggedIn();
+        $Categories=$this->modelCategory->getTipoDeTelaAndImagenCategories();
         if($auth){
             $nombre = $_SESSION['User'];
-            $this->view->Homepage($auth, $nombre);
+            $this->view->Homepage($auth,$Categories,$nombre);
         }
         else{
-            $this->view->Homepage($auth);
+            $this->view->Homepage($auth,$Categories);
         }
     }
     public function getClothesByCategory($Category=NULL){

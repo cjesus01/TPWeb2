@@ -101,7 +101,7 @@ class CategoriesController extends AuthHelper{
             !empty($_POST['temperatura']) && !empty($_POST['categoria']) && 
             !is_numeric($_POST['descripcion']) && !is_numeric($_POST['lavado']) && 
             !is_numeric($_POST['temperatura']) && !is_numeric($_POST['categoria']) &&
-            $this->Idparams($id) && $this->CheckCategories($_POST['categoria'],$id)){
+            $this->Idparams($id) && $this->CheckCategories($_POST['categoria'])){
                 $descripcion = $_POST['descripcion'];
                 $lavado = $_POST['lavado'];
                 $temperatura = $_POST['temperatura'];

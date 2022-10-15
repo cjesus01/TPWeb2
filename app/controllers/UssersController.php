@@ -3,8 +3,10 @@
     require_once './app/views/UssersView.php';
     require_once './app/helpers/AuthHelper.php';
     require_once './app/views/ClothingView.php';
+    require_once './app/models/CategoriesModel.php';
     class UssersController extends AuthHelper{
         private $model;
+        private $modelCategory;
         private $view;
         private $viewClothing;
         private $Auth;
@@ -12,6 +14,7 @@
             $this->model= new UssersModel();
             $this->view= new UssersView();
             $this->viewClothing=new ClothingVIew();
+            $this->modelCategory=new CategoriesModel();
             $this->Auth= new AuthHelper();
         }
         public function FormLogin(){
@@ -40,7 +43,8 @@
                     else if(password_verify($contraseña, $Usser->contraseña)){
                         $_SESSION['User'] = $nombre;
                         $auth=$this->Auth->ChecksessionStart();
-                        $this->viewClothing->Homepage($auth,$nombre);
+                        $Categories=$this->modelCategory->getTipoDeTelaAndImagenCategories();
+                        $this->viewClothing->Homepage($auth,$Categories,$nombre);
                     }
                     else{
                         $this->view->ShowFormLogin($auth,'Contraseña incorrecta, intentelo nuevamente.');

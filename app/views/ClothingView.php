@@ -27,10 +27,11 @@ class ClothingView {
         $this->smarty->assign('auth', $auth);
         $this->smarty->display('./templates/error.tpl');
     }
-    public function Homepage($auth, $nombre=NULL){
+    public function Homepage($auth, $Categories,$nombre=NULL){
         $this->smarty->assign('Title','Homepage');
         $this->smarty->assign('nombre', $nombre);
         $this->smarty->assign('auth', $auth);
+        $this->smarty->assign('Categories',$Categories);
         $this->smarty->display('./templates/homepage.tpl');
     }
     public function ShowClothesByCategory($Clothing,$auth){
