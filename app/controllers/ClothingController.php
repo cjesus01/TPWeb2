@@ -33,7 +33,7 @@ class ClothingController extends AuthHelper{
     }
     public function Homepage(){
         $auth = $this->Auth->CheckLoggedIn();
-        if($auth===true){
+        if($auth){
             $nombre = $_SESSION['User'];
             $this->view->Homepage($auth, $nombre);
         }
@@ -50,42 +50,52 @@ class ClothingController extends AuthHelper{
             }
             else{
                 $this->view->ShowError('No hay prenda que coincida con esa categoria.',$auth);
-            } 
+            }
         }
         else{
-            if(isset($_GET['category']) && !empty($_GET['category'])){
-                $Category=intval($_GET['category']);
-                $Clothing= $this->model->getAllByCategory($Category);
+            if(isset($_GET['category']) && !empty($_GET['category']) && !is_numeric($_GET['category'])){
+                $Clothing= $this->model->getAllByCategory($_GET['category']);
                 if(!empty($Clothing)){
                     $this->view->ShowClothesByCategory($Clothing,$auth);
                 }
                 else{
                     $this->view->ShowError('No hay prenda que coincida con esa categoria.',$auth);
-                }     
+                }
             }
             else{
-                $this->view->ShowError('Ingrese una categoria.',$auth);
+                    $this->view->ShowError('Ingrese una categoria valida.',$auth);
             }
-        }
+        }    
     }
     public function DeleteClothing($id){
         $auth = $this->Auth->CheckLoggedIn();
-        if(is_numeric($id) && !empty($id) && $this->Idparams($id)){
-            $this->model->DeleteClothing($id);
-            $this->view->ShowSuccess('Se eliminó con éxito.','Delete Clothing','Clothing/GetClothing',$auth);
+        if($auth){
+            if(is_numeric($id) && !empty($id) && $this->Idparams($id)){
+                $this->model->DeleteClothing($id);
+                $this->view->ShowSuccess('Se eliminó con éxito.','Delete Clothing','Clothing/GetClothing',$auth);
+            }
+            else{
+                $this->view->ShowError('Ingrese un id válido.',$auth);
+            }
         }
         else{
-            $this->view->ShowError('Ingrese un id válido.',$auth);
+            $this->view->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
         }
     }
     public function AddClothingForm(){
         $auth=$this->Auth->CheckLoggedIn();
-        $categories=$this->modelCategory->getCategoriesOnlyIdAndTipoDeTela();
-        $this->view->FormAddClothing($categories,$auth);
+        if($auth){
+            $categories=$this->modelCategory->getCategoriesOnlyIdAndTipoDeTela();
+            $this->view->FormAddClothing($categories,$auth);
+        }
+        else{
+            $this->view->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
+        }  
     }  
     public function AddClothing(){
         $auth=$this->Auth->CheckLoggedIn();
-        if(isset($_POST['prenda']) && isset($_POST['sexo']) &&
+        if($auth){
+            if(isset($_POST['prenda']) && isset($_POST['sexo']) &&
            isset($_POST['color']) && isset($_POST['talla']) && 
            isset($_POST['category']) && !empty($_POST['prenda']) && 
            !empty($_POST['sexo']) && !empty($_POST['color']) && 
@@ -97,20 +107,24 @@ class ClothingController extends AuthHelper{
             $color=$_POST['color'];
             $talla=$_POST['talla'];
             $category=intval($_POST['category']);
-            if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
-                    || $_FILES['imagen']['type'] == "image/png" ) {
-                $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
-                $this->model->AddClothing($prenda,$sexo,$color,$talla,$category,$img);
-                $this->view->ShowSuccess('Se agregó con éxito.','Add Clothing','Clothing/GetClothing',$auth);
+                if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
+                        || $_FILES['imagen']['type'] == "image/png" ) {
+                    $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
+                    $this->model->AddClothing($prenda,$sexo,$color,$talla,$category,$img);
+                    $this->view->ShowSuccess('Se agregó con éxito.','Add Clothing','Clothing/GetClothing',$auth);
+                }
+                else{
+                    $this->model->AddClothing($prenda,$sexo,$color,$talla,$category);
+                    $this->view->ShowSuccess('Se agregó con éxito.','Add Clothing','Clothing/GetClothing',$auth);
+                }
             }
             else{
-                $this->model->AddClothing($prenda,$sexo,$color,$talla,$category);
-                $this->view->ShowSuccess('Se agregó con éxito.','Add Clothing','Clothing/GetClothing',$auth);
-            }
+                $this->view->ShowError('Complete todo el formulario.',$auth);
+            }      
         }
         else{
-            $this->view->ShowError('Complete todo el formulario.',$auth);
-       }      
+            $this->view->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
+        }
     }
     private function uploadImage($image){
         $target = './imgs/clothing/' . uniqid() . '.jpg';
@@ -120,22 +134,28 @@ class ClothingController extends AuthHelper{
 
     public function FormUpdateClothing($id){
         $auth=$this->Auth->CheckLoggedIn();
-        if(is_numeric($id)&& !empty($id) && $this->Idparams($id)){
-            $Clothing = $this->model->getOneClothes($id);
-            $categories=$this->modelCategory->getCategoriesOnlyIdAndTipoDeTela();
-            $sexo = $Clothing->sexo;
-            $talla = $Clothing->talla;
-            $color = $Clothing->color;
-            $prenda = $Clothing->prenda;
-            $this->view->ShowFormUpdate($sexo, $talla, $color, $prenda, $id,$categories,$auth);
+        if($auth){
+            if(is_numeric($id)&& !empty($id) && $this->Idparams($id)){
+                $Clothing = $this->model->getOneClothes($id);
+                $categories=$this->modelCategory->getCategoriesOnlyIdAndTipoDeTela();
+                $sexo = $Clothing->sexo;
+                $talla = $Clothing->talla;
+                $color = $Clothing->color;
+                $prenda = $Clothing->prenda;
+                $this->view->ShowFormUpdate($sexo, $talla, $color, $prenda, $id,$categories,$auth);
+            }
+            else{
+                $this->view->ShowError('Ingrese un id válido.',$auth);
+            }
         }
         else{
-            $this->view->ShowError('Ingrese un id válido.',$auth);
+            $this->view->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
         }
     }
     public function UpdateClothing($id){
         $auth=$this->Auth->CheckLoggedIn();
-        if(isset($_POST['prenda']) && isset($_POST['sexo']) &&
+        if($auth){
+            if(isset($_POST['prenda']) && isset($_POST['sexo']) &&
            isset($_POST['color']) && isset($_POST['talla']) && 
            isset($_POST['category']) && !empty($_POST['prenda']) && 
            !empty($_POST['sexo']) && !empty($_POST['color']) && 
@@ -160,8 +180,13 @@ class ClothingController extends AuthHelper{
                 }
             }
             else{
-            $this->view->ShowError('No se logró modificar.',$auth);
+                $this->view->ShowError('No se logró modificar.',$auth);
+            }
         }
+        else{
+            $this->view->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
+        }
+        
     }
     public function Idparams($id){
         $Clothing=$this->model->ClothingId();

@@ -4,10 +4,10 @@
     <h1>Bienvenido {$nombre}!!</h1>
     <h3>Nuestras principales telas</h3>
     <div class="homepage_imgs">
-        <a href="Categories/filtercategoryform/1"><img src="./imgs/categorie_inicio/algodon.jpg" alt="error" class="img_categoria"></a>
-        <a href="Categories/filtercategoryform/4"><img src="./imgs/categorie_inicio/lana.jpg" alt="error" class="img_categoria"></a>
-        <a href="Categories/filtercategoryform/2"><img src="./imgs/categorie_inicio/poliester.jpg" alt="error" class="img_categoria"></a>
-        <a href="Categories/filtercategoryform/3"><img src="./imgs/categorie_inicio/seda.jpg" alt="error" class="img_categoria"></a>
+        <a href="Categories/filtercategoryform/Algodón"><img src="./imgs/categorie_inicio/algodon.jpg" alt="error" class="img_categoria"></a>
+        <a href="Categories/filtercategoryform/Lana"><img src="./imgs/categorie_inicio/lana.jpg" alt="error" class="img_categoria"></a>
+        <a href="Categories/filtercategoryform/Poliéster"><img src="./imgs/categorie_inicio/poliester.jpg" alt="error" class="img_categoria"></a>
+        <a href="Categories/filtercategoryform/Seda"><img src="./imgs/categorie_inicio/seda.jpg" alt="error" class="img_categoria"></a>
     </div>
 </div>
 {else}
