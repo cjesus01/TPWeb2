@@ -23,12 +23,17 @@ class ClothingController extends AuthHelper{
     }
     public function getJustOneClothes($id){
         $auth = $this->Auth->CheckLoggedIn();
-        if(is_numeric($id) && !empty($id) && $this->Idparams($id)){
-            $OneClothes=$this->model->getOneClothes($id);
-            $this->view->ShowOneClothes($OneClothes,$auth);
+        if(is_numeric($id) && !empty($id)){
+            if($this->Idparams($id)){
+                $OneClothes=$this->model->getOneClothes($id);
+                $this->view->ShowOneClothes($OneClothes,$auth);
+            }
+            else{
+                $this->view->ShowError('La prenda no existe, por favor busque una que se encuentre en está página.',$auth);
+            }
         }
         else{
-            $this->view->ShowError('Esta prenda no existe, por favor busque una prenda que se encuentre en esta pagina.',$auth);
+            $this->view->ShowError('Ingrese un id válido.',$auth); 
         }
     }
     public function Homepage(){
@@ -50,7 +55,7 @@ class ClothingController extends AuthHelper{
                 $this->view->ShowClothesByCategory($Clothing,$auth);
             }
             else{
-                $this->view->ShowError('No hay prendas disponibles para este tipo de tela.',$auth);
+                $this->view->ShowError('No hay prendas disponibles que coincidan con el tipo de tela seleccionado.',$auth);
             }
         }
         else{
@@ -60,27 +65,32 @@ class ClothingController extends AuthHelper{
                     $this->view->ShowClothesByCategory($Clothing,$auth);
                 }
                 else{
-                    $this->view->ShowError('No hay prendas disponibles para este tipo de tela.',$auth);
+                    $this->view->ShowError('No hay prendas disponibles que coincidan con el tipo de tela seleccionado.',$auth);
                 }
             }
             else{
-                    $this->view->ShowError('Esta prenda no existe, por favor busque una prenda que se encuentre en esta pagina.',$auth);
+                $this->view->ShowError('Complete correctamente el campo para ver las prendas pertenecientes a cierto tipo de tela.',$auth);
             }
         }    
     }
     public function DeleteClothing($id){
         $auth = $this->Auth->CheckLoggedIn();
         if($auth){
-            if(is_numeric($id) && !empty($id) && $this->Idparams($id)){
-                $this->model->DeleteClothing($id);
-                $this->view->ShowSuccess('Se eliminó esta prenda con éxito.','Delete Clothing','Clothing/GetClothing',$auth);
+            if(is_numeric($id) && !empty($id)){
+                if($this->Idparams($id)){
+                    $this->model->DeleteClothing($id);
+                    $this->view->ShowSuccess('Se eliminó esta prenda con éxito.','Delete Clothing','Clothing/GetClothing',$auth);
+                }
+                else{
+                    $this->view->ShowError('La prenda no existe, por favor busque una que se encuentre en está página.',$auth);
+                }
             }
             else{
-                $this->view->ShowError('Esta prenda no existe, por favor busque una prenda que se encuentre en esta pagina.',$auth);
+                $this->view->ShowError('Ingrese un id válido.',$auth);
             }
         }
         else{
-            $this->view->ShowError('No se puede elimninar prendas. Para hacer esta accion REGISTRESE', $auth);
+            $this->view->ShowError('No se puede eliminar prendas porque no se ha iniciado sesión. Si no tiene un usuario, para hacer esta acción tendrá que REGISTRARSE.', $auth);
         }
     }
     public function AddClothingForm(){
@@ -90,30 +100,10 @@ class ClothingController extends AuthHelper{
             $this->view->FormAddClothing($categories,$auth);
         }
         else{
-            $this->view->ShowError('No se puede elimninar prendas. Para hacer esta accion REGISTRESE', $auth);
+            $this->view->ShowError('No se puede agregar prendas porque no se ha iniciado sesión. Si no tiene un usuario, para hacer esta acción tendrá que REGISTRARSE.', $auth);
         }  
     }
-    public function AddClothingImg($id,$auth){
-        if($auth){
-            if(isset($_FILES['imagen']['name']) && !empty($_FILES['imagen']['name'])){
-                if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
-                || $_FILES['imagen']['type'] == "image/png" ) {
-                    $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
-                    $this->model->UpdateClothesImg($img,$id);
-                    $this->view->ShowSuccess('Se modificó con éxito.', 'Update clothes','Clothing/GetClothing', $auth);
-                }
-                else{
-                    $this->view->ShowError('El formato de la imagen no es válido. Ingrese uno diferente.',$auth);
-                }
-            }
-            else{
-                $this->view->ShowFormImg($auth,$id);
-            }
-        }
-        else{
-            $this->view->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
-        }
-    }
+
     public function AddClothing(){
         $auth=$this->Auth->CheckLoggedIn();
         if($auth){
@@ -137,11 +127,11 @@ class ClothingController extends AuthHelper{
                         $this->view->ShowSuccess('La prenda ha sido agregada con éxito.','Add Clothing','Clothing/GetClothing',$auth);
                     }
                     else{
-                        $this->view->ShowError('El formato de la imagen no es válida, ingrese otro formato.',$auth);
+                        $this->view->ShowError('El formato de la imagen no es válida, ingrese otro diferente.',$auth);
                     }
                 }
                 else{
-                    $this->view->ShowError('Se necesita que se agregue una foto.',$auth);
+                    $this->view->ShowError('Se necesita que se agregue una foto para agregar correctamente la prenda.',$auth);
                 }
             }
             else{
@@ -149,7 +139,7 @@ class ClothingController extends AuthHelper{
             }
         }
         else{
-            $this->view->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
+            $this->view->ShowError('No se puede agregar prendas porque no se ha iniciado sesión. Si no tiene un usuario, para hacer esta acción tendrá que REGISTRARSE.', $auth);
         }
     }
 
@@ -161,21 +151,26 @@ class ClothingController extends AuthHelper{
     public function FormUpdateClothing($id){
         $auth=$this->Auth->CheckLoggedIn();
         if($auth){
-            if(is_numeric($id)&& !empty($id) && $this->Idparams($id)){
-                $Clothing = $this->model->getOneClothes($id);
-                $categories=$this->modelCategory->getCategoriesOnlyIdAndTipoDeTela();
-                $sexo = $Clothing->sexo;
-                $talla = $Clothing->talla;
-                $color = $Clothing->color;
-                $prenda = $Clothing->prenda;
-                $this->view->ShowFormUpdate($sexo, $talla, $color, $prenda, $id,$categories,$auth);
+            if(is_numeric($id)&& !empty($id)){
+                if($this->Idparams($id)){
+                    $Clothing = $this->model->getOneClothes($id);
+                    $categories=$this->modelCategory->getCategoriesOnlyIdAndTipoDeTela();
+                    $sexo = $Clothing->sexo;
+                    $talla = $Clothing->talla;
+                    $color = $Clothing->color;
+                    $prenda = $Clothing->prenda;
+                    $this->view->ShowFormUpdate($sexo, $talla, $color, $prenda, $id,$categories,$auth);
+                }
+                else{
+                    $this->view->ShowError('La prenda no existe, por favor busque una que se encuentre en está página.',$auth);
+                }
             }
             else{
-                $this->view->ShowError('Esta prenda no existe, por favor busque una prenda que se encuentre en esta pagina.',$auth);
+                $this->view->ShowError('Ingrese un id válido.',$auth);
             }
         }
         else{
-            $this->view->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
+            $this->view->ShowError('Para modificar datos de las prendas tendrá que iniciar sesión. Si no tiene un usuario, para hacer esta acción tendrá que REGISTRARSE.', $auth);
         }
     }
     
@@ -208,7 +203,7 @@ class ClothingController extends AuthHelper{
                         }
                     }
                     else{
-                        $this->view->ShowError('Se necesita que se agregue una foto.',$auth);             
+                        $this->view->ShowError('Se necesita que se agregue una foto para modificar con éxito la prenda.',$auth);             
                     }
                 }
                 else{
@@ -220,7 +215,7 @@ class ClothingController extends AuthHelper{
             }
         }
         else{
-            $this->view->ShowError('Necesita registrarse para llevar acabo esta acción.', $auth);
+            $this->view->ShowError('Para modificar datos de las prendas tendrá que iniciar sesión. Si no tiene un usuario, para hacer esta acción tendrá que REGISTRARSE.', $auth);
         }    
     }
     public function Idparams($id){

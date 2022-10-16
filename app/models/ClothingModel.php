@@ -41,7 +41,7 @@
         } 
         public function UpdateClothes($prenda, $color, $talla, $sexo, $category, $Id,$img){
                 $query=$this->db->prepare("UPDATE prenda SET `sexo`='$sexo', `talla`='$talla', `color`='$color', `prenda`='$prenda', `id_tela`='$category',`imagen_prenda`='$img' WHERE id=?");
-                $query->execute([$id]);
+                $query->execute([$Id]);
         }
         public function ClothingId(){
             $query=$this->db->prepare("SELECT id FROM prenda");

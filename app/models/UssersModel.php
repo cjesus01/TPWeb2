@@ -21,8 +21,14 @@
             $Usser=$query->fetch(PDO::FETCH_OBJ);
             return $Usser;
         }
-        public function getNameMailUssers(){
-            $query=$this->db->prepare("SELECT nombre,Mail FROM usser");
+        public function getNamessers(){
+            $query=$this->db->prepare("SELECT nombre FROM usser");
+            $query->execute();
+            $Ussers=$query->fetchAll(PDO::FETCH_OBJ);
+            return $Ussers;
+        }
+        public function getMailUssers(){
+            $query=$this->db->prepare("SELECT Mail FROM usser");
             $query->execute();
             $Ussers=$query->fetchAll(PDO::FETCH_OBJ);
             return $Ussers;

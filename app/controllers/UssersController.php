@@ -20,7 +20,7 @@
         public function FormLogin(){
             $auth=$this->Auth->CheckLoggedIn();
             if($auth){
-                $this->viewClothing->ShowError('Ya se encuentra Registrado.', $auth);
+                $this->viewClothing->ShowError('Ya se encuentra registrado.', $auth);
             }
             else{
                 $this->view->ShowFormLogin($auth);
@@ -29,15 +29,15 @@
         public function LoginIn(){
             $auth=$this->Auth->CheckLoggedIn();
             if($auth){
-                $this->viewClothing->ShowError('Ya se encuentra Registrado.', $auth);
+                $this->viewClothing->ShowError('Ya se encuentra registrado.', $auth);
             }
             else{
                 if(isset($_POST['Nombre']) &&  !empty($_POST['Nombre']) && !is_numeric($_POST['Nombre']) &&
-               isset($_POST['Contraseña']) && !empty($_POST['Contraseña'])){
-                $nombre=$_POST['Nombre'];
-                $contraseña = $_POST['Contraseña'];
-                $Usser=$this->model->GetUsser($nombre);
-                    if($Usser=== false){
+                   isset($_POST['Contraseña']) && !empty($_POST['Contraseña'])){
+                    $nombre=$_POST['Nombre'];
+                    $contraseña = $_POST['Contraseña'];
+                    $Usser=$this->model->GetUsser($nombre);
+                    if($Usser===false){
                         $this->view->ShowFormLogin($auth,'Usuario incorrecto, intentelo nuevamente.');
                     }
                     else if(password_verify($contraseña, $Usser->contraseña)){
@@ -58,22 +58,38 @@
         
         public function FormRegister(){
             $auth=$this->Auth->CheckLoggedIn();
-            $this->view->ShowFormRegister($auth);
+            if($auth){
+                $this->viewClothing->ShowError('Ya se encuentra registrado.', $auth);
+            }
+            else{
+                $this->view->ShowFormRegister($auth);
+            }
         }
-        public function AddUsser(){
-            $auth=$this->Auth->CheckLoggedIn();
-            if(isset($_POST['nombre']) && !empty($_POST['nombre']) && !is_numeric($_POST['nombre'])
-            && isset($_POST['mail']) && !empty($_POST['mail']) && !is_numeric($_POST['mail'])
-            && isset($_POST['contraseña']) && !empty($_POST['contraseña']) && $this->CheckNameUsser($_POST['nombre'],$_POST['mail'])){
-            $nombre=$_POST['nombre'];
-            $Mail=$_POST['mail'];
-            $contraseña = $_POST['contraseña'];
-            $hash=password_hash($contraseña,PASSWORD_DEFAULT);
-            $this->model->AddUsser($nombre, $Mail, $hash, $auth);
-            $this->viewClothing->ShowSuccess('Usted ha registrado con éxito.', 'add usser','Login', $auth);
+
+    public function AddUsser(){
+        $auth=$this->Auth->CheckLoggedIn();
+        if(isset($_POST['nombre']) && !empty($_POST['nombre']) && !is_numeric($_POST['nombre'])
+        && isset($_POST['mail']) && !empty($_POST['mail']) && !is_numeric($_POST['mail'])
+        && isset($_POST['contraseña']) && !empty($_POST['contraseña'])){
+            if($this->CheckNameUsser($_POST['nombre'])){
+                if($this->CheckMail($_POST['mail'])){
+                    $nombre=$_POST['nombre'];
+                    $Mail=$_POST['mail'];
+                    $contraseña = $_POST['contraseña'];
+                    $hash=password_hash($contraseña,PASSWORD_DEFAULT);
+                    $this->model->AddUsser($nombre, $Mail, $hash, $auth);
+                    $this->viewClothing->ShowSuccess('Usted se ha registrado con éxito.', 'add usser','Login', $auth);
+                }
+               else{
+                $this->viewClothing->ShowError('Ya existe un usuario con ese mail, escoja otro mail para el usuario.', $auth);
+               } 
+            }
+            else{
+                $this->viewClothing->ShowError('Ya existe un usuario con ese nombre, escoja otro nombre de usuario.', $auth);
+            }
         }
         else{
-            $this->viewClothing->ShowError('No se pudo registrar, intentelo nuevamente.', $auth);
+            $this->viewClothing->ShowError('Complete todos los campos para poder registrarse.', $auth);
         }
     }
 
@@ -81,14 +97,24 @@
         $auth=$this->Auth->CheckLogout();
         $this->view->ShowFormLogin($auth);
     }
-    public function CheckNameUsser($NameUsser,$Mail){
-        $Ussers=$this->model->getNameMailUssers();
+    public function CheckNameUsser($NameUsser){
+        $Ussers=$this->model->getNamessers();
         foreach($Ussers as $Usser){
-            if($Usser->nombre==$NameUsser || $Usser->Mail==$Mail){
+            if($Usser->nombre==$NameUsser){
                 return false;
             }
         }
         return true;
     }
-}
+    public function CheckMail($Mail){
+        $Ussers=$this->model->getMailUssers();
+        foreach($Ussers as $Usser){
+            if($Usser->Mail==$Mail){
+                return false;
+            }
+        }
+        return true;
+    }
+    }
+
 ?>

@@ -32,7 +32,7 @@ class CategoriesController extends AuthHelper{
             $this->view->ShowFormCategories($auth);
         }
         else{
-            $this->viewClothing->ShowError('No se puede agregar prendas por que no se encuentra registrado. Para hacer esta accion REGISTRESE', $auth);
+            $this->viewClothing->ShowError('No se puede agregar categorias porque no se ha iniciado sesión. Si no tiene un usuario, para hacer esta acción tendrá que REGISTRARSE.', $auth);
         }
     }
     public function AddCategories(){
@@ -43,32 +43,38 @@ class CategoriesController extends AuthHelper{
             !empty($_POST['descripcion']) && !empty($_POST['lavado']) &&
             !empty($_POST['temperatura']) && !empty($_POST['categoria']) && 
             !is_numeric($_POST['descripcion']) && !is_numeric($_POST['lavado']) && 
-            !is_numeric($_POST['temperatura']) && !is_numeric($_POST['categoria']) && $this->CheckCategories($_POST['categoria'])){
-                $descripcion=$_POST['descripcion'];
-                $lavado=$_POST['lavado'];
-                $temperatura=$_POST['temperatura'];
-                $category=$_POST['categoria'];
-                if(isset($_FILES['imagen']['name']) && !empty($_FILES['imagen']['name'])){
-                    if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
-                        || $_FILES['imagen']['type'] == "image/png" ) {
-                        $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
-                        $this->model->AddCategory($descripcion, $lavado,$temperatura,$category,$img);
-                        $this->viewClothing->ShowSuccess('Se agregó correctamente el tipo de tela','Add Categories','Categories', $auth);
+            !is_numeric($_POST['temperatura']) && !is_numeric($_POST['categoria'])){
+                if($this->CheckCategories($_POST['categoria'])){
+                    $descripcion=$_POST['descripcion'];
+                    $lavado=$_POST['lavado'];
+                    $temperatura=$_POST['temperatura'];
+                    $category=$_POST['categoria'];
+                    if(isset($_FILES['imagen']['name']) && !empty($_FILES['imagen']['name'])){
+                        if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
+                            || $_FILES['imagen']['type'] == "image/png" ){
+                            $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
+                            $this->model->AddCategory($descripcion, $lavado,$temperatura,$category,$img);
+                            $this->viewClothing->ShowSuccess('Se agregó correctamente la categoria','Add Categories','Categories', $auth);
+                        }
+                        else{
+                            $this->viewClothing->ShowError('El formato de la imagen no es válido. Ingrese uno diferente.',$auth);
+                        }
                     }
                     else{
-                        $this->viewClothing->ShowError('El formato de la imagen no es válido. Ingrese uno diferente.',$auth);
+                        $this->viewClothing->ShowError('Se necesita que se agregue una foto para agregar correctamente la categoria.',$auth);
                     }
                 }
                 else{
-                    $this->viewClothing->ShowError('Se necesita que se agregue una foto.',$auth);
+                    $this->viewClothing->ShowError('Ya se encuentra cargada la categoria, ingrese una diferente.', $auth);   
                 }
             }
             else{
-                $this->viewClothing->ShowError('No se logró agregar el tipo de tela, por favor verifique que todos los campos esten completos.', $auth);   
-        }
+                $this->viewClothing->ShowError('No se logró agregar la categoria, por favor verifique que todos los campos esten completos.', $auth);   
+            }
+        } 
         else{
-            $this->viewClothing->ShowError('No se puede agregar las telas porque no se encuentra registrado. Para hacer esta accion REGISTRESE.', $auth);
-        }
+            $this->viewClothing->ShowError('No se puede agregar categorias porque no se ha iniciado sesión. Si no tiene un usuario, para hacer esta acción tendrá que REGISTRARSE.', $auth);
+        }        
     }
     private function uploadImage($image){
         $target = './imgs/categories/' . uniqid() . '.jpg';
@@ -78,21 +84,26 @@ class CategoriesController extends AuthHelper{
     public function FormUpdateCategories($id){
         $auth = $this->Auth->CheckLoggedIn();
         if($auth){
-            if(is_numeric($id) && !empty($id) && $this->Idparams($id)){
-                $Id=intval($id);
-                $category = $this->model->getCategoriesOne($id);
-                $categoria = $category->tipo_de_tela;
-                $descripcion = $category->descripcion;
-                $lavado = $category->lavado_de_tela;
-                $temperatura = $category->temperatura_de_lavado;
-                $this->view->ShowFormUpdate($id, $categoria, $descripcion, $lavado, $temperatura,$auth);
+            if(is_numeric($id) && !empty($id)){
+                if($this->Idparams($id)){
+                    $Id=intval($id);
+                    $category = $this->model->getCategoriesOne($id);
+                    $categoria = $category->tipo_de_tela;
+                    $descripcion = $category->descripcion;
+                    $lavado = $category->lavado_de_tela;
+                    $temperatura = $category->temperatura_de_lavado;
+                    $this->view->ShowFormUpdate($id, $categoria, $descripcion, $lavado, $temperatura,$auth);
+                }
+                else{
+                    $this->viewClothing->ShowError('Esta categoria no existe, por favor busque una que se encuentre en está página.',$auth);
+                }
             }
             else{
-                $this->viewClothing->ShowError('Este tipo de tela no existe, por favor busque un tipo de tela que se encuentre en esta pagina',$auth);
+                $this->viewClothing->ShowError('Ingrese un id válido.',$auth);
             }
         }
         else{
-            $this->viewClothing->ShowError('No se puede modificar las telas por que no se encuentra registrado. Para hacer esta accion REGISTRESE.', $auth);
+            $this->viewClothing->ShowError('No se puede modificar las categorias porque no se ha iniciado sesión. Si no tiene un usuario, para hacer esta acción tendrá que REGISTRARSE.', $auth);
         }
     }
     public function UpdateCategories($id){
@@ -104,7 +115,7 @@ class CategoriesController extends AuthHelper{
                 !empty($_POST['descripcion']) && !empty($_POST['lavado']) &&
                 !empty($_POST['temperatura']) && !empty($_POST['categoria']) && 
                 !is_numeric($_POST['descripcion']) && !is_numeric($_POST['lavado']) && 
-                !is_numeric($_POST['temperatura']) && !is_numeric($_POST['categoria']){
+                !is_numeric($_POST['temperatura']) && !is_numeric($_POST['categoria'])){
                     if($this->CheckCategories($_POST['categoria'],$id)){
                         $descripcion = $_POST['descripcion'];
                         $lavado = $_POST['lavado'];
@@ -116,14 +127,14 @@ class CategoriesController extends AuthHelper{
                                 || $_FILES['imagen']['type'] == "image/png" ){
                                 $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
                                 $this->model->UpdateCategories($categoria, $lavado, $temperatura, $descripcion, $Id,$img);
-                                $this->viewClothing->ShowSuccess('Se modificó con éxito el tipo de tela.', 'Update categories','Categories', $auth);
+                                $this->viewClothing->ShowSuccess('Se modificó con éxito la categoria.', 'Update categories','Categories', $auth);
                             }
                             else{
                                 $this->viewClothing->ShowError('El formato de la imagen no es válido. Ingrese uno diferente.',$auth);
                             }
                         }
                         else {
-                            $this->viewClothing->ShowError('Se necesita que se agregue una foto.',$auth);
+                            $this->viewClothing->ShowError('Se necesita que se agregue una foto para modificar con éxito la categoria.',$auth);
                         }
                     }
                     else{
@@ -131,7 +142,7 @@ class CategoriesController extends AuthHelper{
                     }   
                 }
                 else{
-                    $this->viewClothing->ShowError('No se pudo modificar el tipo de tela, verifique todos los campos',$auth);
+                    $this->viewClothing->ShowError('No se pudo modificar la categoria, verifique tener todos los campos completos.',$auth);
                 }
             }
             else{
@@ -139,23 +150,28 @@ class CategoriesController extends AuthHelper{
             }
         }
         else{
-            $this->viewClothing->ShowError('No se puede modificar los telas por que no se encuentra registrado. Para hacer esta accion REGISTRESE.', $auth);
+            $this->viewClothing->ShowError('No se puede modificar las categorias por que no se encuentra registrado. Para hacer esta accion REGISTRESE.', $auth);
         }
     }
     public function DeleteCategory($id){
         $auth=$this->Auth->CheckLoggedIn();
         if($auth){
-            if($this->Idparams($id) && $this->CheckCategoryAssignedToAClothing($id)){
-                $Id=intval($id);
-                $this->model->DeleteCategory($Id);
-                $this->viewClothing->ShowSuccess('Se eliminó con éxito el tipo de tela.','Delete category','Categories', $auth);
+            if($this->Idparams($id)){
+                if($this->CheckCategoryAssignedToAClothing($id)){
+                    $Id=intval($id);
+                    $this->model->DeleteCategory($Id);
+                    $this->viewClothing->ShowSuccess('Se eliminó con éxito el tipo de tela.','Delete category','Categories', $auth);
+                }
+                else{
+                    $this->viewClothing->ShowError('No se puede eliminar dado que existen prendas que son parte de este tipo de tela.',$auth);
+                }
             }
             else{
-                $this->viewClothing->ShowError('No se puede eliminar dado que existen prendas que son parte de este tipo de tela.',$auth);
+                $this->viewClothing->ShowError('Ingrese un id válido.',$auth);
             }
         }
         else{
-            $this->viewClothing->ShowError('No se puede eliminar las telas porque no se encuentra registrado. Para hacer esta acción REGISTRESE.', $auth);
+            $this->viewClothing->ShowError('No se puede eliminar las telas porque no se ha iniciado sesión. Si no tiene un usuario, para hacer esta acción tendrá que REGISTRARSE.', $auth);
         }
     }
     public function Idparams($id){
@@ -182,13 +198,13 @@ class CategoriesController extends AuthHelper{
             foreach($Categories as $category){
                 if($category->tipo_de_tela==$categoria && $category->id_tela==$id){
                         return true;
-                    }
+                }
                 else if($category->tipo_de_tela==$categoria && $category->id_tela!=$id){
                     return false;
                 }
+            }
+            return true;
         }
-        return true;
-    }
         else{
             $Categories=$this->model->getTipoDeTelaCategories();
             foreach($Categories as $category){
