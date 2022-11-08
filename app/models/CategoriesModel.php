@@ -31,7 +31,7 @@ class CategoriesModel{
         $Clothing=$query->fetchAll(PDO::FETCH_OBJ);
         return $Clothing;
     }
-    public function AddCategory($descripcion, $lavado,$temperatura,$categoria,$img=NULL){
+    public function addCategory($descripcion, $lavado,$temperatura,$categoria,$img){
         if($img!=NULL){
             $query=$this->db->prepare("INSERT INTO tela(tipo_de_tela,descripcion,lavado_de_tela,temperatura_de_lavado,imagen) VALUES (?,?,?,?,?)");
             $query->execute([$categoria,$descripcion,$lavado,$temperatura,$img]);
@@ -47,7 +47,7 @@ class CategoriesModel{
         $Categories=$query->fetch(PDO::FETCH_OBJ);
         return $Categories;
     }
-    public function UpdateCategories($categories, $lavado, $temperatura, $descripcion, $Id,$img){
+    public function updateCategories($categories, $lavado, $temperatura, $descripcion, $Id,$img){
         $query=$this->db->prepare("UPDATE tela SET `tipo_de_tela`='$categories', `descripcion`='$descripcion', `lavado_de_tela`='$lavado', `temperatura_de_lavado`='$temperatura',`imagen`='$img' WHERE id_tela=?");
         $query->execute([$Id]);
     }
@@ -55,7 +55,7 @@ class CategoriesModel{
         $query=$this->db->prepare("UPDATE tela SET `imagen`='$img' WHERE id_tela=?");
         $query->execute([$Id]);
     }
-    public function DeleteCategory($id){
+    public function deleteCategory($id){
         $query=$this->db->prepare("DELETE FROM tela WHERE id_tela=?");
         $query->execute([$id]);
     } 

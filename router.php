@@ -16,6 +16,7 @@ $controller = new ClothingController();
 $controllerCategories = new CategoriesController(); 
 $controllerUssers= new UssersController();
 
+
 switch($params[0]){
     case 'Clothing':
         if(isset($params[1])){

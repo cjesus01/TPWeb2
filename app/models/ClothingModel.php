@@ -29,7 +29,7 @@
             $Clothing=$query->fetch(PDO::FETCH_OBJ);
             return $Clothing;
         } 
-        public function DeleteClothing($id){
+        public function deleteClothing($id){
             $query=$this->db->prepare('DELETE FROM prenda WHERE id=?');
             $query->execute([$id]);
         }
@@ -37,7 +37,7 @@
             $query=$this->db->prepare('INSERT INTO prenda(prenda,sexo,color,talla,id_tela,imagen_prenda) VALUES (?,?,?,?,?,?)');
             $query->execute([$prenda,$sexo,$color,$talla,$category,$img]);
         }
-        public function UpdateClothes($prenda, $color, $talla, $sexo, $category, $Id,$img){
+        public function updateClothes($prenda, $color, $talla, $sexo, $category, $Id, $img){
                 $query=$this->db->prepare("UPDATE prenda SET `sexo`='$sexo', `talla`='$talla', `color`='$color', `prenda`='$prenda', `id_tela`='$category',`imagen_prenda`='$img' WHERE id=?");
                 $query->execute([$Id]);
         }
@@ -53,13 +53,20 @@
             $Idtela = $query->fetchAll(PDO::FETCH_OBJ);
             return $Idtela;
         }
-    }
+
     public function getAllClothing(){
         $query=$this->db->prepare('SELECT * FROM prenda');
         $query->execute();
         $Clothing = $query->fetchAll(PDO::FETCH_OBJ);
         return $Clothing;
     }
-   
+    public function getClothing($id){
+        $query= $this->db->prepare('SELECT * FROM prenda WHERE id = ?');
+        $query->execute([$id]);
+        $clothes= $query->fetch(PDO::FETCH_OBJ);
+        return $clothes;
+    }
+    
+} 
     
 ?>
