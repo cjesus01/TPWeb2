@@ -1,7 +1,7 @@
 <?php
     require_once './libs/Router.php';
-    require_once './app/controllers/ApiClothingController.php';
-    require_once './app/controllers/CategoriesApiController.php';
+    require_once './api/ApiClothingController.php';
+    require_once './api/CategoriesApiController.php';
 
     $router = new Router();
 
@@ -10,7 +10,6 @@
     $router->addRoute('Clothing', 'POST', 'ApiClothingController', 'addClothing');
     $router->addRoute('Clothing/:ID', 'DELETE', 'ApiClothingController', 'deleteClothing'); 
     $router->addRoute('Clothing/:ID', 'PUT', 'ApiClothingController', 'updateClothing');
-    // $router->addRoute('Clothing', 'POST', 'ClothingController', 'addClothing');
 
     $router->addRoute('Categories', 'GET', 'CategoriesApiController', 'getCategories');
     $router->addRoute('Categories/:ID','GET','CategoriesApiController','getCategory');

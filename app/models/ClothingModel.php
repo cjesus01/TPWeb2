@@ -38,8 +38,8 @@
             $query->execute([$prenda,$sexo,$color,$talla,$category,$img]);
         }
         public function updateClothes($prenda, $color, $talla, $sexo, $category, $Id, $img){
-                $query=$this->db->prepare("UPDATE prenda SET `sexo`='$sexo', `talla`='$talla', `color`='$color', `prenda`='$prenda', `id_tela`='$category',`imagen_prenda`='$img' WHERE id=?");
-                $query->execute([$Id]);
+                $query=$this->db->prepare("UPDATE prenda SET `sexo`=?, `talla`=?, `color`=?, `prenda`=?, `id_tela`=?,`imagen_prenda`=? WHERE id=?");
+                $query->execute([$sexo,$talla,$color,$prenda,$category,$img,$Id]);
         }
         public function ClothingId(){
             $query=$this->db->prepare("SELECT id FROM prenda");
