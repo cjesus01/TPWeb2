@@ -1,15 +1,16 @@
 <?php
     require_once './libs/Router.php';
-    require_once './api/ApiClothingController.php';
+    require_once './api/ClothingApiController.php';
     require_once './api/CategoriesApiController.php';
 
     $router = new Router();
 
-    $router->addRoute('Clothing', 'GET', 'ApiClothingController', 'getClothing');
-    $router->addRoute('Clothing/:ID','GET','ApiClothingController','getClothes');
-    $router->addRoute('Clothing', 'POST', 'ApiClothingController', 'addClothing');
-    $router->addRoute('Clothing/:ID', 'DELETE', 'ApiClothingController', 'deleteClothing'); 
-    $router->addRoute('Clothing/:ID', 'PUT', 'ApiClothingController', 'updateClothing');
+    $router->addRoute('Clothing', 'GET', 'ClothingApiController', 'getClothing');
+    $router->addRoute('Clothing/:ID','GET','ClothingApiController','getClothes');
+    $router->addRoute('Clothing', 'POST', 'ClothingApiController', 'addClothing');
+    $router->addRoute('Clothing/:ID', 'DELETE', 'ClothingApiController', 'deleteClothing'); 
+    $router->addRoute('Clothing/:ID', 'PUT', 'ClothingApiController', 'updateClothing');
+    $router->addRoute('Clothing/:columna/:orden','GET','ClothingApiController','getOrderClothing');
 
     $router->addRoute('Categories', 'GET', 'CategoriesApiController', 'getCategories');
     $router->addRoute('Categories/:ID','GET','CategoriesApiController','getCategory');

@@ -66,6 +66,12 @@
         $clothes= $query->fetch(PDO::FETCH_OBJ);
         return $clothes;
     }
+    public function getOrderByColumn($columna,$orden){
+        $query=$this->db->prepare("SELECT * FROM prenda ORDER BY $columna $orden");
+        $query->execute();
+        $clothing= $query->fetchAll(PDO::FETCH_OBJ);
+        return $clothing;
+    }
     
 } 
     

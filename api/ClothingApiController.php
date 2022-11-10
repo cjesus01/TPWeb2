@@ -3,7 +3,7 @@
     require_once 'app/models/CategoriesModel.php';
     require_once './api/ApiClothingView.php';
 
-    class ApiClothingController {
+    class ClothingApiController {
 
         private $model;
         private $modelCategory;
@@ -124,6 +124,36 @@
             }
             else{
                 return false;
+            }
+        }
+        public function getColumnsClothing($columna){
+            $clothing=$this->model->getAllClothing();
+            foreach($clothing as $clothes){
+                if(isset($clothes->$columna)){
+                    return true;
+                }
+            }
+            return false;
+        }
+        public function getOrderClothing($columna=null,$orden=null){
+            $campo=$columna[':columna'];
+            $ordenCampos=$columna[':orden'];
+            if(isset($campo) && isset($ordenCampos) && !empty($campo) && !empty($ordenCampos) && $ordenCampos!=null && $campo!=null){
+                if($this->getColumnsClothing($campo)){
+                    if($ordenCampos == 'descendiente'){
+                        $clothing=$this->model->getOrderByColumn($campo,'DESC');
+                    }
+                    else{
+                        $clothing=$this->model->getOrderByColumn($campo,'ASC');
+                    }
+                    $this->view->response($clothing,200);
+                }
+                else{
+                    $this->view->response('No existe la columna que se especificó.', 400);
+                }    
+            }
+            else{
+                $this->view->response('No se ha especificado columna o orden que se quiere filtrar.', 400);
             }
         }
     }
