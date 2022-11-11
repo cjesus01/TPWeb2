@@ -18,12 +18,40 @@
         }
 
         public function getClothing(){
-            $clothing = $this->model->getAllClothing();
-            $this->view->response($clothing, 200);
+            if(isset($_GET['page']) && !empty($_GET['page']) && is_numeric($_GET['page']) && !is_null($_GET['page']) &&
+            isset($_GET['elementNumbers']) && !empty($_GET['elementNumbers']) && is_numeric($_GET['elementNumbers']) && !is_null($_GET['elementNumbers'])){
+                if($_GET['page']<1 && $_GET['elementNumbers']<1){
+                    $page=1;
+                    $elementNumbers=1;
+                }
+                else if($_GET['page']<1){
+                    $page=1;
+                    $elementNumbers=$_GET['elementNumbers'];
+                }
+                else if($_GET['elementNumbers']<1){
+                    $page=$_GET['page'];
+                    $elementNumbers=1;
+                }
+                else{
+                    $page=$_GET['page'];
+                    $elementNumbers=$_GET['elementNumbers'];
+                }
+                //controlar limite max de las paginas.
+                $offset=($page-1)*$elementNumbers;
+                echo $page;
+                echo '<br>';
+                echo $offset;
+                $clothing = $this->model->getPaginationClothing($offset,$elementNumbers);
+                $this->view->response($clothing, 200);
+            }
+            else{
+                $clothing = $this->model->getAllClothing();
+                $this->view->response($clothing, 200);
+            }
         }
-        public function getClothes($params= []){
+        public function getClothes($params= null){
             $id=$params[':ID'];
-            $clothes=$this->model->getClothing($id);
+            $clothes=$this->model->getOneClothes($id);
             if($clothes){
                 $this->view->response($clothes, 200);
             }
@@ -59,10 +87,10 @@
                 $this->view->response('Ingrese una categoria válida.', 400);
             }
         }
-        public function deleteClothing($id= null){ //PREGUNTAR JUEVES//
+        public function deleteClothing($id= null){ 
             if(isset($id) && $id != null){
                 $id_borrar= $id[':ID'];
-                $clothes= $this->model->getClothing($id_borrar);
+                $clothes= $this->model->getOneClothes($id_borrar);
                 if($clothes){
                     $this->model->deleteClothing($id_borrar);
                     $this->view->response('Eliminado con exito', 200);
@@ -78,7 +106,7 @@
         public function updateClothing($id= null){
             if(isset($id) && $id != null){
                 $id_update= intval($id[':ID']);
-                $clothing= $this->model->getClothing($id_update);
+                $clothing= $this->model->getOneClothes($id_update);
                 if($clothing){
                     $clothes = $this->getData();
                     if(isset($clothes->id_tela) && !empty($clothes->id_tela) && is_numeric($clothes->id_tela) && $this->existingCategory($clothes->id_tela)){

@@ -12,8 +12,6 @@
     $router->addRoute('Clothing/:ID', 'PUT', 'ClothingApiController', 'updateClothing');
     $router->addRoute('Clothing/:columna/:orden','GET','ClothingApiController','getOrderClothing');
 
-    $router->addRoute('Categories', 'GET', 'CategoriesApiController', 'getCategories');
-    $router->addRoute('Categories/:ID','GET','CategoriesApiController','getCategory');
     $router->addRoute('Categories', 'POST', 'CategoriesApiController', 'addCategory');
     $router->addRoute('Categories/:ID', 'DELETE', 'CategoriesApiController', 'deleteCategory'); 
     $router->addRoute('Categories/:ID', 'PUT', 'CategoriesApiController', 'updateCategory');

@@ -15,56 +15,36 @@ class CategoriesApiController{
         $this->data= file_get_contents('php://input');
     }
 
-    public function getCategories(){
-        $categories= $this->model->getCategoriesAll();
-        if($categories){
-            $this->view->response($categories, 200);
-        }
-        else{
-            $this->view->response('No existe ninguna categoria', 404);
-        }
-    }
-
-    public function getCategory($id= null){
-        if(isset($id) && $id != null){
-            $id_category= $id[':ID'];
-            $category= $this->model->getCategoriesOne($id_category);
-            if($category){
-                $this->view->response($category, 200);
-            }
-            else{
-                $this->view->response('No existe la categoria solicitada', 404);
-            }
-        }
-        else{
-            $this->view->reponse('Ingrese una categoria valida', 400);
-        }
-    }
 
     public function addCategory(){
         $category= $this->getData();
-        if($this->checkExistingCategories($category->tipo_de_tela)){
-            if(isset($category->tipo_de_tela)&& isset($category->descripcion) && isset($category->lavado_de_tela)
-                && isset($category->temperatura_de_lavado) && isset($category->imagen) && !empty($category->tipo_de_tela) &&
-                !empty($category->descripcion) && !empty($category->lavado_de_tela) && !empty($category->temperatura_de_lavado) &&
-                !empty($category->imagen) && !is_numeric($category->tipo_de_tela) && !is_numeric($category->descripcion) && 
-                !is_numeric($category->lavado_de_tela) && !is_numeric($category->temperatura_de_lavado)){
-                    $tela= $category->tipo_de_tela;
-                    $descripcion= $category->descripcion;
-                    $lavado= $category->lavado_de_tela;
-                    $temperatura= $category->temperatura_de_lavado;
-                    $imagen= $category->imagen;
-                    $this->model-> addCategory($descripcion, $lavado,$temperatura,$tela,$imagen);
-                    $this->view->response('Se logro agregar su categoria', 201);
+        if(isset($category->tipo_de_tela) && !empty($category->tipo_de_tela) && !is_numeric($category->tipo_de_tela) && !is_null($category->tipo_de_tela)){
+            if($this->checkExistingCategories($category->tipo_de_tela)){
+                if(isset($category->descripcion) && isset($category->lavado_de_tela)&& 
+                   isset($category->temperatura_de_lavado) && isset($category->imagen) &&
+                    !empty($category->descripcion) && !empty($category->lavado_de_tela) && 
+                    !empty($category->temperatura_de_lavado) &&!empty($category->imagen) && 
+                    !is_numeric($category->descripcion) && !is_numeric($category->lavado_de_tela) && 
+                    !is_numeric($category->temperatura_de_lavado)){
+                        $tela= $category->tipo_de_tela;
+                        $descripcion= $category->descripcion;
+                        $lavado= $category->lavado_de_tela;
+                        $temperatura= $category->temperatura_de_lavado;
+                        $imagen= $category->imagen;
+                        $this->model-> addCategory($descripcion, $lavado,$temperatura,$tela,$imagen);
+                        $this->view->response('Se logro agregar su categoria', 201);
+                }
+                else{
+                    $this->view->response('Ingrese correctamente los datos', 400);
+                }
             }
             else{
-                $this->view->response('Ingrese correctamente los datos', 400);
+                $this->view->response('No puede agregarse ya que esta categoria ya existe.', 400);
             }
         }
         else{
-            $this->view->response('No puede agregarse ya que esta categoria ya existe.', 400);
-        }
-        
+            $this->view->response('Ingrese el tipo de tela para poder agregar.', 400);
+        }    
     }
     
     public function deleteCategory($id = null){
@@ -95,6 +75,7 @@ class CategoriesApiController{
             $oneCategory= $this->model->getCategoriesOne($idcategory);
             if($oneCategory){
                 $category= $this->getData();
+                if(isset($category->id_tela) && !empty($category->id_tela) && !is_null($category->id_tela)){
                     if($this->checkCategories($category->id_tela,$idcategory)){
                         if($this->checkIfCategoryRepeats($category->tipo_de_tela,$idcategory)){
                             if(isset($category->tipo_de_tela)&& isset($category->descripcion) && isset($category->lavado_de_tela)
@@ -111,7 +92,7 @@ class CategoriesApiController{
                                 $this->view->response('Se modifico con exito la categoria', 200);
                             }
                             else{
-                                $this->view->response('Verifique que todos los campos esten completos', 404);
+                                $this->view->response('Verifique que todos los campos esten completos', 400);
                             }
                         }
                         else{
@@ -121,14 +102,17 @@ class CategoriesApiController{
                     else{
                         $this->view->response('No puede modificarse ya que esta categoria esta asignada a una prenda.', 400);
                     }
-                
+                }
+                else{
+                    $this->view->response('Verifique que todos los campos esten completos', 400);
+                }
             } 
             else{
                 $this->view->response('No se encontro el elemento seleccionado', 404);
             }            
         }    
         else{
-            $this->view->response('No se ha especificado la categoria', 404);
+            $this->view->response('No se ha especificado la categoria', 400);
         }
     }
 
