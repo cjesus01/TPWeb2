@@ -24,11 +24,11 @@
                     $page=1;
                     $elementNumbers=1;
                 }
-                else if($_GET['page']<1){
+                else if($_GET['page']<1 && $_GET['elementNumbers']>=1){
                     $page=1;
                     $elementNumbers=$_GET['elementNumbers'];
                 }
-                else if($_GET['elementNumbers']<1){
+                else if($_GET['elementNumbers']<1 && $_GET['page']>=1){
                     $page=$_GET['page'];
                     $elementNumbers=1;
                 }
@@ -36,11 +36,11 @@
                     $page=$_GET['page'];
                     $elementNumbers=$_GET['elementNumbers'];
                 }
-                //controlar limite max de las paginas.
+                $totalPag=ceil(count($this->model->getAllClothing())/$elementNumbers);
+                if($totalPag<$page){
+                    $page=$totalPag;
+                }
                 $offset=($page-1)*$elementNumbers;
-                echo $page;
-                echo '<br>';
-                echo $offset;
                 $clothing = $this->model->getPaginationClothing($offset,$elementNumbers);
                 $this->view->response($clothing, 200);
             }
