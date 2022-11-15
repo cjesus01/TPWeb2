@@ -72,6 +72,13 @@
         $clothing=$query->fetchAll(PDO::FETCH_OBJ);
         return $clothing;
     }
+    public function getFilterClothing($columna,$filtro){
+        $query= $this->db->prepare("SELECT * FROM prenda JOIN tela ON prenda.id_tela=tela.id_tela WHERE $columna LIKE ?");
+        $query->execute([$filtro]);
+        $clothing= $query->fetchAll(PDO::FETCH_OBJ);
+
+        return $clothing;
+    }
     
 } 
     
