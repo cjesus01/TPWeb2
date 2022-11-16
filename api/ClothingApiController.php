@@ -184,4 +184,27 @@
                 $this->view->response('No se ha especificado columna o orden que se quiere filtrar.', 400);
             }
         }
+
+        public function filterClothing($campo = NULL){
+            $columna= $campo[':CAMPO'];
+            if(isset($columna) && !empty($columna) && !is_null($columna) &&
+               isset($_GET['filtrar']) && !empty($_GET['filtrar']) && !is_null(['filtrar'])){
+                $filtro= '%'.$_GET['filtrar'].'%';
+                if($this->getColumnsClothing($columna)){
+                    $clothing= $this->model->getFilterClothing($columna,$filtro);
+                    if($clothing){
+                        $this->view->response($clothing, 200);
+                    }
+                    else{
+                        $this->view->response('No existen elementos que coincidan con el filtro', 404);
+                    }
+                }    
+                else{
+                    $this->view->response('El campo ingresado no existe, por favor intentelo nuevamente', 400);
+                }
+            }
+            else{
+                $this->view->response('Ingrese un elemento para poder realizar la accion', 400);
+            }
+        }
     }
