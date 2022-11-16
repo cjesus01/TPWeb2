@@ -78,7 +78,7 @@ class ClothingController extends AuthHelper{
         if($auth){
             if(is_numeric($id) && !empty($id)){
                 if($this->Idparams($id)){
-                    $this->model->DeleteClothing($id);
+                    $this->model->deleteClothing($id);
                     $this->view->ShowSuccess('Se eliminó esta prenda con éxito.','Delete Clothing','Clothing/GetClothing',$auth);
                 }
                 else{
@@ -195,7 +195,7 @@ class ClothingController extends AuthHelper{
                         if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
                         || $_FILES['imagen']['type'] == "image/png" ){
                             $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
-                            $this->model->UpdateClothes($prenda, $color, $talla, $sexo, $category, $Id,$img);
+                            $this->model->updateClothes($prenda, $color, $talla, $sexo, $category, $Id,$img);
                             $this->view->ShowSuccess('La prenda se modificó con éxito.', 'Update clothes','Clothing/GetClothing', $auth);
                         }
                         else{

@@ -53,7 +53,7 @@ class CategoriesController extends AuthHelper{
                         if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
                             || $_FILES['imagen']['type'] == "image/png" ){
                             $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
-                            $this->model->AddCategory($descripcion, $lavado,$temperatura,$category,$img);
+                            $this->model->addCategory($descripcion, $lavado,$temperatura,$category,$img);
                             $this->viewClothing->ShowSuccess('Se agregó correctamente la categoria','Add Categories','Categories', $auth);
                         }
                         else{
@@ -126,7 +126,7 @@ class CategoriesController extends AuthHelper{
                             if($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" 
                                 || $_FILES['imagen']['type'] == "image/png" ){
                                 $img=$this->uploadImage($_FILES['imagen']['tmp_name']);
-                                $this->model->UpdateCategories($categoria, $lavado, $temperatura, $descripcion, $Id,$img);
+                                $this->model->updateCategories($categoria, $lavado, $temperatura, $descripcion, $Id,$img);
                                 $this->viewClothing->ShowSuccess('Se modificó con éxito la categoria.', 'Update categories','Categories', $auth);
                             }
                             else{
@@ -159,7 +159,7 @@ class CategoriesController extends AuthHelper{
             if($this->Idparams($id)){
                 if($this->CheckCategoryAssignedToAClothing($id)){
                     $Id=intval($id);
-                    $this->model->DeleteCategory($Id);
+                    $this->model->deleteCategory($Id);
                     $this->viewClothing->ShowSuccess('Se eliminó con éxito el tipo de tela.','Delete category','Categories', $auth);
                 }
                 else{

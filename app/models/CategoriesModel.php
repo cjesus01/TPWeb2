@@ -32,14 +32,8 @@ class CategoriesModel{
         return $Clothing;
     }
     public function addCategory($descripcion, $lavado,$temperatura,$categoria,$img){
-        if($img!=NULL){
             $query=$this->db->prepare("INSERT INTO tela(tipo_de_tela,descripcion,lavado_de_tela,temperatura_de_lavado,imagen) VALUES (?,?,?,?,?)");
             $query->execute([$categoria,$descripcion,$lavado,$temperatura,$img]);
-        }
-        else{
-            $query=$this->db->prepare("INSERT INTO tela(tipo_de_tela,descripcion,lavado_de_tela,temperatura_de_lavado) VALUES (?,?,?,?)");
-            $query->execute([$categoria,$descripcion,$lavado,$temperatura]);
-        }
     }
     public function getCategoriesOne($id){
         $query=$this->db->prepare("SELECT * FROM tela WHERE id_tela=?");
@@ -49,10 +43,6 @@ class CategoriesModel{
     }
     public function updateCategories($categories, $lavado, $temperatura, $descripcion, $Id,$img){
         $query=$this->db->prepare("UPDATE tela SET `tipo_de_tela`='$categories', `descripcion`='$descripcion', `lavado_de_tela`='$lavado', `temperatura_de_lavado`='$temperatura',`imagen`='$img' WHERE id_tela=?");
-        $query->execute([$Id]);
-    }
-    public function UpdateClothesImg($img,$Id){
-        $query=$this->db->prepare("UPDATE tela SET `imagen`='$img' WHERE id_tela=?");
         $query->execute([$Id]);
     }
     public function deleteCategory($id){
