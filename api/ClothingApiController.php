@@ -189,7 +189,7 @@
             $columna= $campo[':CAMPO'];
             if(isset($columna) && !empty($columna) && !is_null($columna) &&
                isset($_GET['filtrar']) && !empty($_GET['filtrar']) && !is_null(['filtrar'])){
-                $filtro= '%'.$_GET['filtrar'].'%';
+                $filtro= $_GET['filtrar'].'%';
                 if($this->getColumnsClothing($columna)){
                     $clothing= $this->model->getFilterClothing($columna,$filtro);
                     if($clothing){

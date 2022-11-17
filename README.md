@@ -15,12 +15,11 @@ Explicación de endpoints
     
     api/Clothing/:ID, 'PUT'= Este endpoint utilizando el metodo PUT permite modificar un elemento de la tabla prenda indicado por su ID. Ejemplo= api/Clothing/3.
     
-    api/Clothing/filtro/:CAMPO?filtrar='FILTRO', 'GET'= Este endpoint utilizando el metodo GET permite filtrar los elementos de las columnas (Base de datos de la tabla
-      prenda y tela) segun se especifique en ':CAMPO' (se permite filtrar un campo a la vez). Se filtrara segun lo que se ingrese en filtrar ('FILTRO'). El filtro traera
-      los elementos que contengan lo ingresado por filtrar.
+    api/Clothing/filtro/:CAMPO?filtrar='FILTRO', 'GET'= Este endpoint utilizando el metodo GET permite filtrar los elementos de las columnas (de las tablas prenda y tela que se encuentran en la base de datos) segun el campo que se especifique en ':CAMPO' (se permite filtrar un campo a la vez). Se filtrara según lo que se ingrese en filtrar ('FILTRO'). El filtro traera
+      los elementos que empiecen con lo ingresado por filtrar.
       Ejemplo= api/Clothing/filtro/color?filtrar=a
       
-    api/Clothing/:columna/:orden, 'GET'= Este endpoint utilizando el metodo GET permite, segun la columna que se especifique (base de datos de la tabla prenda y tela)
+    api/Clothing/:columna/:orden, 'GET'= Este endpoint utilizando el metodo GET permite, segun la columna que se especifique (de las tablas prenda y tela que se encuentran en la base de datos)
       en :columna, ordenar ascendentemente o descendentemente el campo especificado (en :orden se utilizara la palabras ascendente o descendente para ordenar los elementos).
       Ejemplo= api/Clothing/tipo_de_tela/ascendente
       
