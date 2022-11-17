@@ -51,17 +51,17 @@ class CategoriesApiController{
         if(isset($id) && $id != null){
             $id_category= $id[':ID'];
             $category= $this->model->getCategoriesOne($id_category);
-            if($this->checkCategoryAssignedToAClothing($category->id_tela)){
-                if($category){
+            if($category){
+                if($this->checkCategoryAssignedToAClothing($category->id_tela)){
                     $this->model->deleteCategory($id_category);
                     $this->view->response('Se eliminó con éxito.', 200);
                 }
                 else{
-                    $this->view->response('Ingrese una categoria válida.', 400);
+                    $this->view->response('No se puede eliminar la categoria ya que existen prendas asignadas a esta.', 400);
                 }
             }
             else{
-                $this->view->response('No se puede eliminar la categoria ya que existen prendas asignadas a esta.', 400);
+                $this->view->response('Ingrese una categoria válida.', 400);
             }
         }
         else{

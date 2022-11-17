@@ -77,7 +77,7 @@
                     $Mail=$_POST['mail'];
                     $contraseña = $_POST['contraseña'];
                     $hash=password_hash($contraseña,PASSWORD_DEFAULT);
-                    $this->model->AddUsser($nombre, $Mail, $hash, $auth);
+                    $this->model->AddUsser($nombre, $Mail, $hash);
                     $this->viewClothing->ShowSuccess('Usted se ha registrado con éxito.', 'add usser','Login', $auth);
                 }
                else{

@@ -56,7 +56,7 @@
                 $this->view->response($clothes, 200);
             }
             else{
-                $this->view->response("El número ingresado no existe",400);
+                $this->view->response("El número ingresado no existe",404);
             }
         }
         public function addClothing(){
@@ -100,7 +100,7 @@
                 }
             }
             else{
-                $this->view->response('Ingrese un numero correspondiente a una prenda', 404);
+                $this->view->response('Ingrese un numero correspondiente a una prenda', 400);
             }
         }
         public function updateClothing($id= null){
@@ -139,7 +139,7 @@
                 }
             }
             else{
-                $this->view->response('No se ha especificado una prenda', 404);
+                $this->view->response('No se ha especificado una prenda', 400);
             }
         }
         public function getData(){
@@ -166,7 +166,8 @@
         public function getOrderClothing($columna=null,$orden=null){
             $campo=$columna[':columna'];
             $ordenCampos=$columna[':orden'];
-            if(isset($campo) && isset($ordenCampos) && !empty($campo) && !empty($ordenCampos) && $ordenCampos!=null && $campo!=null){
+            if(isset($campo) && isset($ordenCampos) && !empty($campo) && !empty($ordenCampos) && 
+            !is_null($ordenCampos) && !is_null($campo)){
                 if($this->getColumnsClothing($campo)){
                     if($ordenCampos == 'descendiente'){
                         $clothing=$this->model->getOrderByColumn($campo,'DESC');
