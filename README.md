@@ -1,22 +1,22 @@
-**TRABAJO API REST Ropa
+# TRABAJO API REST Ropa
 
-***Detalles a tener en cuenta para empezar:
+## Detalles a tener en cuenta para empezar:
 
 	Importar la base de datos y cambiar la rama
 
-•	La API REST fue creada sobre la actual base de datos.
+-	La API REST fue creada sobre la actual base de datos.
 
-•	Cambiar hacia la rama ApiRest en el repositorio remoto GitHub
+-	Cambiar hacia la rama ApiRest en el repositorio remoto GitHub
 
-•	Importar desde PHPMyAdmin
+-	Importar desde PHPMyAdmin
 
-**Bodys
+## Bodys
 
-**Para POST Y PUT 
+### Para POST Y PUT 
 
-*IMPORTANTE!!, la clave foránea del trabajo resulta ser id_tela.
+*IMPORTANTE!!, la clave foránea del trabajo resulta ser id_tela.*
 
-***Tabla ropa:
+*Tabla ropa:*
 { 
 
 "sexo": ‘……’, 
@@ -38,7 +38,7 @@
 
 
 
-ejemplo:
+*ejemplo:*
 {
 "sexo":’Masculino’,
 
@@ -56,7 +56,7 @@ ejemplo:
 
 }
 
-Tabla tela:
+*Tabla tela:*
 {
 "tipo_de_tela": ‘…….’,
 
@@ -71,7 +71,7 @@ Tabla tela:
 “id_tela”: ‘…..’,
 
 }
-ejemplo:
+*ejemplo:*
 {
  "tipo_de_tela": ‘Algodon’,
  
@@ -88,11 +88,11 @@ ejemplo:
  }
 
 
-Endpoints:
+# Endpoints:
 
-ENDPOINT METODO GET:
+## ENDPOINT METODO GET:
 
-Clothing=
+### Clothing=
 
 http://localhost/proyects/TPE-WebII/TPWeb2/api/Clothing/?page=’numero’&elementNumbers=’numero’&columna=’campo &orden=’orden’ &filtrar=’busqueda’
 Este endpoint usando el metodo GET trae todos los elementos de las tablas de la base de datos. Ademas que se pueden pasar parámetros de=
@@ -107,32 +107,32 @@ Si no se especifica ninguna se traerán todos los elementos de la tabla.
 No es necesario darle un valor a cada parámetro(excepto en elementNumbers y page que  se tendrá que especificar obligatoriamente los dos parámetros y filtrar que se tiene que especificar la columna).
 Ejemplos=
 
-Especificar todos los campos=
+### Especificar todos los campos=
 
 http://localhost/proyects/TPE-WebII/TPWeb2/api/Clothing/?page=1&elementNumbers=2&columna=color&orden=ascendiente&filtrar=b
 
-Solo elementNumbers y page=
+### Solo elementNumbers y page=
 
 http://localhost/proyects/TPE-WebII/TPWeb2/api/Clothing/?page=1&elementNumbers=2
 
-Solo filtro y columna=
+### Solo filtro y columna=
 
 http://localhost/proyects/TPE-WebII/TPWeb2/api/Clothing/?page=1&elementNumbers=2&columna=color&filtrar=b
 
-No se especifica nada=
+### No se especifica nada=
 
 http://localhost/proyects/TPE-WebII/TPWeb2/api/Clothing
 
 
-Solo columna=
+### Solo columna=
 
 http://localhost/proyects/TPE-WebII/TPWeb2/api/Clothing/?page=1&elementNumbers=2&columna=color
 
-Solo orden=
+### Solo orden=
 
 http://localhost/proyects/TPE-WebII/TPWeb2/api/Clothing/?page=1&elementNumbers=2&orden=ascendiente
 
-Solo orden y columna=
+### Solo orden y columna=
 
 http://localhost/proyects/TPE-WebII/TPWeb2/api/Clothing/?page=1&elementNumbers=2&columna=color&orden=ascendiente
 
@@ -142,45 +142,45 @@ http://localhost/proyecto/Ropa/TPWeb2/api/Clothing/:ID
 
 Este endpoint te lleva a la función getCategories en la cual te trae todas las categorias de la tabla categorias. Ejemplo = api/Clothing/3
 
-ENDPOINT METODOS POST:
+## ENDPOINT METODOS POST:
 
-Clothing=
+### Clothing=
 
 
 http://localhost/proyecto/Ropa/TPWeb2/api/Clothing/
 
 Este endpoint utilizando el metodo POST permite agregar un nuevo elemento en la tabla prenda. 
 
-Categories=
+### Categories=
 
 http://localhost/proyecto/Ropa/TPWeb2/api/Categories/
 
 Este endpoint utilizando el metodo POST permite agregar un nuevo elemento en la tabla tela.
 
- ENDPOINT METODO PUT:
+ ## ENDPOINT METODO PUT:
  
-Clothing=
+### Clothing=
 
 http://localhost/proyecto/Ropa/TPWeb2/api/Clothing/:ID
 
 Este endpoint utilizando el metodo PUT permite modificar un elemento de la tabla prenda indicado por su ID. Ejemplo= api/Clothing/5.
 
-Categories=
+### Categories=
 
 http://localhost/proyecto/Ropa/TPWeb2/api/Categories/:ID
 
 Este endpoint utilizando el metodo PUT permite modificar un elemento de la tabla tela indicado por su ID. Ejemplo= api/Categories/35.
 
 
-•	ENDPOINT METODO DELETE:
+## ENDPOINT METODO DELETE:
 
-Clothing=
+### Clothing=
 
 http://localhost/proyecto/Ropa/TPWeb2/api/Clothing/:ID 
 
 Este endpoint utilizando el metodo DELETE permite eliminar un elemento de la tabla prenda indicado por su ID. Ejemplo= api/Clothing/7.
 
-Categories=
+### Categories=
 
 http://localhost/proyecto/Ropa/TPWeb2/api/Categories/:ID 
 
