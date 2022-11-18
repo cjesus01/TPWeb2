@@ -60,22 +60,16 @@
         $Clothing = $query->fetchAll(PDO::FETCH_OBJ);
         return $Clothing;
     }
-    public function getOrderByColumn($columna,$orden){
-        $query=$this->db->prepare("SELECT * FROM prenda JOIN tela ON prenda.id_tela=tela.id_tela ORDER BY $columna $orden");
-        $query->execute();
-        $clothing= $query->fetchAll(PDO::FETCH_OBJ);
-        return $clothing;
-    }
-    public function getPaginationClothing($page,$elementNumbers){
-        $query=$this->db->prepare("SELECT * FROM prenda JOIN tela ON prenda.id_tela=tela.id_tela ORDER BY id LIMIT $page,$elementNumbers");
+    public function getClothing($page,$elementNumbers,$campo,$orden){
+        $query=$this->db->prepare("SELECT * FROM prenda JOIN tela ON prenda.id_tela=tela.id_tela ORDER BY $campo $orden LIMIT $page,$elementNumbers");
         $query->execute();
         $clothing=$query->fetchAll(PDO::FETCH_OBJ);
         return $clothing;
     }
-    public function getFilterClothing($columna,$filtro){
-        $query= $this->db->prepare("SELECT * FROM prenda JOIN tela ON prenda.id_tela=tela.id_tela WHERE $columna LIKE ?");
+    public function getClothingWithFilter($page,$elementNumbers,$campo,$filtro,$orden){
+        $query=$this->db->prepare("SELECT * FROM prenda JOIN tela ON prenda.id_tela=tela.id_tela WHERE $campo LIKE ? ORDER BY $campo $orden LIMIT $page,$elementNumbers");
         $query->execute([$filtro]);
-        $clothing= $query->fetchAll(PDO::FETCH_OBJ);
+        $clothing=$query->fetchAll(PDO::FETCH_OBJ);
         return $clothing;
     }
     

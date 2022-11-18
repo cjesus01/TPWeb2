@@ -19,7 +19,8 @@
 
         public function getClothing(){
             if(isset($_GET['page']) && !empty($_GET['page']) && is_numeric($_GET['page']) && !is_null($_GET['page']) &&
-            isset($_GET['elementNumbers']) && !empty($_GET['elementNumbers']) && is_numeric($_GET['elementNumbers']) && !is_null($_GET['elementNumbers'])){
+            isset($_GET['elementNumbers']) && !empty($_GET['elementNumbers']) && is_numeric($_GET['elementNumbers']) && 
+            !is_null($_GET['elementNumbers'])){
                 if($_GET['page']<1 && $_GET['elementNumbers']<1){
                     $page=1;
                     $elementNumbers=1;
@@ -41,8 +42,120 @@
                     $page=$totalPag;
                 }
                 $offset=($page-1)*$elementNumbers;
-                $clothing = $this->model->getPaginationClothing($offset,$elementNumbers);
-                $this->view->response($clothing, 200);
+                if(isset($_GET['columna']) && !empty($_GET['columna']) && 
+                isset($_GET['orden']) && !empty($_GET['orden']) && 
+                isset($_GET['filtrar']) && !empty($_GET['filtrar']) && !is_numeric($_GET['filtrar']) && 
+                !is_null(['filtrar'])){
+                    $campo=$_GET['columna'];
+                    $ordenCampos=$_GET['orden'];
+                    $filtro= $_GET['filtrar'].'%';
+                    if($this->getColumnsClothing($campo)){
+                        if($ordenCampos == 'descendiente'){
+                            $clothing=$this->model->getClothingWithFilter($offset,$elementNumbers,$campo,$filtro,'DESC');
+                        }
+                        else{
+                            $clothing=$this->model->getClothingWithFilter($offset,$elementNumbers,$campo,$filtro,'ASC');
+                        }
+                        if($clothing){
+                            $this->view->response($clothing,200);
+                        }
+                        else{
+                            $this->view->response('No existe coincidencias.', 404);
+                        }
+                    }
+                    else{
+                        $this->view->response('No existe la columna que se especificó.', 400);
+                    }
+                }
+                else if(isset($_GET['filtrar']) && !empty($_GET['filtrar']) && !is_numeric($_GET['filtrar']) && !is_null(['filtrar']) && 
+                        isset($_GET['columna']) && !empty($_GET['columna'])){
+                    $campo=$_GET['columna'];
+                    $filtro= $_GET['filtrar'].'%';
+                    if($this->getColumnsClothing($campo)){
+                        $clothing=$this->model->getClothingWithFilter($offset,$elementNumbers,$campo,$filtro,'ASC');
+                        if($clothing){
+                            $this->view->response($clothing,200);
+                        }
+                        else{
+                            $this->view->response('No existe coincidencias.', 404);
+                        }
+                    }
+                    else{
+                        $this->view->response('No existe la columna que se especificó.', 400);
+                    } 
+                }
+                else if(isset($_GET['filtrar']) && !empty($_GET['filtrar']) && !is_numeric($_GET['filtrar']) && 
+                !is_null(['filtrar']) && isset($_GET['orden']) && !empty($_GET['orden'])){
+                    $filtro= $_GET['filtrar'].'%';
+                    $ordenCampos=$_GET['orden'];
+                        if($ordenCampos == 'descendiente'){
+                            $clothing=$this->model->getClothingWithFilter($offset,$elementNumbers,'id',$filtro,'DESC');
+                        }
+                        else{
+                            $clothing=$this->model->getClothingWithFilter($offset,$elementNumbers,'id',$filtro,'ASC');
+                        }
+                        if($clothing){
+                            $this->view->response($clothing,200);
+                        }
+                        else{
+                            $this->view->response('No existe coincidencias.', 404);
+                        }
+                }
+                else if(isset($_GET['columna']) && !empty($_GET['columna']) && isset($_GET['orden']) 
+                        && !empty($_GET['orden'])){
+                    $ordenCampos=$_GET['orden'];
+                    $campo=$_GET['columna'];
+                    if($this->getColumnsClothing($campo)){
+                        if($ordenCampos == 'descendiente'){
+                            $clothing=$this->model->getClothing($offset,$elementNumbers,$campo,'DESC');
+                        }
+                        else{
+                            $clothing=$this->model->getClothing($offset,$elementNumbers,$campo,'ASC');
+                        }
+                        if($clothing){
+                            $this->view->response($clothing,200);
+                        }
+                        else{
+                            $this->view->response('No existe coincidencias.', 404);
+                        }
+                    }
+                    else{
+                        $this->view->response('No existe la columna que se especificó.', 400);
+                    }
+                }
+                else if(isset($_GET['columna']) && !empty($_GET['columna'])){
+                    $campo=$_GET['columna'];
+                    if($this->getColumnsClothing($campo)){
+                        $clothing=$this->model->getClothing($offset,$elementNumbers,$campo,'ASC');
+                        if($clothing){
+                            $this->view->response($clothing,200);
+                        }
+                        else{
+                            $this->view->response('No existe coincidencias.', 404);
+                        }
+                    }
+                    else{
+                        $this->view->response('No existe la columna que se especificó.', 400);
+                    } 
+                }
+                else if(isset($_GET['orden']) && !empty($_GET['orden'])){
+                    $ordenCampos=$_GET['orden'];
+                    if($ordenCampos == 'descendiente'){
+                        $clothing=$this->model->getClothing($offset,$elementNumbers,'id','DESC');
+                    }
+                    else{
+                        $clothing=$this->model->getClothing($offset,$elementNumbers,'id','ASC');
+                    }
+                    if($clothing){
+                        $this->view->response($clothing,200);
+                    }
+                    else{
+                        $this->view->response('No existe coincidencias.', 404);
+                    }
+                }
+                else if(isset($_GET['filtrar'])){
+                    $this->view->response('Se necesita especificar un campo para filtrar',400);
+                }
             }
             else{
                 $clothing = $this->model->getAllClothing();
@@ -162,50 +275,5 @@
                 }
             }
             return false;
-        }
-        public function getOrderClothing($columna=null,$orden=null){
-            $campo=$columna[':columna'];
-            $ordenCampos=$columna[':orden'];
-            if(isset($campo) && isset($ordenCampos) && !empty($campo) && !empty($ordenCampos) && 
-            !is_null($ordenCampos) && !is_null($campo)){
-                if($this->getColumnsClothing($campo)){
-                    if($ordenCampos == 'descendiente'){
-                        $clothing=$this->model->getOrderByColumn($campo,'DESC');
-                    }
-                    else{
-                        $clothing=$this->model->getOrderByColumn($campo,'ASC');
-                    }
-                    $this->view->response($clothing,200);
-                }
-                else{
-                    $this->view->response('No existe la columna que se especificó.', 400);
-                }    
-            }
-            else{
-                $this->view->response('No se ha especificado columna o orden que se quiere filtrar.', 400);
-            }
-        }
-
-        public function filterClothing($campo = NULL){
-            $columna= $campo[':CAMPO'];
-            if(isset($columna) && !empty($columna) && !is_null($columna) &&
-               isset($_GET['filtrar']) && !empty($_GET['filtrar']) && !is_null(['filtrar'])){
-                $filtro= $_GET['filtrar'].'%';
-                if($this->getColumnsClothing($columna)){
-                    $clothing= $this->model->getFilterClothing($columna,$filtro);
-                    if($clothing){
-                        $this->view->response($clothing, 200);
-                    }
-                    else{
-                        $this->view->response('No existen elementos que coincidan con el filtro', 404);
-                    }
-                }    
-                else{
-                    $this->view->response('El campo ingresado no existe, por favor intentelo nuevamente', 400);
-                }
-            }
-            else{
-                $this->view->response('Ingrese un elemento para poder realizar la accion', 400);
-            }
         }
     }
